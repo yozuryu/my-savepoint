@@ -1,5 +1,19 @@
 # Changelog
 
+## v26.11.15
+
+The first two Legend of Heroes games, in every version on the want-to-play list, form a new Iselhasa sub-series of The Legend of Heroes
+
+### RetroAchievements
+
+- improved: **The Legend of Heroes** series now starts with the two Dragon Slayer: The Legend of Heroes games
+  A new Iselhasa sub-series holds all eight versions (PC Engine CD, Super Famicom, PC-98 and PC-88). The first game leaves the Dragon Slayer series.
+
+### Hub
+
+- improved: **The Legend of Heroes** shared series gains the Iselhasa games
+  Same move as on the RA profile: eight versions of the first two games, out of Dragon Slayer.
+
 ## v26.11.14
 
 A LEGO series on the RA and Steam profiles, LEGO 2K Drive as the face of the shared one, games from a Steam Family library in your play log, and Steam icons that load again

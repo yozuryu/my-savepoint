@@ -373,7 +373,6 @@
     "id": "mnntu37w",
     "name": "Dragon Slayer",
     "gameIds": [
-      12889,
       5142,
       1795,
       4706,
@@ -1885,6 +1884,14 @@
     "id": "mnmljwrh",
     "name": "The Legend of Heroes",
     "gameIds": [
+      12889,
+      2821,
+      7619,
+      13976,
+      10197,
+      2822,
+      7654,
+      13977,
       3563,
       3567,
       3562,
@@ -1898,6 +1905,20 @@
     "coverGameId": 10479,
     "showProgress": true,
     "groups": [
+      {
+        "id": "iselhasa",
+        "name": "Iselhasa",
+        "gameIds": [
+          12889,
+          2821,
+          7619,
+          13976,
+          10197,
+          2822,
+          7654,
+          13977
+        ]
+      },
       {
         "id": "gagharv",
         "name": "Gagharv",

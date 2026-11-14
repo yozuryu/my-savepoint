@@ -253,7 +253,6 @@
     "gameIds": [
       "ra:5142",
       "ra:1795",
-      "ra:12889",
       "ra:4345",
       "ra:4706",
       "steam:312560",
@@ -267,7 +266,6 @@
         "gameIds": [
           "ra:5142",
           "ra:1795",
-          "ra:12889",
           "ra:4345"
         ]
       },
@@ -1249,6 +1247,14 @@
     "id": "hbab9c4834",
     "name": "The Legend of Heroes",
     "gameIds": [
+      "ra:12889",
+      "ra:2821",
+      "ra:7619",
+      "ra:13976",
+      "ra:10197",
+      "ra:2822",
+      "ra:7654",
+      "ra:13977",
       "ra:3563",
       "ra:3567",
       "ra:3562",
@@ -1270,6 +1276,20 @@
     ],
     "showProgress": true,
     "groups": [
+      {
+        "id": "iselhasa",
+        "name": "Iselhasa",
+        "gameIds": [
+          "ra:12889",
+          "ra:2821",
+          "ra:7619",
+          "ra:13976",
+          "ra:10197",
+          "ra:2822",
+          "ra:7654",
+          "ra:13977"
+        ]
+      },
       {
         "id": "gagharv",
         "name": "Gagharv",
