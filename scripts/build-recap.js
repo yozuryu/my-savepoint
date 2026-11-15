@@ -179,6 +179,8 @@ const gameCard = key => {
 const round1 = n => Math.round(n * 10) / 10;
 const addDay = (day, n) => { const d = new Date(day + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
 
+const sharedSeries = (x => Array.isArray(x) ? x : x.series ?? [])(read('data/hub/series.json', [])).map(sr => ({ name: sr.name, keys: new Set(sr.gameIds ?? []) }));
+
 // ── One year ────────────────────────────────────────────────────────────────
 const now = Date.now(), thisYear = local(now).year;
 function buildYear(year) {
@@ -269,24 +271,39 @@ function buildYear(year) {
         activeDays: dayKeys.length, rare: us.filter(u => u.r != null && u.r < 10).length,
     };
 
-    // A name for the year: the trait that stands out most, in a fixed order of how much it says
-    const topShare = top[0]?.share ?? 0, lead = Object.entries(byPlatform).sort((a, b) => b[1] - a[1])[0];
-    const title =
-        totals.completed >= 5 ? ['The Completionist', `${totals.completed} games finished to 100%`]
-        : us.length >= 20 && totals.rare / us.length >= 0.25 ? ['Rare Hunter', `${totals.rare} unlocks under 10% rarity`]
-        : streak.days >= 14 ? ['Daily Driver', `${streak.days} days in a row`]
-        : topShare >= 50 && gameKeys.length > 1 ? ['One True Game', `${Math.round(topShare)}% of the year in ${top[0].name}`]
-        : us.length >= 20 && dayPart.id === 'night' && dayPart.pct >= 40 ? ['Night Owl', `${dayPart.pct}% of unlocks after 22:00`]
-        : totals.newGames >= 15 ? ['The Explorer', `${totals.newGames} new games started`]
-        : lead[0] === 'ra' && lead[1] / Math.max(us.length, 1) >= 0.6 ? ['Retro Soul', `${Math.round(100 * lead[1] / us.length)}% of unlocks on classic systems`]
-        : totals.completed + totals.beaten >= 3 ? ['The Finisher', `${totals.completed + totals.beaten} games seen through`]
-        : us.length < 40 ? ['Quiet Year', `${us.length} unlocks, ${gameKeys.length} ${gameKeys.length === 1 ? 'game' : 'games'}`]
-        : ['Steady Hand', `${totals.activeDays} days played`];
+    // What the year's title is picked from (pickTitles, once every year is known)
+    const share = (n, of = us.length) => of ? n / of : 0;
+    const lastBefore = unlocks.filter(u => u.year < year && !hidden(u.key)).pop();
+    const active = [...(lastBefore ? [lastBefore.day] : []), ...dayKeys];
+    let gap = { days: 0 };
+    active.forEach((d, i) => {
+        const n = i ? Math.round((Date.parse(d) - Date.parse(active[i - 1])) / 864e5) : 0;
+        if (n > gap.days) gap = { days: n, after: us.filter(u => u.day >= d).length };
+    });
+    const inSeries = sharedSeries.map(sr => ({ name: sr.name, unlocks: us.filter(u => sr.keys.has(u.key)).length, games: gameKeys.filter(k => sr.keys.has(k)).length }))
+        .filter(x => x.games >= 2).sort((a, b) => b.unlocks - a.unlocks)[0];
+    const raUs = us.filter(u => u.platform === 'ra');
+    const traits = {
+        unlocks: us.length, games: gameKeys.length, activeDays: dayKeys.length,
+        completed: totals.completed, beaten: totals.beaten, rare: totals.rare, rareShare: share(totals.rare),
+        streak: streak.days, topShare: gameKeys.length > 1 ? top[0]?.share ?? 0 : 0, topName: top[0]?.name,
+        night: us.length ? parts.find(p => p.id === 'night').pct : 0, morning: us.length ? parts.find(p => p.id === 'morning').pct : 0,
+        weekend: Math.round(100 * share(weekdays[WEEKDAYS.indexOf('Sat')] + weekdays[WEEKDAYS.indexOf('Sun')])),
+        peakMonth, peakShare: Math.round(100 * share(monthTotals[peakMonth])),
+        gap: gap.days, gapAfter: gap.after ?? 0, newGames: totals.newGames,
+        spread: Math.round(100 * Math.min(...Object.values(byPlatform).map(n => share(n)))),
+        backlog: yearDone.filter(c => firstEver[c.key] < year).length,
+        series: inSeries ? Math.round(100 * share(inSeries.unlocks)) : 0, seriesName: inSeries?.name,
+        hardcore: raUs.length >= 20 ? Math.round(100 * share(raUs.filter(u => u.hc).length, raUs.length)) : 0, raUnlocks: raUs.length,
+        retro: Math.round(100 * share(byPlatform.ra)),
+        longest: ss.reduce((n, x) => Math.max(n, x.minutes), 0),
+        bestDay: best ? days[best].unlocks : 0,
+    };
 
     return {
         year, tz: TZ, partial: year === thisYear || undefined, asOf: year === thisYear ? local(now).day : undefined,
         user: { name: config.username ?? 'Player', motto: config.motto },
-        title: { name: title[0], why: title[1] },
+        traits,
         rankBy: byTime ? 'time' : 'unlocks',
         // Play time is logged from this day on: a year that starts before it only has part of its hours
         trackedFrom: byTime && local(trackedFrom).year === year && local(trackedFrom).day > `${year}-01-01` ? local(trackedFrom).day : undefined,
@@ -304,6 +321,58 @@ function buildYear(year) {
 // ── Write ───────────────────────────────────────────────────────────────────
 const allYears = [...new Set([...unlocks.map(u => u.year), ...sessions.map(s => s.year)])].sort();
 const recaps = allYears.map(buildYear).filter(Boolean);
+
+// ── A name for each year ────────────────────────────────────────────────────
+// Every title has a measure, a bar the year must clear (`min`, plus `ok`) and a value where it is unmistakable (`max`).
+// A year takes the title it stands out in most: partly how far past the bar it is, partly how it compares with
+// the owner's other years, so a habit that holds every year (late nights) only names the year it peaked.
+// No title two years in a row while another one fits.
+const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const hm = m => m >= 60 ? `${Math.floor(m / 60)}h ${m % 60}m` : `${m}m`;
+const TITLES = [
+    { name: 'The Completionist', of: t => t.completed, min: 4, max: 10, why: t => `${t.completed} games finished to 100%` },
+    { name: 'The Finisher', of: t => t.beaten, min: 3, max: 8, why: t => `${t.beaten} games beaten` },
+    { name: 'Backlog Slayer', of: t => t.backlog, min: 3, max: 8, why: t => `${t.backlog} older games finally finished` },
+    { name: 'Rare Hunter', of: t => t.rareShare * 100, min: 15, max: 40, ok: t => t.unlocks >= 20, why: t => `${t.rare} unlocks under 10% rarity` },
+    { name: 'Daily Driver', of: t => t.streak, min: 10, max: 30, why: t => `${t.streak} days in a row` },
+    { name: 'One True Game', of: t => t.topShare, min: 45, max: 80, why: t => `${Math.round(t.topShare)}% of the year in ${t.topName}` },
+    { name: 'Series Devotee', of: t => t.series, min: 40, max: 80, ok: t => t.unlocks >= 20, why: t => `${t.series}% of unlocks in ${t.seriesName}` },
+    { name: 'Night Owl', of: t => t.night, min: 40, max: 75, ok: t => t.unlocks >= 20, why: t => `${t.night}% of unlocks after 22:00` },
+    { name: 'Early Bird', of: t => t.morning, min: 30, max: 60, ok: t => t.unlocks >= 20, why: t => `${t.morning}% of unlocks before noon` },
+    { name: 'Weekend Warrior', of: t => t.weekend, min: 55, max: 80, ok: t => t.unlocks >= 20, why: t => `${t.weekend}% of unlocks on weekends` },
+    { name: 'The Sprinter', of: t => t.peakShare, min: 40, max: 75, ok: t => t.unlocks >= 40, why: t => `${t.peakShare}% of the year in ${MONTH_NAMES[t.peakMonth]}` },
+    { name: 'The Comeback', of: t => t.gap, min: 120, max: 365, ok: t => t.gapAfter >= 20, why: t => `Back after ${t.gap} days away` },
+    { name: 'The Explorer', of: t => t.newGames, min: 12, max: 35, why: t => `${t.newGames} new games started` },
+    { name: 'Platform Hopper', of: t => t.spread, min: 15, max: 30, why: () => 'Unlocks on all three platforms' },
+    { name: 'Retro Soul', of: t => t.retro, min: 60, max: 95, ok: t => t.unlocks >= 20, why: t => `${t.retro}% of unlocks on classic systems` },
+    { name: 'No Safety Net', of: t => t.hardcore, min: 90, max: 100, ok: t => t.raUnlocks >= 40, why: t => `${t.hardcore}% of retro unlocks in hardcore` },
+    { name: 'Marathoner', of: t => t.longest, min: 240, max: 480, why: t => `One session of ${hm(t.longest)}` },
+    { name: 'Trophy Storm', of: t => t.bestDay, min: 25, max: 60, why: t => `${t.bestDay} unlocks in a single day` },
+    { name: 'Banner Year', of: (t, all) => { const o = all.filter(x => x !== t).map(x => x.unlocks).sort((a, b) => a - b); return o.length >= 3 ? t.unlocks / Math.max(o[o.length >> 1], 1) : 0; },
+        min: 1.75, max: 4, why: t => `${t.unlocks.toLocaleString('en-US')} unlocks, a personal high` , ok: (t, all) => all.every(x => x.unlocks <= t.unlocks) },
+];
+function pickTitles(recaps) {
+    const all = recaps.map(r => r.traits);
+    let prev = null;
+    for (const r of recaps) {
+        const t = r.traits;
+        const fits = TITLES.map(T => {
+            const v = T.of(t, all);
+            if (!(v >= T.min) || (T.ok && !T.ok(t, all))) return null;
+            const others = all.filter(x => x !== t).map(x => T.of(x, all));
+            const rank = others.length >= 3 ? others.filter(o => o < v).length / others.length : 0.5;
+            return { name: T.name, why: T.why(t), score: 0.5 * rank + 0.5 * Math.min(1, (v - T.min) / (T.max - T.min)) };
+        }).filter(Boolean).sort((a, b) => b.score - a.score);
+        fits.push(t.unlocks < 40
+            ? { name: 'Quiet Year', why: `${t.unlocks} unlocks, ${t.games} ${t.games === 1 ? 'game' : 'games'}`, score: 0 }
+            : { name: 'Steady Hand', why: `${t.activeDays} days played`, score: 0 });
+        const pick = fits.find(f => f.name !== prev) ?? fits[0];
+        r.title = { name: pick.name, why: pick.why };
+        r.titleFits = fits;
+        prev = pick.name;
+    }
+}
+pickTitles(recaps);
 const index = recaps.map(r => ({ year: r.year, partial: r.partial, title: r.title.name, unlocks: r.totals.unlocks, games: r.totals.games,
     minutes: r.totals.minutes, top: r.top[0] && { name: r.top[0].name, icon: r.top[0].icon, cover: r.top[0].cover } }));
 
@@ -340,7 +409,7 @@ if (template) {
             `<meta name="twitter:description" content="${esc(desc)}">`,
             `<meta name="twitter:image" content="${image}">`,
         ].join('\n    ');
-        const data = JSON.stringify({ recap: r, years: index, base, site: SITE }).replace(/</g, '\\u003c');
+        const data = JSON.stringify({ recap: { ...r, traits: undefined, titleFits: undefined }, years: index, base, site: SITE }).replace(/</g, '\\u003c');
         return template.replace(/<!--meta-->[\s\S]*?<!--\/meta-->/, () => meta).replaceAll('{{base}}', base)
             .replace('<!--data-->', () => `<script type="application/json" id="recap">${data}</script>`);
     };
@@ -354,6 +423,7 @@ if (template) {
     fs.writeFileSync(path.join(pageDir, 'years.json'), JSON.stringify({ years: recaps.map(r => r.year), latest: recaps.length ? (r => ({ year: r.year, title: r.title.name, partial: !!r.partial }))(recaps[recaps.length - 1]) : null }));
 }
 console.log(`recap: ${recaps.length} years (${recaps.map(r => r.year).join(', ')})${template ? `, pages ${(bytes / 1024).toFixed(0)} KB` : ', no memory-card/page.html: nothing written'}`);
+if (process.argv.includes('--titles')) for (const r of recaps) console.log(`${r.year}  ${r.titleFits.map(f => `${f.name === r.title.name ? '>' : ' '}${f.name} ${f.score.toFixed(2)} (${f.why})`).join('  |  ')}`);
 if (process.argv.includes('--print')) for (const r of recaps) {
     console.log(`\n${r.year}  ${r.title.name} (${r.title.why})  unlocks ${r.totals.unlocks} games ${r.totals.games} new ${r.totals.newGames} done ${r.totals.completed}+${r.totals.beaten} min ${r.totals.minutes ?? '-'} days ${r.totals.activeDays} streak ${r.streak.days} rare ${r.totals.rare} farms ${JSON.stringify(r.farms ?? null)}`);
     for (const g of r.top) console.log(`   ${g.platform} ${g.name}  ${g.unlocks}u ${g.minutes ?? '-'}m ${g.share}% ${g.tier ?? ''}`);

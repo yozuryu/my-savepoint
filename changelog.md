@@ -13,6 +13,8 @@ Memory Card: a showcase page for every year in games, with a picture and a link 
 
 - new: **Memory Card** a page for each year in games, made to share
   Top five games, the year's days as save blocks, finished games, rarest unlocks and when you play, for every year since 2015. Share it as a picture or a link that previews that year. Open it from the Memory Card link under the totals in the header.
+- improved: **Memory Card** titles: 21 to earn, picked by what made the year different
+  Each year gets the title it stands out in most against your other years, and no title repeats two years in a row.
 - improved: **The Legend of Heroes** shared series gains the Iselhasa games
   Same move as on the RA profile: eight versions of the first two games, out of Dragon Slayer.
 
