@@ -176,6 +176,16 @@
     }
     #activity-toggle-btn:active { background: #202d39; }
     /* The link label at the end of the section bars (Playing, Series, Activity): blue, so the bar reads as a link */
+    /* Under the totals: the Memory Card link (memory-card/, the year in its card colour) and the platforms.
+       The platform chips are icons only (names in the tooltip), so both fit one line under the three numbers */
+    .hub-meta { display: flex !important; align-items: center; justify-content: space-between; gap: 10px; }
+    .hub-meta .crits { flex-wrap: nowrap; margin-left: auto; }
+    #memcard-link { --mc: 102, 192, 244; display: inline-flex; align-items: center; gap: 6px; padding: 5px 0; font-size: 11.5px; font-weight: 600; color: #66c0f4; white-space: nowrap; animation: motion-fade 200ms ease-out backwards; }
+    #memcard-link:hover { color: #c6d4df; }
+    #memcard-link svg:first-child, #memcard-link b { color: rgb(var(--mc)); }
+    #memcard-link b { font: 700 13px/1 Oxanium, 'Segoe UI', Arial, sans-serif; letter-spacing: .04em; }
+    .hub-meta .crit { padding: 0 6px; } .hub-meta .crit span { display: none; }
+    @media (prefers-reduced-motion: reduce) { #memcard-link { animation: none; } }
     .hub-go { margin-left: auto; flex-shrink: 0; display: flex; align-items: center; gap: 3px; color: #66c0f4; font-weight: 600; white-space: nowrap; transition: color 0.15s; }
     a:hover > .hub-go { color: #c6d4df; }
     /* Desktop: a bar under the feed to the Activity page, with the last 7 days (the header chevron was too easy to miss) */
@@ -263,7 +273,10 @@
           <div class="phead-stat"><b><span class="skeleton" style="width:48px;height:18px"></span></b><span>Unlocks</span></div>
           <div class="phead-stat"><b><span class="skeleton" style="width:28px;height:18px"></span></b><span>Completed</span></div>
         </div>
-        <div class="phead-meta crits" style="justify-content:flex-end"><span class="crit"><img src="./assets/icon-ra.png" alt="">RetroAchievements</span><span class="crit"><img src="./assets/icon-steam.png" alt="">Steam</span><span class="crit"><img src="./assets/icon-xbox.png" alt="">Xbox</span></div>
+        <div class="phead-meta hub-meta">
+          <a id="memcard-link" href="./memory-card/" style="display:none;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg><b id="memcard-year"></b>Memory Card<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+          <span class="crits"><span class="crit" title="RetroAchievements"><img src="./assets/icon-ra.png" alt="RetroAchievements"><span>RetroAchievements</span></span><span class="crit" title="Steam"><img src="./assets/icon-steam.png" alt="Steam"><span>Steam</span></span><span class="crit" title="Xbox"><img src="./assets/icon-xbox.png" alt="Xbox"><span>Xbox</span></span></span>
+        </div>
       </div>
     </div>
   </header>
@@ -1274,6 +1287,20 @@
       }
     }
 
+    // Memory Card link under the totals: the latest year in that year's card colour (same list as
+    // memory-card/page.html). Stays hidden when the pages aren't built
+    const MEMCARD_COLORS = ['167, 139, 250', '255, 122, 144', '255, 179, 71', '95, 180, 255', '63, 224, 197', '190, 227, 86'];
+    async function loadMemcardLink() {
+      const latest = (await fetchJsonOnce('./memory-card/years.json'))?.latest;
+      if (!latest) return;
+      const link = document.getElementById('memcard-link');
+      link.style.setProperty('--mc', MEMCARD_COLORS[latest.year % MEMCARD_COLORS.length]);
+      link.title = `Memory Card: ${latest.year} in games, ${latest.title}`;
+      document.getElementById('memcard-year').textContent = latest.year;
+      link.style.display = '';
+    }
+
+    loadMemcardLink();
     loadPlayingSection();
     loadSeriesSection();
     loadHubProfile();

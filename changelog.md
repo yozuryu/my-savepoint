@@ -2,7 +2,7 @@
 
 ## v26.11.15
 
-The first two Legend of Heroes games, in every version on the want-to-play list, form a new Iselhasa sub-series of The Legend of Heroes
+Memory Card: a showcase page for every year in games, with a picture and a link to share. The first two Legend of Heroes games form a new Iselhasa sub-series
 
 ### RetroAchievements
 
@@ -11,6 +11,8 @@ The first two Legend of Heroes games, in every version on the want-to-play list,
 
 ### Hub
 
+- new: **Memory Card** a page for each year in games, made to share
+  Top five games, the year's days as save blocks, finished games, rarest unlocks and when you play, for every year since 2015. Share it as a picture or a link that previews that year. Open it from the Memory Card link under the totals in the header.
 - improved: **The Legend of Heroes** shared series gains the Iselhasa games
   Same move as on the RA profile: eight versions of the first two games, out of Dragon Slayer.
 

@@ -65,6 +65,11 @@ jobs:
           for f in $(node -p "require('./scripts/data-paths.json').private.join(' ')"); do rm -f "_site/$f"; done
           # Shared series progress, from the hand-made data/hub/series.json and the platform data
           node scripts/build-series.js _site
+          # Memory Card: one page per year from memory-card/page.html, then each year's share pictures
+          # (headless Chrome; a failed render keeps the deploy, the pictures are then missing)
+          node scripts/build-recap.js _site
+          rm -f _site/memory-card/page.html
+          node scripts/render-recap.js _site || echo "::warning::Memory Card share pictures were not rendered"
           echo "Site: $(find _site -type f | wc -l) files, $(du -sh _site | cut -f1)"
 
       - uses: actions/configure-pages@v5

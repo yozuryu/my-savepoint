@@ -89,6 +89,7 @@ gaming-hub/
 ├── completions/                    # CLAUDE.md in this directory
 ├── series/                         # Shared series page (CLAUDE.md in this directory)
 ├── changelog/                      # CLAUDE.md in this directory
+├── memory-card/                    # Memory Card: the yearly showcase. Only page.html is tracked; see Memory Card
 │
 ├── admin/
 │   └── index.html                  # Admin panel (series management, config)
@@ -133,7 +134,7 @@ Vanilla JS, no React. Reads `data/hub/config.json`, `data/ra/profile.json`, `dat
 
 **Sections switched off in the admin** (Site Config → Hub sections, `data/hub/config.json` `<id>.visible: false`): `playing`, `series`, `activity`, `completions`, `analytics`, applied in `loadHubProfile()`. Playing and Series start loading before the config arrives and are hidden again when off; the platform `active` flag in the file is unused (sync is `XBOX_ENABLED` in `fetch-data.yml`)
 
-**Header** (`.phead` in `assets/ui.css`, the same pattern as the profile headers): avatar, name, "Last change · Changelog", motto, the genre tags in one sideways-scrolling row, and a totals strip across platforms: Hours played (RA + Steam), Unlocks (all three), Completed (RA mastered + Steam perfect + Xbox completed). Each stat loader calls `reportHubTotals()`; the strip fills in once all three answered (a failed platform counts as zero). The latest played game's art (RA or Steam, whichever is newer, `offerHeaderArt()`; for RA the hero from `data/ra/art.json` when picked, else the screenshot) is blurred behind it.
+**Header** (`.phead` in `assets/ui.css`, the same pattern as the profile headers): avatar, name, "Last change · Changelog", motto, the genre tags in one sideways-scrolling row, and a totals strip across platforms: Hours played (RA + Steam), Unlocks (all three), Completed (RA mastered + Steam perfect + Xbox completed), and under it one row (`.hub-meta`): the Memory Card link on the left (see Memory Card), the platform chips as icons on the right. Each stat loader calls `reportHubTotals()`; the strip fills in once all three answered (a failed platform counts as zero). The latest played game's art (RA or Steam, whichever is newer, `offerHeaderArt()`; for RA the hero from `data/ra/art.json` when picked, else the screenshot) is blurred behind it.
 
 **Playing section** (first on the page, mobile and desktop): the 4 most recent games from the Playing group of `assets/playing.js` as mini tiles (Activity's tiles without the stats band: cover, chip, last played, title, progress, 13-week strip), 2×2 on mobile and one row on desktop, then one link line (`+N more playing · N on hold · N drifting`, **All playing ›**) to `activity/?view=playing`. The three section bars (Playing, Series, Activity) end in a blue `.hub-go` label. Loaded with `import('./assets/playing.js')` from the classic script, sharing `fetchJsonOnce`. Shows its skeleton at once; hidden only when nothing is in rotation at all
 
@@ -273,6 +274,15 @@ Series across platforms, made by hand in the admin (General → Shared Series) i
 - `scripts/build-series.js [siteRoot]` turns it into `data/hub/series-games.json` (~115 KB): each game's title, icon, art, unlocked / total, beaten, playtime, last activity and latest unlock (`last`: name, icon, date), from the RA games index + watchlist + awards, the Steam / Xbox indexes + win conditions. The hub and the series cards read only that file, never the per-platform lists; a game opened on `series/` loads its own file (`data/{ra,steam,xbox}/games/{id}.json`) 
 - Built in `deploy.yml` (after the site is assembled, so every data run and every push rebuilds it), by `npm run data:pull`, and by the admin server whenever the series file is saved. The output is gitignored
 - A series shows with 3+ games the platform data knows; games missing from it (unplayed Steam games aren't in the index) are left out
+
+## Memory Card
+The year in games as a public showcase (`memory-card/{YYYY}/`, `memory-card/` = the latest year), made for visitors and for sharing. It stands outside the app on purpose: its own look (dark, one colour per year, Oxanium / Figtree / Silkscreen), vanilla JS, no `mobile-nav.js`, no `ui.css`. The hub links it from the header, in the row under the totals (`#memcard-link` in `.hub-meta`, `loadMemcardLink()`: save icon, the latest year in its card colour from `years.json` `latest`, "Memory Card ›" in link blue; hidden when the pages aren't built; the colour list is a copy of `COLORS` in `page.html`). The platform chips beside it are icons only, so both fit one line under the totals.
+- **`memory-card/page.html`** is the only source: template, styles and script. `scripts/build-recap.js [siteRoot]` computes one recap per year with unlocks or play time and writes `memory-card/{YYYY}/index.html`, `memory-card/index.html` and `memory-card/years.json` (all gitignored), each page with its recap embedded as JSON (`#recap`) and its own title, description and Open Graph / Twitter tags, so a shared link previews that year. `page.html` itself is removed from the published site
+- **Share pictures:** `scripts/render-recap.js [siteRoot] [year …]` screenshots each year's page in its card modes (`?card=link` 1200 × 630, `?card=story` 1080 × 1920) into `memory-card/share/{YYYY}-link.jpg` / `-story.jpg` with headless Chrome over `--remote-debugging-pipe` (no npm dependency; waits for `body[data-ready="1"]`). The link picture is the page's `og:image`; the Share sheet (Story / Wide, share, save, copy link) hands out the same files. About 22 s and 3.5 MB for 12 years locally
+- **Built** in `deploy.yml` after `build-series.js` (pages, then pictures; a failed render only warns) and by `npm run data:pull` (pages only; run `render-recap.js` by hand for the pictures)
+- **Rules of the numbers:** days and hours are in the owner's timezone, fixed at build time (`timezone` in `data/hub/config.json`, default `Asia/Jakarta`), not the viewer's, so the page and its pictures agree. Games rank by play time when the year has it, else by unlocks; play time exists only from 25 Mar 2026. Farms and idle games are left out as in Analytics. A year still running is marked "So far"
+- The site URL in the meta tags is the `SITE` constant in `build-recap.js`
+- Check it like everything else at 450px, and look at both pictures after a change to the card styles (`.sc-link`, `.sc-story`)
 
 ## Publishing / Private Files
 

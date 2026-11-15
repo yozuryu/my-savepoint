@@ -27,3 +27,5 @@ console.log(`data/ updated from the data branch (${ref})`);
 
 // The shared series progress file is built from this data (deploy.yml builds it for the site)
 execFileSync('node', [path.join(__dirname, 'build-series.js')], { cwd: ROOT, stdio: 'inherit' });
+// Memory Card pages too (their share pictures need Chrome: node scripts/render-recap.js)
+execFileSync('node', [path.join(__dirname, 'build-recap.js')], { cwd: ROOT, stdio: 'inherit' });
