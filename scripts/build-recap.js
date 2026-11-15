@@ -319,7 +319,8 @@ function buildYear(year) {
 
     return {
         year, tz: TZ, partial: year === thisYear || undefined, asOf: year === thisYear ? local(now).day : undefined,
-        user: { name: config.username ?? 'Player', motto: config.motto },
+        // avatar: a picture URL or a path in the repo, like the hub header (assets/avatar.png when empty)
+        user: { name: config.username ?? 'Player', motto: config.motto, avatar: config.avatar || undefined },
         traits,
         rankBy: byTime ? 'time' : 'unlocks',
         // Play time is logged from this day on: a year that starts before it only has part of its hours

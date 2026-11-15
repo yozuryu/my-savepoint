@@ -384,6 +384,8 @@
         const MONTHS_LONG = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
         const WEEKDAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
         const day = d => `${+d.slice(8)} ${MONTHS[+d.slice(5, 7) - 1]}`;
+        // The picture from config.json (a URL, or a path in the repo like the hub reads it), else the repo's avatar
+        const avatarUrl = !R.user.avatar ? `${BASE}assets/avatar.png` : /^(https?:)?\/\//.test(R.user.avatar) ? R.user.avatar : BASE + R.user.avatar.replace(/^\.?\//, '');
         const time = m => m >= 60 ? `${Math.floor(m / 60)}h${m % 60 ? ` ${m % 60}m` : ''}` : `${m}m`;
         const hrs = m => m >= 600 ? n(Math.round(m / 60)) : (Math.round(m / 6) / 10).toString();
         const plural = (v, one, many = one + 's') => v === 1 ? one : many;
@@ -486,7 +488,7 @@
                     <a href="#slots">All years</a>
                 </nav>
             </div>
-            <div class="who"><img src="${BASE}assets/avatar.png" alt="">
+            <div class="who"><img src="${esc(avatarUrl)}" alt="" onerror="this.onerror=null;this.src='${BASE}assets/avatar.png'">
                 <div><h1>${esc(R.user.name)}’s ${R.year} in games</h1>
                 <p>${R.partial ? `<span class="chip live"><i></i>So far, to ${day(R.asOf)}</span>` : `<span class="chip">Year complete</span>`}</p></div></div>
             <div class="title"><div class="px">Title earned</div><h2>${esc(R.title.name)}</h2><p>${esc(R.title.why)}</p></div>
