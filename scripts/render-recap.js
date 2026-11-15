@@ -2,7 +2,8 @@
 // Memory Card share pictures: screenshots each year's page in its card modes with headless Chrome
 //   memory-card/share/{YYYY}-link.jpg    1200 × 630, the link preview (og:image)
 //   memory-card/share/{YYYY}-story.jpg   1080 × 1920, the picture the page's Share sheet opens with
-//   …-link-cover.jpg, -link-blocks.jpg, -story-cover.jpg, -story-blocks.jpg   the other styles the Share sheet offers
+//   …-{link,story}-{cover,blocks,shelf,title}.jpg   the other styles the Share sheet offers
+//   memory-card/share/{YYYY}-slide-{key}.jpg   the story's slides, 1080 × 1920
 // Run after build-recap.js (it reads memory-card/years.json). No npm dependency: Chrome is driven over
 // --remote-debugging-pipe. Needs the network (fonts, game art).
 //   node scripts/render-recap.js [siteRoot] [year …]     (default: the repo, every year; CHROME=/path/to/chrome)
@@ -16,7 +17,7 @@ const args = process.argv.slice(2);
 const ROOT = path.resolve(args.find(a => !/^\d{4}$/.test(a) && !a.startsWith('--')) || path.join(__dirname, '..'));
 const only = args.filter(a => /^\d{4}$/.test(a)).map(Number);
 const OUT = path.join(ROOT, 'memory-card', 'share');
-const STYLES = ['card', 'cover', 'blocks'];             // 'card' keeps the plain file name: it is the og:image
+const STYLES = ['card', 'cover', 'blocks', 'shelf', 'title'];             // 'card' keeps the plain file name: it is the og:image
 const CARDS = [{ kind: 'link', w: 1200, h: 630 }, { kind: 'story', w: 1080, h: 1920 }]
     .flatMap(c => STYLES.map(style => ({ ...c, style, query: `card=${c.kind}${style === 'card' ? '' : `&style=${style}`}`, name: `${c.kind}${style === 'card' ? '' : `-${style}`}` })));
 const SLIDE = { w: 450, h: 800, scale: 2.4 };            // a story slide at phone size, saved as 1080 × 1920

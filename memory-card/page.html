@@ -255,7 +255,7 @@
         .seg { display: inline-flex; padding: 3px; border-radius: 999px; background: rgba(255, 255, 255, 0.06); border: 1px solid var(--line); }
         .seg button { height: 28px; padding: 0 12px; border-radius: 999px; font: 600 12.5px/1 var(--body); color: var(--dim); }
         .seg button.on { background: rgb(var(--a)); color: #071018; }
-        .thumbs { display: flex; gap: 8px; overflow-x: auto; margin: 0 -16px 12px; padding: 0 16px; scrollbar-width: none; }
+        .thumbs { display: flex; align-items: center; height: 92px; gap: 8px; overflow-x: auto; margin: 0 -16px 12px; padding: 0 16px; scrollbar-width: none; }
         .thumbs::-webkit-scrollbar { display: none; }
         .th { flex: none; height: 88px; padding: 0; border-radius: 6px; overflow: hidden; border: 2px solid transparent; background: #0a0c13; opacity: 0.55; transition: opacity 160ms, border-color 160ms; }
         .thumbs.k-link .th { height: 60px; }
@@ -456,6 +456,41 @@
         .sc-link.v-blocks .bfacts { margin-top: 26px; gap: 44px; font-size: 16px; color: var(--dim); align-items: flex-end; }
         .sc-link.v-blocks .bfacts b { font-size: 24px; margin-bottom: 4px; } .sc-link.v-blocks .bfacts .site { margin-left: auto; } .sc-link.v-blocks .bfacts .site b { font-size: 18px; margin: 0; }
 
+        /* Shelf and Title, both shapes */
+        .shelf { display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: minmax(0, 1fr); min-height: 0; }
+        .stile { position: relative; overflow: hidden; display: flex; flex-direction: column; min-width: 0; background: #0d1018; border: 1px solid rgba(255, 255, 255, 0.16); }
+        .stile:first-child:nth-last-child(odd) { grid-column: 1 / -1; }
+        .stile.gold { border-color: rgba(229, 177, 67, 0.75); } .stile.silver { border-color: rgba(184, 196, 206, 0.6); }
+        .stile .art { flex: 1; min-height: 0; width: 100%; max-width: none; object-fit: cover; object-position: 50% 25%; display: block; }
+        .stile .rk { position: absolute; top: 0.5em; left: 0.5em; display: grid; place-items: center; width: 1.7em; height: 1.7em; font: 800 0.8em/1 var(--display); color: #fff; background: rgba(9, 11, 18, 0.85); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 0.25em; }
+        .stile:first-child .rk { color: rgb(var(--a)); border-color: rgba(var(--a), 0.6); }
+        /* The name sits on a solid bar under the art, never on it: art is too busy to read text over */
+        .stile .cap { display: flex; align-items: baseline; justify-content: space-between; gap: 0.7em; padding: 0.55em 0.75em; background: #0d1018; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+        .stile h3 { flex: 1 1 0; margin: 0; min-width: 0; font: 700 1em/1.2 var(--display); color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .stile .cap span { flex: none; font-size: 0.78em; color: var(--dim); white-space: nowrap; } .stile .cap b { color: var(--text); font-family: var(--display); font-size: 1.15em; }
+        .stile.gold .cap b { color: #e5b143; } .stile.silver .cap b { color: #b8c4ce; }
+        .shotc .big { font-family: var(--display); font-weight: 800; line-height: 0.95; text-transform: uppercase; color: rgb(var(--a)); text-shadow: 0 10px 60px rgba(var(--a), 0.4); }
+        .shotc .big small { display: block; font-family: var(--body); font-weight: 500; line-height: 1.2; color: var(--text); text-transform: none; text-shadow: none; }
+        .shotc .big .px { color: var(--dim); text-shadow: none; }
+        .tf { display: flex; flex-direction: column; } .tf div { display: grid; align-items: baseline; border-top: 1px solid rgba(255, 255, 255, 0.12); }
+        .tf h3 { margin: 0; font-family: var(--display); font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .tf b { font-family: var(--display); font-weight: 800; color: rgb(var(--a)); white-space: nowrap; }
+
+        .sc-link.v-shelf { display: grid; grid-template-columns: 590px 1fr; gap: 44px; }
+        .sc-link.v-shelf .shelf { gap: 10px; font-size: 16px; } .sc-link.v-shelf .stile { border-radius: 8px; }
+        .sc-link.v-title { display: flex; flex-direction: column; }
+        .sc-link.v-title .top { display: flex; align-items: center; justify-content: space-between; } .sc-link.v-title .slot { margin: 0; }
+        .sc-link.v-title .big { margin: auto 0; } .sc-link.v-title .big .px { margin-bottom: 14px; font-size: 15px; } .sc-link.v-title .big small { margin-top: 16px; font-size: 26px; }
+        .sc-link.v-title .bot { display: flex; align-items: flex-end; gap: 34px; } .sc-link.v-title .year { font-size: 112px; margin: 0 0 -8px -4px; } .sc-link.v-title .st { margin: 0; }
+        .sc-link.v-title .st span { white-space: nowrap; }
+        .sc-link.v-title .site { margin-left: auto; white-space: nowrap; font: 700 15px/1 var(--display); color: var(--dim); }
+
+        .sc-story.v-shelf .shelf { flex: 1; margin-top: 50px; gap: 16px; font-size: 27px; } .sc-story.v-shelf .stile { border-radius: 12px; }
+        .sc-story.v-shelf .foot { margin-top: 0; } .sc-story.v-shelf .year { font-size: 300px; }
+        .sc-story.v-title .big { margin-top: 70px; } .sc-story.v-title .big .px { margin-bottom: 22px; } .sc-story.v-title .big small { margin-top: 26px; font-size: 38px; }
+        .sc-story.v-title .year { font-size: 250px; margin-top: 50px; }
+        .sc-story.v-title .tf { margin-top: 50px; } .sc-story.v-title .tf div { grid-template-columns: 250px minmax(0, 1fr) auto; gap: 24px; padding: 24px 0; }
+        .sc-story.v-title .tf h3 { font-size: 32px; } .sc-story.v-title .tf b { font-size: 36px; }
+
         .sc-story { width: 1080px; height: 1920px; padding: 140px 76px 150px; display: flex; flex-direction: column; }
         .sc-story::before { background: radial-gradient(100% 50% at 50% 0%, rgba(var(--a), 0.3), transparent 70%), linear-gradient(180deg, rgba(9, 11, 18, 0.6) 0%, rgba(9, 11, 18, 0.9) 45%, rgba(9, 11, 18, 0.97) 100%); }
         .sc-story .brand { font-size: 34px; }
@@ -494,7 +529,7 @@
         const D = JSON.parse(document.getElementById('recap').textContent);
         const R = D.recap, YEARS = D.years, BASE = D.base, T = R.totals;
         const Q = new URLSearchParams(location.search), CARD = Q.get('card');
-        const STYLE = ['cover', 'blocks'].includes(Q.get('style')) ? Q.get('style') : 'card';     // which of the three share pictures
+        const STYLE = ['cover', 'blocks', 'shelf', 'title'].includes(Q.get('style')) ? Q.get('style') : 'card';     // which of the five share pictures
         const RA_ICON = BASE + 'assets/icon-ra.png', ICON = { ra: RA_ICON, steam: BASE + 'assets/icon-steam.png', xbox: BASE + 'assets/icon-xbox.png' };
         const PLATFORM = { ra: 'RetroAchievements', steam: 'Steam', xbox: 'Xbox' }, PCOLOR = { ra: 'var(--ra)', steam: 'var(--steam)', xbox: 'var(--xbox)' };
         // Card colours, like the translucent plastics memory cards came in; a year keeps its colour
@@ -620,7 +655,7 @@
             const wait = () => document.fonts.ready.then(() => settled() ? (document.body.dataset.ready = '1') : setTimeout(wait, 80));
             wait();
         };
-        // ── Share pictures: ?card=link|story in one of three styles (&style=cover|blocks, none = card) ──
+        // ── Share pictures: ?card=link|story in one of five styles (&style=cover|blocks|shelf|title, none = card) ──
         if (CARD === 'link' || CARD === 'story') {
             const rows = R.top.slice(0, 5).map((g, i) => `<div class="sc-row">${rowArt(g)}<span class="rk">${i + 1}</span><span></span><h3>${esc(g.name)}</h3>
                 <span class="v">${rowVal(g)[0]}<small>${rowVal(g)[1]}</small></span></div>`).join('');
@@ -642,13 +677,34 @@
                 R.bestDay ? [`${R.bestDay.unlocks} ${plural(R.bestDay.unlocks, 'unlock')}`, `biggest day, ${day(R.bestDay.day)}`] : null,
                 R.peakMonth != null ? [MONTHS_LONG[R.peakMonth], 'busiest month'] : null,
             ].filter(Boolean).map(([v, l]) => `<div><b>${v}</b>${l}</div>`).join('');
+            // Shelf: the year's games as art tiles, the top games first, then the finished ones; an odd count gives the first a full row
+            const shelfOf = max => {
+                const seen = new Set(), all = [...R.top, ...R.completions].filter(g => !seen.has(g.key) && seen.add(g.key)).slice(0, max);
+                const list = all.length % 2 || all.length < 3 ? all : all.slice(0, all.length - 1);
+                return `<div class="shelf">${list.map((g, i) => `<div class="stile ${g.tier === 'completed' ? 'gold' : g.tier ? 'silver' : ''}">${img(i ? midArt(g) : bigArt(g), 'art' + (pix(g) ? ' pixart' : ''))}
+                    ${i < R.top.length ? `<span class="rk">${i + 1}</span>` : ''}
+                    <div class="cap"><h3>${esc(g.name)}</h3><span>${i < R.top.length ? `<b>${rowVal(g)[0]}</b>${byTime && g.minutes ? '' : ` ${rowVal(g)[1]}`}` : `<b>${g.tier === 'completed' ? '★' : '⚑'}</b> ${day(g.day)}`}</span></div></div>`).join('')}</div>`;
+            };
+            // Title: the title earned as the picture, sized so its longest word fits the width
+            const words = R.title.name.split(' '), longest = Math.max(...words.map(w => w.length));
+            const big = (width, max, oneLine) => `<div class="big" style="font-size:${Math.min(max, Math.floor(width / ((oneLine ? R.title.name.length : longest) * 0.7)))}px"><div class="px">Title earned</div>${esc(R.title.name)}<small>${esc(R.title.why)}</small></div>`;
+            const tfacts = `<div class="tf">${[
+                top1 ? [listName, top1.name, rowVal(top1)[0]] : null,
+                R.rarest[0] ? ['Rarest find', R.rarest[0].name, `${R.rarest[0].pct}%`] : null,
+                ['Longest streak', R.streak.days > 1 ? `${day(R.streak.from)} to ${day(R.streak.to)}` : 'No two days in a row', `${R.streak.days} ${plural(R.streak.days, 'day')}`],
+                R.bestDay ? ['Biggest day', `${day(R.bestDay.day)} · ${R.bestDay.game.name}`, `${R.bestDay.unlocks}`] : null,
+            ].filter(Boolean).map(([l, name, v]) => `<div><span class="px">${l}</span><h3>${esc(name)}</h3><b>${v}</b></div>`).join('')}</div>`;
             const cards = {
                 link: {
+                    shelf: `${bg}<div class="l">${brand}${slot}${year}${ttl}${st}</div>${shelfOf(7)}`,
+                    title: `${bg}<div class="top">${brand}${slot}</div>${big(1090, 150, true)}<div class="bot">${year}${st}<b class="site">${site}</b></div>`,
                     card: `${bg}<div class="l">${brand}${slot}${year}${ttl}${st}</div>${list}`,
                     cover: `${cov || bg}<div class="l">${brand}${slot}${year}${ttl}${st}</div>${game}`,
                     blocks: `${bg}${brand}${slot}<div class="hd">${year}<div class="hr">${ttl}${st}</div></div>${strip()}<div class="bfacts">${bfacts}<div class="site"><b>${site}</b></div></div>`,
                 },
                 story: {
+                    shelf: `${bg}${brand}${slot}${year}${ttl}${st}${shelfOf(7)}${foot('')}`,
+                    title: `${bg}${brand}${slot}${big(928, 210, false)}${year}${st}${tfacts}${foot(strip())}`,
                     card: `${bg}${brand}${slot}${year}${ttl}${st}${list}${foot(strip())}`,
                     cover: `${cov || bg}${brand}${slot}${game}${year}${ttl}${st}${foot(strip())}`,
                     blocks: `${bg}${brand}${slot}${year}${ttl}${st}${monthsHtml}${foot('')}`,
@@ -859,7 +915,7 @@
         // ── Sharing: the pictures are rendered at deploy time, so sharing is fetching a file ──
         const pageUrl = `${D.site}/memory-card/${R.year}/`;
         const shareTitle = `${R.user.name}'s Memory Card ${R.year}`;
-        const STYLES = [['card', 'Card'], ['cover', 'Cover'], ['blocks', 'Blocks']];
+        const STYLES = [['card', 'Card'], ['cover', 'Cover'], ['blocks', 'Blocks'], ['shelf', 'Shelf'], ['title', 'Title']];
         const picName = (kind, style = 'card') => `${R.year}-${kind}${style === 'card' ? '' : `-${style}`}.jpg`;
         const imageUrl = (kind, style) => `${BASE}memory-card/share/${picName(kind, style)}`;
         const copy = async (btn) => {
@@ -880,16 +936,16 @@
                 return 'shared';
             } catch (err) { return err?.name === 'AbortError' ? 'cancelled' : 'failed'; }
         };
-        const openShare = () => {
-            // One picture is picked from thumbnails: the three styles in either shape, and in the story shape every slide too
-            let kind = 'story', pick = 'card';
-            const picks = () => [...STYLES.map(([id, name]) => ({ id, name, url: imageUrl(kind, id), file: picName(kind, id) })),
-                ...(kind === 'story' ? SLIDES.map(x => ({ id: `slide-${x.key}`, name: x.name, url: slidePic(x.key), file: `${R.year}-slide-${x.key}.jpg` })) : [])];
+        const openShare = (from = 'story') => {
+            // Three sections, one picture picked from thumbnails in each: the tall and the wide picture in their five styles, and the story's slides
+            let kind = from, pick = '';
+            const picks = () => kind === 'slides' ? SLIDES.map(x => ({ id: `slide-${x.key}`, name: x.name, url: slidePic(x.key), file: `${R.year}-slide-${x.key}.jpg` }))
+                : STYLES.map(([id, name]) => ({ id, name, url: imageUrl(kind, id), file: picName(kind, id) }));
             const el = document.createElement('div');
             el.className = 'scrim';
             el.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-label="Share ${R.year}">
                 <header><h2>Share ${R.year}</h2><button class="x" data-close aria-label="Close">${svg.x}</button></header>
-                <div class="pick"><div class="seg" aria-label="Shape"><button data-kind="story">Story</button><button data-kind="link">Wide</button></div></div>
+                <div class="pick"><div class="seg" aria-label="Shape"><button data-kind="story">Tall</button><button data-kind="link">Wide</button><button data-kind="slides">Story</button></div></div>
                 <div class="thumbs" aria-label="Picture"></div>
                 <div class="pv"></div>
                 <div class="acts"><button class="btn go" data-send>${svg.share}<span>Share picture</span></button><a class="btn" data-save download>${svg.down}Save picture</a></div>
@@ -907,7 +963,7 @@
                 }
                 thumbs.querySelectorAll('.th').forEach(b => b.classList.toggle('on', b.dataset.pick === pick));
                 const pic = new Image();
-                pic.alt = `${shareTitle}, ${kind === 'story' ? 'story picture' : 'wide picture'}, ${cur.name}`;
+                pic.alt = `${shareTitle}, ${kind === 'link' ? 'wide picture' : kind === 'slides' ? 'story card' : 'tall picture'}, ${cur.name}`;
                 pic.onload = () => { pv.replaceChildren(pic); };
                 pic.onerror = () => { pv.innerHTML = '<p>The picture for this year isn’t built yet. The link still works.</p>'; };
                 pic.src = cur.url;
@@ -997,7 +1053,7 @@
                 const t = e.target.closest('button');
                 if (e.target === el || t?.dataset.close != null) return close();
                 if (t?.dataset.shot != null) return sharePic(slides[at].key);
-                if (t?.dataset.share != null) { close(); openShare(); }
+                if (t?.dataset.share != null) { close(); openShare('slides'); }
             });
             document.addEventListener('keydown', onKey);
             document.documentElement.style.overflow = 'hidden';
