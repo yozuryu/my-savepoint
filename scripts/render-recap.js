@@ -19,6 +19,7 @@ const OUT = path.join(ROOT, 'memory-card', 'share');
 const STYLES = ['card', 'cover', 'blocks'];             // 'card' keeps the plain file name: it is the og:image
 const CARDS = [{ kind: 'link', w: 1200, h: 630 }, { kind: 'story', w: 1080, h: 1920 }]
     .flatMap(c => STYLES.map(style => ({ ...c, style, query: `card=${c.kind}${style === 'card' ? '' : `&style=${style}`}`, name: `${c.kind}${style === 'card' ? '' : `-${style}`}` })));
+const SLIDE = { w: 450, h: 800, scale: 2.4 };            // a story slide at phone size, saved as 1080 × 1920
 const READY_TIMEOUT_MS = 25000;
 
 function findChrome() {
@@ -76,8 +77,10 @@ const server = http.createServer((req, res) => {
         const { sessionId } = await send('Target.attachToTarget', { targetId, flatten: true });
         const tab = (method, params) => send(method, params, sessionId);
         await tab('Page.enable');
-        for (const year of years) for (const { w, h, query, name } of CARDS) {
-            await tab('Emulation.setDeviceMetricsOverride', { width: w, height: h, deviceScaleFactor: 1, mobile: false });
+        let made = 0;
+        const shoot = async (year, { w, h, scale = 1, query, name }) => {
+            made++;
+            await tab('Emulation.setDeviceMetricsOverride', { width: w, height: h, deviceScaleFactor: scale, mobile: false });
             await tab('Page.navigate', { url: `${origin}/memory-card/${year}/?${query}` });
             // The page sets body[data-ready] once its fonts and images have settled
             const start = Date.now();
@@ -91,9 +94,16 @@ const server = http.createServer((req, res) => {
             await new Promise(r => setTimeout(r, 150));
             const shot = await tab('Page.captureScreenshot', { format: 'jpeg', quality: 86, clip: { x: 0, y: 0, width: w, height: h, scale: 1 } });
             fs.writeFileSync(path.join(OUT, `${year}-${name}.jpg`), Buffer.from(shot.data, 'base64'));
+        };
+        for (const year of years) {
+            for (const card of CARDS) await shoot(year, card);
+            // The story's slides: the first load also tells which slides this year has
+            await shoot(year, { ...SLIDE, query: 'card=slide', name: 'slide-year' });
+            const keys = (await tab('Runtime.evaluate', { expression: `document.body?.dataset.slides ?? ''` })).result?.value ?? '';
+            for (const key of keys.split(',').filter(k => k && k !== 'year')) await shoot(year, { ...SLIDE, query: `card=slide&s=${key}`, name: `slide-${key}` });
         }
         const kb = fs.readdirSync(OUT).reduce((s, f) => s + fs.statSync(path.join(OUT, f)).size, 0) / 1024;
-        console.log(`recap pictures: ${years.length} years × ${CARDS.length}, share/ ${(kb / 1024).toFixed(1)} MB${failed ? `, ${failed} not settled` : ''}`);
+        console.log(`recap pictures: ${made} for ${years.length} years, share/ ${(kb / 1024).toFixed(1)} MB${failed ? `, ${failed} not settled` : ''}`);
     } finally {
         server.close();
         // Chrome still writes to its profile until it has exited

@@ -311,52 +311,83 @@
             .card { padding: 22px; }
         }
 
-        /* ── Story: the year played back as slides (the Play button). Tap right / left, hold to pause ── */
+        /* ── Story: the year played back as slides (the Play button). Tap right / left, hold to pause. Every slide is a full
+              card, also rendered as a picture (?card=slide&s=<key>, 450 × 800 at 2.4×) so it can be shared from the story ── */
         .story { position: fixed; inset: 0; z-index: 60; background: #04050a; display: grid; place-items: center; animation: fade 200ms ease-out backwards; }
         .story .frame { position: relative; width: 100%; height: 100%; overflow: hidden; background: var(--bg); isolation: isolate; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; touch-action: manipulation; cursor: pointer; }
-        .story img { pointer-events: none; }
+        .story .frame::before { content: ''; position: absolute; inset: 0; z-index: -1;
+            background: radial-gradient(120% 60% at 80% 0%, rgba(var(--a), 0.26), transparent 62%), linear-gradient(180deg, rgba(9, 11, 18, 0.6) 0%, rgba(9, 11, 18, 0.86) 60%, rgba(9, 11, 18, 0.96) 100%); }
+        .story img, .story a { pointer-events: none; }
         .story.paused *, .story.paused *::before { animation-play-state: paused !important; }
         .sbars { position: absolute; z-index: 3; top: calc(10px + env(safe-area-inset-top, 0px)); left: 12px; right: 12px; display: flex; gap: 4px; }
         .sbars i { flex: 1; height: 3px; border-radius: 2px; background: rgba(255, 255, 255, 0.22); overflow: hidden; }
         .sbars b { display: block; height: 100%; background: #fff; transform: scaleX(0); transform-origin: left; }
-        .sbars .done b { transform: none; }
-        .sbars .on b { animation: sbar var(--dur, 6000ms) linear forwards; }
+        .sbars .past b { transform: none; }
+        .sbars .on b { animation: sbar var(--dur, 8000ms) linear forwards; }
         @keyframes sbar { to { transform: none; } }
-        .story .stop { position: absolute; z-index: 3; top: calc(22px + env(safe-area-inset-top, 0px)); left: 14px; right: 10px; display: flex; align-items: center; gap: 8px; }
+        .story .stop { position: absolute; z-index: 3; top: calc(22px + env(safe-area-inset-top, 0px)); left: 16px; right: 10px; display: flex; align-items: center; gap: 6px; }
         .story .stop .brand { flex: 1; font-size: 13px; text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8); } .story .stop .brand img { width: 18px; height: 18px; }
         .story .x { background: rgba(9, 11, 18, 0.55); }
         .sbg { position: absolute; inset: -40px; width: calc(100% + 80px); height: calc(100% + 80px); object-fit: cover; filter: blur(26px) saturate(1.25); opacity: 0.5; z-index: -2; }
-        .sart { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; animation: szoom 7s ease-out backwards; }
-        @keyframes szoom { from { transform: scale(1.08); } }
-        .stage { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; gap: 14px; container-type: inline-size;
-            padding: calc(70px + env(safe-area-inset-top, 0px)) 22px calc(30px + env(safe-area-inset-bottom, 0px)); }
-        .stage::before { content: ''; position: absolute; inset: 0; z-index: -1;
-            background: radial-gradient(120% 60% at 80% 0%, rgba(var(--a), 0.26), transparent 62%), linear-gradient(180deg, rgba(9, 11, 18, 0.6) 0%, rgba(9, 11, 18, 0.86) 60%, rgba(9, 11, 18, 0.96) 100%); }
-        .stage.s-game { justify-content: flex-end; }
-        .stage.s-game::before { background: linear-gradient(180deg, rgba(9, 11, 18, 0.35) 0%, rgba(9, 11, 18, 0.05) 30%, rgba(9, 11, 18, 0.82) 68%, rgba(9, 11, 18, 0.97) 100%); }
-        .sa { animation: rise 560ms cubic-bezier(.2, .7, .2, 1) backwards; animation-delay: calc(var(--i, 0) * 110ms + 120ms); }
-        .stage .year { font-size: min(39cqw, 190px); margin: 0 0 0 -4px; }
-        .stage h2 { margin: 0; font: 800 34px/1.02 var(--display); text-transform: uppercase; text-wrap: balance; }
-        .stage h2.name { text-transform: none; font-size: 38px; text-shadow: 0 2px 18px rgba(0, 0, 0, 0.8); }
-        .stage .lead { margin: 0; color: var(--dim); font-size: 15px; }
-        .stage > .px { color: rgb(var(--a)); }
-        .snums { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 6px; }
-        .snum { padding: 14px; border-radius: 6px; background: rgba(9, 11, 18, 0.5); border: 1px solid var(--line); }
-        .snum .num { font-weight: 800; font-size: 32px; line-height: 1; letter-spacing: -0.02em; } .snum .num small { font: 600 16px/1 var(--display); color: var(--dim); margin-left: 3px; }
-        .snum span { display: block; margin-top: 6px; color: var(--dim); font-size: 13.5px; }
-        .snum:first-child { grid-column: 1 / -1; border-color: rgba(var(--a), 0.45); background: rgba(var(--a), 0.12); } .snum:first-child .num { font-size: 72px; color: rgb(var(--a)); }
-        .stage .facts { gap: 22px; } .stage .fact .num { font-size: 26px; }
-        .stage .rows { gap: 8px; } .stage .done { gap: 8px; } .stage .dn { min-height: 0; aspect-ratio: 16 / 10; }
-        .stage .strip { --g: 1.5px; --c: calc((100cqw - 44px - 53 * var(--g)) / 54); }
-        .stage .duo { margin: 0; grid-template-columns: 1fr 1fr; } .stage .done { grid-template-columns: 1fr 1fr; }
-        .stage .title h2 { margin: 8px 0 2px; font-size: 30px; }
-        .spic { align-self: center; height: 58%; max-width: 100%; aspect-ratio: 9 / 16; object-fit: cover; border-radius: 10px; border: 1px solid var(--line); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6); background: #10131c; }
-        .stage.s-end { align-items: stretch; text-align: center; } .stage .btns { display: flex; gap: 8px; justify-content: center; }
+        .sfoot { position: absolute; z-index: 2; left: 20px; right: 20px; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); display: flex; justify-content: space-between; gap: 10px; font-size: 11px; color: var(--mute); white-space: nowrap; }
+        .sfoot b { color: var(--dim); font-weight: 600; } .sfoot span { overflow: hidden; text-overflow: ellipsis; }
+        .stoast { position: absolute; z-index: 4; left: 50%; bottom: calc(46px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); padding: 9px 14px; border-radius: 999px; background: rgba(9, 11, 18, 0.9); border: 1px solid var(--line); font-size: 13px; animation: fade 200ms ease-out backwards; }
+        .stage { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; gap: 12px; container-type: inline-size;
+            padding: calc(64px + env(safe-area-inset-top, 0px)) 20px calc(40px + env(safe-area-inset-bottom, 0px)); }
+        .stage.out { animation: sout 220ms ease-in forwards; pointer-events: none; }
+        @keyframes sout { to { opacity: 0; transform: translateY(-10px); } }
+        /* Pieces come in one after another: most rise, tiles and numbers pop, the year settles, strips wipe in, bars grow */
+        .sa { animation: rise 560ms cubic-bezier(.2, .7, .2, 1) backwards; animation-delay: calc(var(--i, 0) * 70ms + 140ms); }
+        .sa.pop { animation-name: spop; }
+        .sa.wipe { animation: swipe 1100ms cubic-bezier(.3, .6, .2, 1) backwards; animation-delay: calc(var(--i, 0) * 70ms + 200ms); }
+        .sa.yr { animation: syear 800ms cubic-bezier(.2, .7, .2, 1) backwards; transform-origin: left center; }
+        @keyframes spop { from { transform: scale(0.9); opacity: 0; } }
+        @keyframes swipe { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+        @keyframes syear { from { transform: scale(1.14); opacity: 0; } }
+        @keyframes sgrowx { from { transform: scaleX(0); } }
+        @keyframes szoom { from { transform: scale(1.1); } }
+        .stage .meter, .stage .split i { transform-origin: left; animation: sgrowx 800ms cubic-bezier(.2, .7, .2, 1) backwards; animation-delay: calc(var(--i, 0) * 70ms + 420ms); }
+        .stage .bars i { transform-origin: bottom; animation: grow 700ms cubic-bezier(.2, .7, .2, 1) backwards; animation-delay: calc(var(--i, 0) * 70ms + 380ms); }
+        .stage .feat .art { animation: szoom 8s ease-out backwards; }
+        .stage .year { font-size: min(36cqw, 180px); margin: 0 0 0 -4px; }
+        .stage h2 { margin: 0; font: 800 24px/1.05 var(--display); text-transform: uppercase; text-wrap: balance; }
+        .shead { display: flex; align-items: baseline; gap: 10px; } .shead h2 { font-size: 28px; } .shead .px { margin-left: auto; color: rgb(var(--a)); white-space: nowrap; }
+        .stage .lead { margin: 0; color: var(--dim); font-size: 13px; }
+        .stage .title { padding: 12px 16px 12px 18px; } .stage .title h2 { margin: 7px 0 2px; font-size: 26px; } .stage .title p { font-size: 13px; }
+        .snums { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .snum { padding: 12px 14px; border-radius: 6px; background: rgba(9, 11, 18, 0.5); border: 1px solid var(--line); }
+        .snum .num { font-weight: 800; font-size: 32px; line-height: 1; letter-spacing: -0.02em; } .snum .num small { font: 600 14px/1 var(--display); color: var(--dim); margin-left: 4px; letter-spacing: 0; }
+        .snum > span { display: block; margin-top: 5px; color: var(--dim); font-size: 13px; }
+        .snum:first-child { border-color: rgba(var(--a), 0.45); background: rgba(var(--a), 0.12); } .snum:first-child .num { color: rgb(var(--a)); }
+        .splat .split { margin: 0 0 8px; height: 8px; } .splat p { margin: 0; display: flex; gap: 14px; font-size: 12.5px; color: var(--dim); }
+        .splat p span { display: inline-flex; align-items: center; gap: 5px; } .splat p img { width: 13px; height: 13px; } .splat p b { color: var(--text); }
+        .stage .strip { --g: 1.5px; --c: calc((100cqw - 40px - 53 * var(--g)) / 54); } .stage .mlab { margin-bottom: 6px; }
+        .stage .feat { flex: 1 1 0; min-height: 230px; max-height: 360px; } .stage .feat h3 { font-size: 26px; margin: 8px 0; }
+        .stage .feat .rank { font-size: 64px; top: 12px; } .stage .feat .in { padding: 14px 16px; }
+        .stage .facts { gap: 6px 16px; } .stage .fact .num { font-size: 20px; }
+        .stage .rows { display: grid; gap: 8px; } .stage .grow { min-height: 64px; padding-block: 10px; }
+        .stage .done { gap: 8px; grid-template-columns: 1fr 1fr; } .stage .dn { min-height: 0; height: var(--th, 132px); } .stage .done .dn:last-child:nth-child(odd) { grid-column: 1 / -1; }
+        .stage .duo { margin: 0; gap: 8px; grid-template-columns: 1fr 1fr; } .stage .mini { padding: 12px 14px; } .stage .mini .num { font-size: 26px; margin-top: 8px; }
+        .stage .card { padding: 12px 14px; border-radius: 6px; } .stage .card .big { font-size: 20px; margin-top: 8px; } .stage .card .big small { font-size: 12px; }
+        .stage .bars { height: 52px; margin-top: 10px; gap: 2px; }
+        .stage .rare { gap: 6px; } .stage .rr { padding: 8px 12px 8px 8px; } .stage .rr .ic, .stage .end .ic { width: 46px; height: 46px; }
+        .stage .ends { gap: 6px; grid-template-columns: 1fr; } .stage .end { padding: 10px 12px; } .stage .end h3 { margin: 5px 0 1px; font-size: 15px; }
+        .stage.s-end { text-align: center; } .stage .btns { display: flex; gap: 8px; justify-content: center; }
         .stage .btn { height: 42px; padding: 0 18px; font-size: 14px; }
+        .spicks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .spk { position: relative; aspect-ratio: 9 / 16; border-radius: 6px; overflow: hidden; border: 1px solid var(--line); background: #10131c; }
+        .spk img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .spk span { position: absolute; right: 5px; bottom: 5px; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: rgb(var(--a)); color: #071018; }
+        .spk span svg { width: 13px; height: 13px; }
+        .spk:active { transform: scale(0.96); }
         @media (min-width: 720px) {
             .story .frame { width: auto; height: min(100dvh - 40px, 900px); aspect-ratio: 9 / 16; border-radius: 10px; border: 1px solid var(--line); }
         }
         @media (prefers-reduced-motion: reduce) { .sbars .on b { transform: none; } }
+        /* The same slide as a picture: no bars, no buttons, nothing moving */
+        .story.still { position: static; width: 450px; height: 800px; animation: none; }
+        .story.still *, .story.still *::before { animation: none !important; }
+        .story.still .stop { top: 20px; } .story.still .stage { padding-top: 54px; }
 
         /* ── Share images: ?card=link (1200 × 630) and ?card=story (1080 × 1920), each in three styles (&style=cover | blocks,
               none = card), rendered by scripts/render-recap.js ── */
@@ -575,6 +606,12 @@
             ${R.bestDay ? `<div class="mini ${cls}"><div class="px">Biggest day</div><div class="num">${R.bestDay.unlocks}<small>${plural(R.bestDay.unlocks, 'unlock')}</small></div><p>${day(R.bestDay.day)} · ${esc(R.bestDay.game.name)}</p></div>` : ''}
             ${R.peakMonth != null ? `<div class="mini ${cls}"><div class="px">Busiest month</div><div class="num">${MONTHS_LONG[R.peakMonth].slice(0, 3)}<small>${n(monthTotal(R.peakMonth))} unlocks</small></div><p>${byTime && R.months[R.peakMonth].minutes ? `${time(R.months[R.peakMonth].minutes)} played` : `${Math.round(100 * monthTotal(R.peakMonth) / T.unlocks)}% of the year`}</p></div>` : ''}
             <div class="mini ${cls}"><div class="px">Rare finds</div><div class="num gold">${n(T.rare)}<small>under 10%</small></div><p>${T.unlocks ? `${Math.round(100 * T.rare / T.unlocks)}% of all unlocks` : ''}</p></div>`;
+        // The renderer waits for this: fonts in, every image loaded or given up
+        const shotReady = () => {
+            const settled = () => [...document.images].every(i => i.complete && (i.naturalWidth || i.dataset.next == null || i.style.visibility === 'hidden'));
+            const wait = () => document.fonts.ready.then(() => settled() ? (document.body.dataset.ready = '1') : setTimeout(wait, 80));
+            wait();
+        };
         // ── Share pictures: ?card=link|story in one of three styles (&style=cover|blocks, none = card) ──
         if (CARD === 'link' || CARD === 'story') {
             const rows = R.top.slice(0, 5).map((g, i) => `<div class="sc-row">${rowArt(g)}<span class="rk">${i + 1}</span><span></span><h3>${esc(g.name)}</h3>
@@ -612,10 +649,7 @@
             document.body.classList.add('shot');
             document.getElementById('app').innerHTML = `<div class="shotc sc-${CARD} v-${STYLE}">${cards[CARD][STYLE]}</div>`;
             document.querySelectorAll('img.pixart').forEach(i => { i.style.imageRendering = 'pixelated'; });
-            // The renderer waits for this: fonts in, every image loaded or given up
-            const settled = () => [...document.images].every(i => i.complete && (i.naturalWidth || i.dataset.next == null || i.style.visibility === 'hidden'));
-            const wait = () => document.fonts.ready.then(() => settled() ? (document.body.dataset.ready = '1') : setTimeout(wait, 80));
-            wait();
+            shotReady();
             return;
         }
 
@@ -731,6 +765,59 @@
             R.farms ? `${R.farms.games} achievement ${plural(R.farms.games, 'farm')} left out (${n(R.farms.unlocks)} unlocks)` : null,
         ].filter(Boolean);
 
+        // ── Story slides: each one a full card, shown in the story and rendered as a picture. Slides with nothing to show are left out ──
+        const slidePic = key => `${BASE}memory-card/share/${R.year}-slide-${key}.jpg`;
+        const count = v => { const d = String(v).replace(/\D/g, ''); return /^[\d,.\s]+$/.test(String(v)) && +d >= 10 ? ` data-count="${d}"` : ''; };
+        const uIcon = u => img([sized(u.game, u.icon, 128), sized(u.game, u.game.icon, 128)], 'ic') || '<span class="ic"></span>';
+        const sRare = u => `<div class="rr sa">${uIcon(u)}<div style="min-width:0"><h3>${esc(u.name)}</h3><p><img src="${ICON[u.game.platform]}" alt=""><span>${esc(u.game.name)} · ${day(u.day)}</span></p></div>
+            <div class="pct"><div class="num">${u.pct}%</div><span>of players</span></div></div>`;
+        const sEnd = (u, label) => !u ? '' : `<div class="end sa">${uIcon(u)}<div style="min-width:0"><div class="px">${label} · ${day(u.day)}</div><h3>${esc(u.name)}</h3><p>${esc(u.game.name)}</p></div></div>`;
+        const sTiles = (list, max) => { const rows = Math.ceil(Math.min(list.length, max) / 2);
+            return `<div class="done" style="--th:${Math.min(180, Math.floor(540 / rows))}px">${list.slice(0, max).map(g => tileHtml(g, 'div', 'sa pop')).join('')}</div>${list.length > max ? `<p class="lead sa">and ${list.length - max} more</p>` : ''}`; };
+        const fewDone = R.completions.length > 0 && R.completions.length < 3;      // too few for a slide of their own: they join the rarest finds
+        const tierLine = `${T.completed ? `★ ${T.completed} ` : ''}${T.beaten ? `⚑ ${T.beaten}` : ''}`;
+        const SLIDES = [
+            { key: 'year', name: 'The year', html: `<div class="slot px sa"><i></i>Slot ${slotNo} <b>of ${YEARS.length} · ${R.partial ? `so far, to ${day(R.asOf)}` : 'year complete'}</b></div>
+                <div class="year sa yr"${yearArt}>${R.year}</div><h2 class="sa">${esc(R.user.name)}’s year in games</h2>
+                <div class="title sa"><div class="px">Title earned</div><h2>${esc(R.title.name)}</h2><p>${esc(R.title.why)}</p></div>
+                <div class="snums">${headline.map(h => `<div class="snum sa pop"><div class="num"><span${count(h.v)}>${h.v}</span>${h.unit ? '<small>hours</small>' : ''}</div><span>${h.lab}</span></div>`).join('')}</div>
+                ${plats.length > 1 ? `<div class="splat sa"><div class="split">${plats.map(p => `<i style="flex:${Math.max(T.byPlatform[p], 0.01)};background:${PCOLOR[p]}"></i>`).join('')}</div>
+                    <p>${plats.map(p => `<span><img src="${ICON[p]}" alt=""><b>${n(T.byPlatform[p])}</b> unlocks</span>`).join('')}</p></div>` : ''}
+                <div class="sa wipe">${strip()}</div><p class="lead sa">${n(T.activeDays)} of ${daysSoFar} days played</p>` },
+            top1 && { key: 'top', name: listName, html: `<div class="shead sa"><h2>${listName}</h2><span class="px">Top ${R.top.length}</span></div>
+                <div class="feat sa">${img(bigArt(top1), 'art' + (pix(top1) ? ' pixart' : ''))}<div class="rank"><small>Save file</small>01</div>
+                    <div class="in"><div class="tags">${platTag(top1)}${tierTag(top1.tier)}</div><h3>${esc(top1.name)}</h3>
+                    <div class="facts">${[...gameFacts(top1), top1.sessions ? { v: n(top1.sessions), l: plural(top1.sessions, 'session') } : null, top1.total ? { v: `${top1.unlockedAll ?? top1.unlocks}/${top1.total}`, l: 'achievements' } : null]
+                        .filter(Boolean).map(f => `<div class="fact"><div class="num">${f.v}</div><span>${f.l}</span></div>`).join('')}</div></div></div>
+                <div class="rows">${R.top.slice(1).map((g, i) => rowHtml(g, i + 2, 'div', 'sa')).join('')}</div>` },
+            R.completions.length >= 3 && { key: 'done', name: 'Seen through', html: `<div class="shead sa"><h2>Seen through</h2><span class="px">${tierLine}</span></div>${sTiles(R.completions, 8)}` },
+            T.unlocks && { key: 'blocks', name: 'Blocks', html: `<div class="shead sa"><h2>${n(T.activeDays)} blocks used</h2><span class="px">of ${daysSoFar} days</span></div>
+                <div class="sa wipe">${strip()}</div><div class="duo">${minis('sa pop')}</div>
+                <div class="duo"><div class="card sa"><h3>Time of day</h3><div class="big">${esc(R.dayPart.label)}<small>${R.dayPart.pct}% of unlocks</small></div>
+                        <div class="bars">${R.hours.map((v, h) => `<div><i class="${hot.includes(h) ? 'hot' : ''}" style="height:${100 * v / maxHour}%"></i></div>`).join('')}</div>
+                        <div class="axis sparse"><span>00</span><span>06</span><span>12</span><span>18</span><span>23</span></div></div>
+                    <div class="card sa"><h3>Day of the week</h3><div class="big">${WEEKDAYS[topWd]}s<small>${Math.round(100 * R.weekdays[topWd] / T.unlocks)}% of unlocks</small></div>
+                        <div class="bars">${R.weekdays.map((v, d) => `<div><i class="${d === topWd ? 'hot' : ''}" style="height:${100 * v / maxWd}%"></i></div>`).join('')}</div>
+                        <div class="axis">${WEEKDAYS.map(d => `<span>${d[0]}</span>`).join('')}</div></div></div>
+                <div class="card sa"><h3>Month by month</h3>
+                    <div class="bars">${MONTHS.map((_, m) => `<div>${['xbox', 'steam', 'ra'].filter(p => R.months[m][p]).map(p => `<i class="${p}" style="height:${100 * R.months[m][p] / maxMonth}%"></i>`).join('') || '<i style="height:0;background:rgba(255,255,255,0.12)"></i>'}</div>`).join('')}</div>
+                    <div class="axis">${MONTHS.map(m => `<span>${m[0]}</span>`).join('')}</div></div>` },
+            (R.rarest.length || R.first) && { key: 'rare', name: 'Rarest finds', html: `${fewDone ? `<div class="shead sa"><h2>Seen through</h2><span class="px">${tierLine}</span></div>${sTiles(R.completions, 2)}` : ''}
+                ${R.rarest.length ? `<div class="shead sa"><h2>Rarest finds</h2><span class="px">One per game</span></div><div class="rare">${R.rarest.slice(0, fewDone ? 3 : 5).map(sRare).join('')}</div>` : ''}
+                ${R.first ? `${R.rarest.length ? '' : '<div class="shead sa"><h2>Bookends</h2></div>'}<div class="ends">${sEnd(R.first, 'First unlock')}${sEnd(R.last, R.partial ? 'Latest unlock' : 'Last unlock')}</div>` : ''}` },
+        ].filter(Boolean);
+        const storyFrame = (inner, chrome = '') => `${top1 ? img(bigArt(top1), 'sbg') : ''}${chrome}${inner}
+            <div class="sfoot"><b>${esc(R.user.name)}’s ${R.year}</b><span>${esc(D.site.replace(/^https?:\/\//, ''))}/memory-card/${R.year}</span></div>`;
+        if (CARD === 'slide') {
+            const sl = SLIDES.find(x => x.key === Q.get('s')) ?? SLIDES[0];
+            document.body.classList.add('shot');
+            document.body.dataset.slides = SLIDES.map(x => x.key).join(',');       // the renderer reads the list from here
+            document.getElementById('app').innerHTML = `<div class="story still"><div class="frame">${storyFrame(`<div class="stage s-${sl.key}">${sl.html}</div>`, `<div class="stop">${brand}</div>`)}</div></div>`;
+            document.querySelectorAll('img.pixart').forEach(i => { i.style.imageRendering = 'pixelated'; });
+            shotReady();
+            return;
+        }
+
         document.getElementById('app').innerHTML = `
             <div class="backdrop">${top1 ? img(bigArt(top1), '') : ''}</div>
             <div class="wrap">
@@ -752,13 +839,14 @@
             const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
             document.querySelectorAll('.rv').forEach(el => io.observe(el));
         }
-        // Headline numbers count up once
-        if (!calm) document.querySelectorAll('[data-count]').forEach(el => {
+        // Numbers count up once, on the page and on each slide
+        const countUp = root => { if (!calm) root.querySelectorAll('[data-count]').forEach(el => {
             const end = +el.dataset.count, final = el.textContent, t0 = performance.now(), dur = 900;
             if (end < 10) return;
-            const tick = t => { const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3); el.textContent = k < 1 ? n(Math.round(end * e)) : final; if (k < 1) requestAnimationFrame(tick); };
+            const tick = t => { const k = Math.max(0, Math.min(1, (t - t0) / dur)), e = 1 - Math.pow(1 - k, 3); el.textContent = k < 1 ? n(Math.round(end * e)) : final; if (k < 1) requestAnimationFrame(tick); };
             requestAnimationFrame(tick);
-        });
+        }); };
+        countUp(document);
 
         // ── Sharing: the pictures are rendered at deploy time, so sharing is fetching a file ──
         const pageUrl = `${D.site}/memory-card/${R.year}/`;
@@ -771,6 +859,18 @@
             try { await navigator.clipboard.writeText(pageUrl); label.textContent = 'Link copied'; }
             catch { label.textContent = 'Copy failed'; }
             setTimeout(() => { label.textContent = old; }, 1600);
+        };
+        // Shares the picture as a file where the device can, the link where it can't, and saves it otherwise
+        const sendPic = async (url, name) => {
+            try {
+                const res = await fetch(url);
+                if (!res.ok) return 'failed';
+                const file = new File([await res.blob()], name, { type: 'image/jpeg' });
+                if (navigator.canShare?.({ files: [file] })) await navigator.share({ files: [file], title: shareTitle, text: `${shareTitle} ${pageUrl}` });
+                else if (navigator.share) await navigator.share({ title: shareTitle, url: pageUrl });
+                else { const a = Object.assign(document.createElement('a'), { href: url, download: name }); document.body.append(a); a.click(); a.remove(); return 'saved'; }
+                return 'shared';
+            } catch (err) { return err?.name === 'AbortError' ? 'cancelled' : 'failed'; }
         };
         const openShare = () => {
             let kind = 'story', style = 'card';
@@ -803,14 +903,8 @@
                 if (t?.dataset.style) { style = t.dataset.style; return show(); }
                 if (t?.dataset.copy != null) return copy(t);
                 if (t?.dataset.send != null) {
-                    const label = send.querySelector('span');
-                    try {
-                        const blob = await (await fetch(imageUrl(kind, style))).blob();
-                        const file = new File([blob], `memory-card-${picName(kind, style)}`, { type: 'image/jpeg' });
-                        if (navigator.canShare?.({ files: [file] })) await navigator.share({ files: [file], title: shareTitle, text: `${shareTitle} ${pageUrl}` });
-                        else if (navigator.share) await navigator.share({ title: shareTitle, url: pageUrl });
-                        else { save.click(); label.textContent = 'Saved instead'; setTimeout(() => { label.textContent = 'Share picture'; }, 1600); }
-                    } catch (err) { if (err?.name !== 'AbortError') { label.textContent = 'Couldn’t share'; setTimeout(() => { label.textContent = 'Share picture'; }, 1600); } }
+                    const label = send.querySelector('span'), got = await sendPic(imageUrl(kind, style), `memory-card-${picName(kind, style)}`);
+                    if (got === 'saved' || got === 'failed') { label.textContent = got === 'saved' ? 'Saved instead' : 'Couldn’t share'; setTimeout(() => { label.textContent = 'Share picture'; }, 1600); }
                 }
             });
             document.addEventListener('keydown', onKey);
@@ -819,46 +913,46 @@
             show();
             el.querySelector('[data-close]').focus();
         };
-        // ── Story: the year played back as slides. Each bar on top fills while its slide shows and its end moves on;
-        //    tap right / left to step, hold to pause. Slides with nothing to show are left out ──
+        // ── Story: the slides played back. Each bar on top fills while its slide shows and its end moves on; tap right / left
+        //    to step, hold to pause. The share button sends the picture of the slide on screen; the last slide offers them all ──
         const openStory = () => {
-            const bg = top1 ? img(bigArt(top1), 'sbg') : '';
-            const more = R.completions.length - 6;
-            const slides = [
-                { cls: 's-intro', html: `${bg}<div class="slot px sa"><i></i>Slot ${slotNo} <b>of ${YEARS.length}</b></div><div class="year sa"${yearArt}>${R.year}</div>
-                    <h2 class="sa">${esc(R.user.name)}’s year in games</h2>
-                    <div class="title sa"><div class="px">Title earned</div><h2>${esc(R.title.name)}</h2><p>${esc(R.title.why)}</p></div>` },
-                { cls: 's-nums', html: `${bg}<div class="px sa">${R.partial ? `So far, to ${day(R.asOf)}` : 'Year complete'}</div><h2 class="sa">The numbers</h2>
-                    <div class="snums">${headline.map(h => `<div class="snum sa"><div class="num">${h.v}${h.unit ? '<small>hours</small>' : ''}</div><span>${h.lab}</span></div>`).join('')}</div>` },
-                top1 && { cls: 's-game', html: `${img(bigArt(top1), 'sart' + (pix(top1) ? ' pixart' : ''))}<div class="px sa">Save file 01 · ${listName}</div><h2 class="name sa">${esc(top1.name)}</h2>
-                    <div class="tags sa">${platTag(top1)}${tierTag(top1.tier)}</div>
-                    <div class="facts sa">${gameFacts(top1).map(f => `<div class="fact"><div class="num">${f.v}</div><span>${f.l}</span></div>`).join('')}</div>` },
-                R.top.length > 1 && { cls: 's-top', ms: 7000, html: `${bg}<div class="px sa">Top ${R.top.length}</div><h2 class="sa">${listName}</h2>
-                    <div class="rows">${R.top.map((g, i) => rowHtml(g, i + 1, 'div', 'sa')).join('')}</div>` },
-                R.completions.length && { cls: 's-done', ms: 7000, html: `${bg}<div class="px sa">${T.completed ? `★ ${T.completed} ` : ''}${T.beaten ? `⚑ ${T.beaten}` : ''}</div><h2 class="sa">Seen through</h2>
-                    <div class="done">${R.completions.slice(0, 6).map(g => tileHtml(g, 'div', 'sa')).join('')}</div>${more > 0 ? `<p class="lead sa">and ${more} more</p>` : ''}` },
-                { cls: 's-blocks', html: `${bg}<div class="px sa">of ${daysSoFar} days</div><h2 class="sa">${n(T.activeDays)} blocks used</h2><div class="sa">${strip()}</div><div class="duo">${minis('sa')}</div>` },
-                { cls: 's-end', html: `${bg}<img class="spic sa" src="${imageUrl('story')}" alt="" onerror="this.remove()"><h2 class="sa">${R.year} saved</h2><p class="lead sa">Pass the card around.</p>
-                    <div class="btns sa"><button class="btn go" data-share>${svg.share}Share</button><button class="btn" data-replay>${svg.again}Replay</button></div>` },
-            ].filter(Boolean);
-            let at = 0, held = false, holdTimer = 0;
+            const slides = [...SLIDES.map(x => ({ ...x, ms: 8000 })), { key: null, cls: 'end', ms: 8000, html: `<h2 class="sa">${R.year} saved</h2><div class="px sa" style="color:rgb(var(--a))">Share a card</div>
+                <div class="spicks">${SLIDES.map(x => `<button class="spk sa pop" data-pic="${x.key}" aria-label="Share ${esc(x.name)}"><img src="${slidePic(x.key)}" alt="" onerror="this.parentNode.remove()"><span>${svg.share}</span></button>`).join('')}</div>
+                <div class="btns sa"><button class="btn" data-replay>${svg.again}Replay</button><button class="btn" data-share>More pictures</button></div>` }];
+            let at = 0, held = false, holdTimer = 0, toastTimer = 0;
             const el = document.createElement('div');
             el.className = 'story';
-            el.innerHTML = `<div class="frame" role="dialog" aria-modal="true" aria-label="${R.year} played back">
+            el.innerHTML = `<div class="frame" role="dialog" aria-modal="true" aria-label="${R.year} played back">${storyFrame('', `
                 <div class="sbars">${slides.map(() => '<i><b></b></i>').join('')}</div>
-                <div class="stop">${brand}<button class="x" data-close aria-label="Close">${svg.x}</button></div><div class="stage"></div></div>`;
-            const frame = el.firstElementChild, stage = el.querySelector('.stage'), bars = [...el.querySelectorAll('.sbars i')];
+                <div class="stop">${brand}<button class="x" data-shot aria-label="Share this card">${svg.share}</button><button class="x" data-close aria-label="Close">${svg.x}</button></div>`)}</div>`;
+            const frame = el.firstElementChild, foot = el.querySelector('.sfoot'), bars = [...el.querySelectorAll('.sbars i')], shot = el.querySelector('[data-shot]');
             const go = k => {
                 if (k < 0 || k >= slides.length) return;
                 at = k;
                 bars.forEach(b => { b.className = ''; });
                 void frame.offsetWidth;                                  // so a bar shown again starts over
-                bars.forEach((b, j) => { b.className = j < at ? 'done' : j === at ? 'on' : ''; });
-                el.style.setProperty('--dur', `${slides[at].ms ?? 6000}ms`);
-                stage.className = `stage ${slides[at].cls}`;
+                bars.forEach((b, j) => { b.className = j < at ? 'past' : j === at ? 'on' : ''; });
+                el.style.setProperty('--dur', `${slides[at].ms}ms`);
+                frame.querySelectorAll('.stage').forEach(old => { old.classList.add('out'); setTimeout(() => old.remove(), 230); });
+                const stage = document.createElement('div');
+                stage.className = `stage s-${slides[at].key ?? 'end'}`;
                 stage.innerHTML = slides[at].html;
                 stage.querySelectorAll('.sa').forEach((e, i) => e.style.setProperty('--i', i));
                 stage.querySelectorAll('img.pixart').forEach(i => { i.style.imageRendering = 'pixelated'; });
+                frame.insertBefore(stage, foot);
+                countUp(stage);
+                shot.hidden = !slides[at].key;
+            };
+            const toast = text => {
+                clearTimeout(toastTimer); frame.querySelector('.stoast')?.remove();
+                frame.insertAdjacentHTML('beforeend', `<div class="stoast">${text}</div>`);
+                toastTimer = setTimeout(() => frame.querySelector('.stoast')?.remove(), 1800);
+            };
+            const sharePic = async key => {                               // the story waits while the share sheet is up
+                hold(true);
+                const got = await sendPic(slidePic(key), `memory-card-${R.year}-${key}.jpg`);
+                hold(false);
+                if (got === 'saved') toast('Picture saved'); else if (got === 'failed') toast('This picture isn’t built yet');
             };
             const close = () => { el.remove(); document.documentElement.style.overflow = ''; document.removeEventListener('keydown', onKey); };
             const hold = on => { held = on; el.classList.toggle('paused', on); };
@@ -873,8 +967,8 @@
             frame.addEventListener('pointercancel', () => { clearTimeout(holdTimer); hold(false); });
             frame.addEventListener('pointerup', e => {
                 clearTimeout(holdTimer);
-                if (held) return hold(false);
                 if (e.target.closest('button')) return;
+                if (held) return hold(false);
                 const box = frame.getBoundingClientRect();
                 go(e.clientX - box.left < box.width * 0.3 ? at - 1 : at + 1);
             });
@@ -882,6 +976,8 @@
                 const t = e.target.closest('button');
                 if (e.target === el || t?.dataset.close != null) return close();
                 if (t?.dataset.replay != null) return go(0);
+                if (t?.dataset.shot != null) return sharePic(slides[at].key);
+                if (t?.dataset.pic) return sharePic(t.dataset.pic);
                 if (t?.dataset.share != null) { close(); openShare(); }
             });
             document.addEventListener('keydown', onKey);

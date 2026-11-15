@@ -19,8 +19,8 @@ Memory Card: a showcase page for every year in games, played back as slides, wit
 - improved: **Memory Card** titles: 21 to earn, picked by what made the year different
   Each year gets the title it stands out in most against your other years, and no title repeats two years in a row.
 - fix: **Memory Card** no longer counts achievement farms as finished games
-- new: **Memory Card** plays the year back as slides
-  Press Play: the year, the numbers, the top game, the top five, finished games and the save blocks, one screen each. Tap to step, hold to pause.
+- new: **Memory Card** plays the year back as slides, each one a card to share
+  Press Play: the year, the top five, finished games, the save blocks with your rhythm, and the rarest finds, one full card each. Tap to step, hold to pause. The share button sends the card on screen as a picture, and the last slide lets you pick any of them.
 - new: **Memory Card** share pictures in three styles: Card, Cover and Blocks
   Pick the style in the Share sheet, for both the story and the wide picture.
 - improved: **Memory Card** game rows and finished games show their art
