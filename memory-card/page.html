@@ -85,13 +85,13 @@
         .chip.live { color: rgb(var(--a)); border-color: rgba(var(--a), 0.4); background: rgba(var(--a), 0.1); }
         .chip.live i { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: pulse 1.8s ease-in-out infinite; }
         @keyframes pulse { 50% { opacity: 0.25; } }
-        .title { position: relative; padding: 16px 18px 16px 20px; border-radius: 14px; overflow: hidden; background: linear-gradient(110deg, rgba(var(--a), 0.2), rgba(var(--a), 0.04) 70%); border: 1px solid rgba(var(--a), 0.35); }
+        .title { position: relative; padding: 16px 18px 16px 20px; border-radius: 6px; overflow: hidden; background: linear-gradient(110deg, rgba(var(--a), 0.2), rgba(var(--a), 0.04) 70%); border: 1px solid rgba(var(--a), 0.35); }
         .title::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: rgb(var(--a)); }
         .title .px { color: rgb(var(--a)); }
         .title h2 { margin: 8px 0 2px; font: 800 30px/1 var(--display); letter-spacing: 0.01em; text-transform: uppercase; }
         .title p { margin: 0; color: var(--dim); font-size: 14px; }
         .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .stat { padding: 14px 16px; border-radius: 14px; background: var(--panel); border: 1px solid var(--line); backdrop-filter: blur(8px); min-width: 0; }
+        .stat { padding: 14px 16px; border-radius: 6px; background: var(--panel); border: 1px solid var(--line); backdrop-filter: blur(8px); min-width: 0; }
         .stat .num { font-weight: 800; font-size: 40px; line-height: 1; letter-spacing: -0.02em; display: flex; align-items: baseline; gap: 4px; }
         .stat .num small { font: 600 15px/1 var(--display); color: var(--dim); letter-spacing: 0; }
         .stat .lab { margin-top: 6px; color: var(--dim); font-size: 13px; }
@@ -108,7 +108,7 @@
 
         /* Most played */
         .top { display: grid; gap: 10px; }
-        .feat { position: relative; display: block; border-radius: 18px; overflow: hidden; min-height: 300px; border: 1px solid rgba(var(--a), 0.4); background: #10131c; isolation: isolate; }
+        .feat { position: relative; display: block; border-radius: 10px; overflow: hidden; min-height: 300px; border: 1px solid rgba(var(--a), 0.4); background: #10131c; isolation: isolate; }
         .feat .art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; transition: transform 600ms cubic-bezier(.2, .7, .2, 1); }
         .feat:hover .art { transform: scale(1.04); }
         .feat::after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(9, 11, 18, 0.15) 0%, rgba(9, 11, 18, 0.5) 45%, rgba(9, 11, 18, 0.96) 100%); }
@@ -125,16 +125,16 @@
         .fact .num { font-weight: 700; font-size: 22px; line-height: 1; }
         .fact span { display: block; margin-top: 3px; font-size: 12px; color: var(--dim); }
         .rows { display: grid; gap: 8px; }
-        .grow { position: relative; display: grid; grid-template-columns: 26px 92px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 10px 14px 10px 10px; border-radius: 14px; background: var(--panel); border: 1px solid var(--line); overflow: hidden; transition: background-color 150ms, border-color 150ms; }
-        .grow:hover { background: rgba(255, 255, 255, 0.08); border-color: rgba(var(--a), 0.35); }
-        .grow .meter { position: absolute; left: 0; bottom: 0; height: 2px; background: rgb(var(--a)); opacity: 0.8; }
-        .grow .rk { font: 800 22px/1 var(--display); color: var(--mute); text-align: center; }
-        .th { position: relative; width: 92px; height: 43px; border-radius: 6px; overflow: hidden; background: #151925; flex: none; }
-        .th img { position: absolute; inset: 0; width: 100%; height: 100%; }
-        .th .bg { object-fit: cover; filter: blur(8px) brightness(0.7); transform: scale(1.4); }
-        .th .fg { object-fit: contain; }
-        .th.pix .fg { image-rendering: pixelated; }
-        .grow h3 { margin: 0; font: 700 15px/1.2 var(--display); overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+        /* Rows: the game's wide art behind the left of the row, fading out under the title (like the #1 card, sideways) */
+        .grow { position: relative; display: grid; grid-template-columns: 26px 92px minmax(0, 1fr) auto; gap: 12px; align-items: center; min-height: 68px; padding: 12px 14px 12px 12px; border-radius: 6px; background: #0d1018; border: 1px solid var(--line); overflow: hidden; isolation: isolate; transition: border-color 150ms; }
+        a.grow:hover { border-color: rgba(var(--a), 0.45); }
+        .rowart { position: absolute; top: 0; left: 0; width: 45%; height: 100%; object-fit: cover; object-position: 72% 30%; z-index: -2;
+            -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 42%, transparent 86%); mask-image: linear-gradient(90deg, #000 0%, #000 42%, transparent 86%); }
+        .rowart.soft { filter: blur(10px) saturate(1.2); }          /* only a square icon to show: blurred, as colour */
+        .grow::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(9, 11, 18, 0.78) 0, rgba(9, 11, 18, 0.25) 46px, rgba(9, 11, 18, 0) 120px); }
+        .grow .meter { position: absolute; left: 0; bottom: 0; height: 3px; background: rgb(var(--a)); box-shadow: 0 0 10px rgba(var(--a), 0.7); }
+        .grow .rk { width: 26px; height: 26px; display: grid; place-items: center; font: 800 17px/1 var(--display); color: #fff; border-radius: 4px; background: rgba(9, 11, 18, 0.72); border: 1px solid rgba(255, 255, 255, 0.14); }
+        .grow h3 { margin: 0; font: 700 15px/1.2 var(--display); text-shadow: 0 1px 8px rgba(0, 0, 0, 0.95); overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
         .grow .meta { margin-top: 4px; display: flex; gap: 8px; align-items: center; font-size: 12px; color: var(--dim); white-space: nowrap; overflow: hidden; }
         .grow .meta img { width: 12px; height: 12px; flex: none; }
         .grow .meta .gold, .grow .meta .silver { font-weight: 700; font-size: 10.5px; letter-spacing: 0.07em; text-transform: uppercase; }
@@ -143,7 +143,7 @@
         .grow .val span { display: block; margin-top: 3px; font-size: 11.5px; color: var(--mute); }
 
         /* Blocks: the year as a memory card, one block per day */
-        .card { border-radius: 18px; background: var(--panel); border: 1px solid var(--line); padding: 18px; min-width: 0; }
+        .card { border-radius: 10px; background: var(--panel); border: 1px solid var(--line); padding: 18px; min-width: 0; }
         .months { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 14px; }
         .mo { min-width: 0; }
         .mo .px { color: var(--mute); margin-bottom: 6px; display: flex; justify-content: space-between; }
@@ -164,7 +164,7 @@
         .key .cells { display: inline-grid; grid-template-columns: repeat(4, 11px); grid-auto-rows: 11px; }
         .key i.one { width: 11px; height: 11px; border-radius: 2px; display: inline-block; }
         .duo { display: grid; gap: 10px; margin-top: 10px; grid-template-columns: 1fr 1fr; }
-        .mini { padding: 14px 16px; border-radius: 14px; background: var(--panel); border: 1px solid var(--line); min-width: 0; }
+        .mini { padding: 14px 16px; border-radius: 6px; background: var(--panel); border: 1px solid var(--line); min-width: 0; }
         .mini .px { color: var(--mute); }
         .mini .num { font-weight: 800; font-size: 30px; line-height: 1; margin-top: 10px; display: flex; align-items: baseline; gap: 5px; }
         .mini .num small { font: 600 13px/1 var(--display); color: var(--dim); }
@@ -172,19 +172,19 @@
 
         /* Finished */
         .done { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .dn { position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 150px; padding: 12px; border-radius: 14px; overflow: hidden; isolation: isolate; background: #10131c; border: 2px solid rgba(184, 196, 206, 0.5); }
-        .dn.completed { border-color: var(--gold); box-shadow: 0 0 22px rgba(229, 177, 67, 0.18); }
+        .dn { position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 158px; padding: 12px; border-radius: 6px; overflow: hidden; isolation: isolate; background: #10131c; border: 1px solid rgba(184, 196, 206, 0.32); }
+        .dn.completed { border-color: rgba(229, 177, 67, 0.85); box-shadow: 0 0 18px rgba(229, 177, 67, 0.16); }
         .dn img.art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
         .dn.pix img.art { image-rendering: pixelated; }
-        .dn::after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(9, 11, 18, 0.1) 0%, rgba(9, 11, 18, 0.55) 45%, rgba(9, 11, 18, 0.96) 100%); }
-        .dn .tag { position: absolute; top: 10px; left: 10px; }
-        .dn h3 { margin: 0; font: 700 15px/1.15 var(--display); overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+        .dn::after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(9, 11, 18, 0) 0%, rgba(9, 11, 18, 0.08) 34%, rgba(9, 11, 18, 0.84) 62%, rgba(9, 11, 18, 0.97) 100%); }
+        .dn .tag { position: absolute; top: 8px; left: 8px; }
+        .dn h3 { margin: 0; font: 700 15px/1.15 var(--display); text-shadow: 0 1px 10px rgba(0, 0, 0, 0.9); overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
         .dn p { margin: 4px 0 0; font-size: 11.5px; color: var(--dim); display: flex; gap: 6px; align-items: center; white-space: nowrap; overflow: hidden; }
         .dn p img { width: 11px; height: 11px; flex: none; }
 
         /* Rarest */
         .rare { display: grid; gap: 8px; }
-        .rr { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 10px 14px 10px 10px; border-radius: 14px; background: var(--panel); border: 1px solid var(--line); }
+        .rr { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 10px 14px 10px 10px; border-radius: 6px; background: var(--panel); border: 1px solid var(--line); }
         .rr .ic { width: 52px; height: 52px; border-radius: 8px; background: #151925; object-fit: cover; }
         .rr h3 { margin: 0; font: 700 15px/1.2 var(--display); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .rr p { margin: 3px 0 0; font-size: 12.5px; color: var(--dim); display: flex; gap: 6px; align-items: center; min-width: 0; }
@@ -219,7 +219,7 @@
 
         /* Bookends */
         .ends { display: grid; gap: 10px; }
-        .end { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 12px; align-items: center; padding: 14px; border-radius: 14px; background: var(--panel); border: 1px solid var(--line); }
+        .end { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 12px; align-items: center; padding: 14px; border-radius: 6px; background: var(--panel); border: 1px solid var(--line); }
         .end .ic { width: 52px; height: 52px; border-radius: 8px; background: #151925; object-fit: cover; }
         .end .px { color: rgb(var(--a)); }
         .end h3 { margin: 6px 0 2px; font: 700 16px/1.2 var(--display); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -227,7 +227,7 @@
 
         /* Other years: the card's other slots */
         .slots { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .sl { position: relative; display: block; padding: 12px 14px; min-height: 92px; border-radius: 14px; overflow: hidden; isolation: isolate; background: #10131c; border: 1px solid var(--line); transition: border-color 150ms, transform 150ms; }
+        .sl { position: relative; display: block; padding: 12px 14px; min-height: 92px; border-radius: 6px; overflow: hidden; isolation: isolate; background: #10131c; border: 1px solid var(--line); transition: border-color 150ms, transform 150ms; }
         .sl:hover { border-color: rgba(var(--c), 0.7); transform: translateY(-2px); }
         .sl.on { border-color: rgb(var(--c)); box-shadow: 0 0 0 1px rgb(var(--c)); }
         .sl img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; opacity: 0.55; }
@@ -237,7 +237,7 @@
         .sl p { margin: 4px 0 0; font-size: 12px; color: var(--dim); }
 
         /* Footer */
-        .cta { margin-top: 44px; padding: 26px 20px; border-radius: 20px; text-align: center; background: radial-gradient(120% 140% at 50% 0%, rgba(var(--a), 0.22), rgba(var(--a), 0.03) 70%); border: 1px solid rgba(var(--a), 0.35); }
+        .cta { margin-top: 44px; padding: 26px 20px; border-radius: 10px; text-align: center; background: radial-gradient(120% 140% at 50% 0%, rgba(var(--a), 0.22), rgba(var(--a), 0.03) 70%); border: 1px solid rgba(var(--a), 0.35); }
         .cta h2 { margin: 0 0 6px; font: 800 24px/1.1 var(--display); text-transform: uppercase; text-wrap: balance; }
         .cta p { margin: 0 0 16px; color: var(--dim); }
         .cta .btns { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
@@ -248,15 +248,16 @@
 
         /* Share sheet */
         .scrim { position: fixed; inset: 0; z-index: 50; background: rgba(4, 5, 9, 0.72); backdrop-filter: blur(6px); display: flex; align-items: flex-end; justify-content: center; animation: fade 180ms ease-out backwards; }
-        .sheet { width: min(460px, 100%); max-height: 100%; overflow: auto; background: #12151f; border: 1px solid var(--line); border-radius: 22px 22px 0 0; padding: 16px 16px calc(18px + env(safe-area-inset-bottom, 0px)); animation: up 260ms cubic-bezier(.2, .8, .2, 1) backwards; }
+        .sheet { width: min(460px, 100%); max-height: 100%; overflow: auto; background: #12151f; border: 1px solid var(--line); border-radius: 10px 10px 0 0; padding: 16px 16px calc(18px + env(safe-area-inset-bottom, 0px)); animation: up 260ms cubic-bezier(.2, .8, .2, 1) backwards; }
         .sheet header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
         .sheet header h2 { margin: 0; flex: 1; font: 800 18px/1 var(--display); text-transform: uppercase; }
+        .pick { display: flex; gap: 8px; justify-content: space-between; flex-wrap: wrap; margin-bottom: 12px; }
         .seg { display: inline-flex; padding: 3px; border-radius: 999px; background: rgba(255, 255, 255, 0.06); border: 1px solid var(--line); }
         .seg button { height: 28px; padding: 0 12px; border-radius: 999px; font: 600 12.5px/1 var(--body); color: var(--dim); }
         .seg button.on { background: rgb(var(--a)); color: #071018; }
         .x { width: 34px; height: 34px; border-radius: 50%; background: rgba(255, 255, 255, 0.07); display: grid; place-items: center; }
         .x svg { width: 16px; height: 16px; }
-        .pv { display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr); place-items: center; padding: 10px; height: min(46vh, 380px); border-radius: 14px; background: #0a0c13; border: 1px solid var(--line); overflow: hidden; }
+        .pv { display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr); place-items: center; padding: 10px; height: min(46vh, 380px); border-radius: 6px; background: #0a0c13; border: 1px solid var(--line); overflow: hidden; }
         .pv img { width: 100%; height: 100%; object-fit: contain; display: block; border-radius: 6px; animation: fade 220ms ease-out backwards; }
         .pv p { margin: 0; padding: 20px; text-align: center; color: var(--dim); font-size: 13.5px; }
         .acts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
@@ -300,7 +301,7 @@
             .rare .rr:first-child { grid-column: 1 / -1; }
             .bento { grid-template-columns: repeat(2, 1fr); }
             .slots { grid-template-columns: repeat(4, 1fr); }
-            .scrim { align-items: center; padding: 20px; } .sheet { border-radius: 22px; }
+            .scrim { align-items: center; padding: 20px; } .sheet { border-radius: 10px; }
             .backdrop { height: 900px; }
         }
         @media (min-width: 1100px) {
@@ -310,57 +311,140 @@
             .card { padding: 22px; }
         }
 
-        /* ── Share images: ?card=link (1200 × 630) and ?card=story (1080 × 1920), rendered by scripts/render-recap.js ── */
+        /* ── Story: the year played back as slides (the Play button). Tap right / left, hold to pause ── */
+        .story { position: fixed; inset: 0; z-index: 60; background: #04050a; display: grid; place-items: center; animation: fade 200ms ease-out backwards; }
+        .story .frame { position: relative; width: 100%; height: 100%; overflow: hidden; background: var(--bg); isolation: isolate; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; touch-action: manipulation; cursor: pointer; }
+        .story img { pointer-events: none; }
+        .story.paused *, .story.paused *::before { animation-play-state: paused !important; }
+        .sbars { position: absolute; z-index: 3; top: calc(10px + env(safe-area-inset-top, 0px)); left: 12px; right: 12px; display: flex; gap: 4px; }
+        .sbars i { flex: 1; height: 3px; border-radius: 2px; background: rgba(255, 255, 255, 0.22); overflow: hidden; }
+        .sbars b { display: block; height: 100%; background: #fff; transform: scaleX(0); transform-origin: left; }
+        .sbars .done b { transform: none; }
+        .sbars .on b { animation: sbar var(--dur, 6000ms) linear forwards; }
+        @keyframes sbar { to { transform: none; } }
+        .story .stop { position: absolute; z-index: 3; top: calc(22px + env(safe-area-inset-top, 0px)); left: 14px; right: 10px; display: flex; align-items: center; gap: 8px; }
+        .story .stop .brand { flex: 1; font-size: 13px; text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8); } .story .stop .brand img { width: 18px; height: 18px; }
+        .story .x { background: rgba(9, 11, 18, 0.55); }
+        .sbg { position: absolute; inset: -40px; width: calc(100% + 80px); height: calc(100% + 80px); object-fit: cover; filter: blur(26px) saturate(1.25); opacity: 0.5; z-index: -2; }
+        .sart { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; animation: szoom 7s ease-out backwards; }
+        @keyframes szoom { from { transform: scale(1.08); } }
+        .stage { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; gap: 14px; container-type: inline-size;
+            padding: calc(70px + env(safe-area-inset-top, 0px)) 22px calc(30px + env(safe-area-inset-bottom, 0px)); }
+        .stage::before { content: ''; position: absolute; inset: 0; z-index: -1;
+            background: radial-gradient(120% 60% at 80% 0%, rgba(var(--a), 0.26), transparent 62%), linear-gradient(180deg, rgba(9, 11, 18, 0.6) 0%, rgba(9, 11, 18, 0.86) 60%, rgba(9, 11, 18, 0.96) 100%); }
+        .stage.s-game { justify-content: flex-end; }
+        .stage.s-game::before { background: linear-gradient(180deg, rgba(9, 11, 18, 0.35) 0%, rgba(9, 11, 18, 0.05) 30%, rgba(9, 11, 18, 0.82) 68%, rgba(9, 11, 18, 0.97) 100%); }
+        .sa { animation: rise 560ms cubic-bezier(.2, .7, .2, 1) backwards; animation-delay: calc(var(--i, 0) * 110ms + 120ms); }
+        .stage .year { font-size: min(39cqw, 190px); margin: 0 0 0 -4px; }
+        .stage h2 { margin: 0; font: 800 34px/1.02 var(--display); text-transform: uppercase; text-wrap: balance; }
+        .stage h2.name { text-transform: none; font-size: 38px; text-shadow: 0 2px 18px rgba(0, 0, 0, 0.8); }
+        .stage .lead { margin: 0; color: var(--dim); font-size: 15px; }
+        .stage > .px { color: rgb(var(--a)); }
+        .snums { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 6px; }
+        .snum { padding: 14px; border-radius: 6px; background: rgba(9, 11, 18, 0.5); border: 1px solid var(--line); }
+        .snum .num { font-weight: 800; font-size: 32px; line-height: 1; letter-spacing: -0.02em; } .snum .num small { font: 600 16px/1 var(--display); color: var(--dim); margin-left: 3px; }
+        .snum span { display: block; margin-top: 6px; color: var(--dim); font-size: 13.5px; }
+        .snum:first-child { grid-column: 1 / -1; border-color: rgba(var(--a), 0.45); background: rgba(var(--a), 0.12); } .snum:first-child .num { font-size: 72px; color: rgb(var(--a)); }
+        .stage .facts { gap: 22px; } .stage .fact .num { font-size: 26px; }
+        .stage .rows { gap: 8px; } .stage .done { gap: 8px; } .stage .dn { min-height: 0; aspect-ratio: 16 / 10; }
+        .stage .strip { --g: 1.5px; --c: calc((100cqw - 44px - 53 * var(--g)) / 54); }
+        .stage .duo { margin: 0; grid-template-columns: 1fr 1fr; } .stage .done { grid-template-columns: 1fr 1fr; }
+        .stage .title h2 { margin: 8px 0 2px; font-size: 30px; }
+        .spic { align-self: center; height: 58%; max-width: 100%; aspect-ratio: 9 / 16; object-fit: cover; border-radius: 10px; border: 1px solid var(--line); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6); background: #10131c; }
+        .stage.s-end { align-items: stretch; text-align: center; } .stage .btns { display: flex; gap: 8px; justify-content: center; }
+        .stage .btn { height: 42px; padding: 0 18px; font-size: 14px; }
+        @media (min-width: 720px) {
+            .story .frame { width: auto; height: min(100dvh - 40px, 900px); aspect-ratio: 9 / 16; border-radius: 10px; border: 1px solid var(--line); }
+        }
+        @media (prefers-reduced-motion: reduce) { .sbars .on b { transform: none; } }
+
+        /* ── Share images: ?card=link (1200 × 630) and ?card=story (1080 × 1920), each in three styles (&style=cover | blocks,
+              none = card), rendered by scripts/render-recap.js ── */
         body.shot { overflow: hidden; }
         .shotc { position: relative; overflow: hidden; background: var(--bg); isolation: isolate; }
-        .shotc .bgart { position: absolute; inset: -60px; width: calc(100% + 120px); height: calc(100% + 120px); object-fit: cover; filter: blur(30px) saturate(1.3); opacity: 0.6; z-index: -2; }
-        .shotc::before { content: ''; position: absolute; inset: 0; z-index: -1; }
+        .shotc .bgart { position: absolute; inset: -60px; width: calc(100% + 120px); height: calc(100% + 120px); object-fit: cover; filter: blur(30px) saturate(1.3); opacity: 0.6; z-index: -3; }
+        .shotc::before { content: ''; position: absolute; inset: 0; z-index: -2; }
+        .shotc .covart { position: absolute; object-fit: cover; z-index: -1; }
         .shotc .brand img { width: 1.5em; height: 1.5em; }
         .shotc .year { filter: drop-shadow(0 14px 50px rgba(var(--a), 0.35)); margin: 0; }
-        .shotc .th { border-radius: 8px; }
-        .sc-link { width: 1200px; height: 630px; padding: 46px 54px; display: grid; grid-template-columns: 590px 1fr; gap: 44px; }
-        .sc-link::before { background: radial-gradient(90% 120% at 0% 0%, rgba(var(--a), 0.28), transparent 60%), linear-gradient(100deg, rgba(9, 11, 18, 0.72) 0%, rgba(9, 11, 18, 0.9) 60%, rgba(9, 11, 18, 0.96) 100%); }
-        .sc-link .l { display: flex; flex-direction: column; min-width: 0; }
-        .sc-link .brand { font-size: 22px; }
-        .sc-link .slot { margin-top: 26px; } .sc-link .slot .px, .sc-link .px { font-size: 13px; }
-        .sc-link .year { font-size: 244px; margin: 16px 0 0 -8px; }
-        .sc-link .ttl { margin-top: 20px; font: 800 38px/1 var(--display); text-transform: uppercase; color: #fff; white-space: nowrap; }
-        .sc-link .ttl small { display: block; margin-top: 8px; font: 500 20px/1.2 var(--body); color: var(--dim); text-transform: none; }
-        .sc-link .st { margin-top: auto; display: flex; gap: 34px; }
-        .sc-link .st .num { font-weight: 800; font-size: 44px; line-height: 1; }
-        .sc-link .st span { display: block; margin-top: 6px; font-size: 17px; color: var(--dim); }
-        .sc-link .r { display: flex; flex-direction: column; gap: 10px; justify-content: center; min-width: 0; }
-        .sc-link .r > .px { color: rgb(var(--a)); margin-bottom: 4px; }
-        .sc-row { display: grid; align-items: center; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .sc-row .rk { font: 800 1em/1 var(--display); color: var(--mute); text-align: center; }
-        .sc-row:first-of-type { border-color: rgba(var(--a), 0.6); background: rgba(var(--a), 0.12); }
-        .sc-row:first-of-type .rk { color: rgb(var(--a)); }
-        .sc-row h3 { margin: 0; font-family: var(--display); font-weight: 700; line-height: 1.15; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+        .shotc .ttl { font-family: var(--display); font-weight: 800; line-height: 1; text-transform: uppercase; color: #fff; }
+        .shotc .ttl small { display: block; font-family: var(--body); font-weight: 500; line-height: 1.2; color: var(--dim); text-transform: none; }
+        .shotc .st .num { font-weight: 800; line-height: 1; } .shotc .st span { display: block; color: var(--dim); }
+        .shotc .r { display: flex; flex-direction: column; min-width: 0; } .shotc .r > .px { color: rgb(var(--a)); }
+        .shotc .game .px { color: rgb(var(--a)); text-shadow: 0 1px 8px rgba(0, 0, 0, 0.9); } .shotc .game h3 { font-family: var(--display); font-weight: 800; line-height: 1.02; text-wrap: balance; text-shadow: 0 2px 24px rgba(0, 0, 0, 0.85); overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+        .shotc .game p { margin: 0; color: var(--text); } .shotc .game p b { font-family: var(--display); font-weight: 700; }
+        .sc-row { position: relative; display: grid; align-items: center; overflow: hidden; isolation: isolate; background: #0d1018; border: 1px solid rgba(255, 255, 255, 0.12); }
+        .sc-row::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(9, 11, 18, 0.78) 0, rgba(9, 11, 18, 0.2) 12%, rgba(9, 11, 18, 0) 30%); }
+        .sc-row .rk { display: grid; place-items: center; aspect-ratio: 1; font: 800 0.72em/1 var(--display); color: #fff; background: rgba(9, 11, 18, 0.72); border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 0.16em; }
+        .sc-row:first-of-type { border-color: rgba(var(--a), 0.7); }
+        .sc-row:first-of-type .rk { color: rgb(var(--a)); border-color: rgba(var(--a), 0.5); }
+        .sc-row h3 { margin: 0; font-family: var(--display); font-weight: 700; line-height: 1.15; text-shadow: 0 1px 10px rgba(0, 0, 0, 0.95); overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
         .sc-row .v { font-family: var(--display); font-weight: 700; white-space: nowrap; text-align: right; }
         .sc-row .v small { display: block; font: 500 0.62em/1.3 var(--body); color: var(--dim); }
-        .sc-link .sc-row { grid-template-columns: 30px 128px minmax(0, 1fr) auto; gap: 14px; padding: 10px 16px 10px 10px; border-radius: 14px; font-size: 26px; }
-        .sc-link .sc-row .th { width: 128px; height: 60px; }
+        /* The year's days as one strip, weeks as columns (Monday on top), with the months above */
+        .strip.cells { display: grid; grid-template-columns: none; grid-template-rows: repeat(7, var(--c)); grid-auto-flow: column; grid-auto-columns: var(--c); grid-auto-rows: auto; gap: var(--g); }
+        .mlab { display: grid; grid-auto-flow: column; grid-auto-columns: var(--c); gap: var(--g); color: var(--mute); margin-bottom: 0.9em; }
+        .mlab span { grid-row: 1; white-space: nowrap; }
+        .bfacts { display: flex; } .bfacts div { min-width: 0; white-space: nowrap; } .bfacts b { display: block; font-family: var(--display); font-weight: 700; color: var(--text); white-space: nowrap; }
+
+        .sc-link { width: 1200px; height: 630px; padding: 46px 54px; }
+        .sc-link::before { background: radial-gradient(90% 120% at 0% 0%, rgba(var(--a), 0.28), transparent 60%), linear-gradient(100deg, rgba(9, 11, 18, 0.72) 0%, rgba(9, 11, 18, 0.9) 60%, rgba(9, 11, 18, 0.96) 100%); }
+        .sc-link .l { display: flex; flex-direction: column; min-width: 0; height: 100%; }
+        .sc-link .brand { font-size: 22px; }
+        .sc-link .slot { margin-top: 26px; } .sc-link .px { font-size: 13px; }
+        .sc-link .year { font-size: 244px; margin: 16px 0 0 -8px; }
+        .sc-link .ttl { margin-top: 20px; font-size: 38px; white-space: nowrap; } .sc-link .ttl small { margin-top: 8px; font-size: 20px; }
+        .sc-link .st { margin-top: auto; display: flex; gap: 34px; }
+        .sc-link .st .num { font-size: 44px; } .sc-link .st span { margin-top: 6px; font-size: 17px; }
+        .sc-link .r { gap: 10px; justify-content: center; } .sc-link .r > .px { margin-bottom: 4px; }
+        .sc-link .sc-row { grid-template-columns: 34px 132px minmax(0, 1fr) auto; gap: 14px; min-height: 82px; padding: 10px 16px 10px 12px; border-radius: 8px; font-size: 26px; }
         .sc-link .sc-row h3 { font-size: 20px; } .sc-link .sc-row .v { font-size: 22px; }
+        .sc-link.v-card { display: grid; grid-template-columns: 590px 1fr; gap: 44px; }
+        /* Wide cover: the #1 game's art sharp on the right, the year on the left over a dark fade */
+        .sc-link.v-cover::before { background: linear-gradient(90deg, rgba(9, 11, 18, 0.96) 0%, rgba(9, 11, 18, 0.9) 34%, rgba(9, 11, 18, 0) 70%); z-index: 0; }
+        .sc-link.v-cover > * { z-index: 1; position: relative; }
+        .sc-link.v-cover .covart { position: absolute; z-index: -1; top: 0; right: 0; width: 860px; height: 100%; object-position: 60% 30%; }
+        .sc-link.v-cover::after { content: ''; position: absolute; right: 0; bottom: 0; width: 860px; height: 300px; background: linear-gradient(180deg, rgba(9, 11, 18, 0), rgba(9, 11, 18, 0.9)); }
+        .sc-link.v-cover .l { width: 600px; }
+        .sc-link.v-cover .game { position: absolute; z-index: 2; right: 54px; bottom: 46px; width: 470px; text-align: right; }
+        .sc-link.v-cover .game h3 { margin: 10px 0 8px; font-size: 40px; } .sc-link.v-cover .game p { font-size: 19px; }
+        /* Wide blocks: the whole year as one strip */
+        .sc-link.v-blocks { display: flex; flex-direction: column; }
+        .sc-link.v-blocks .hd { display: flex; align-items: flex-end; gap: 40px; margin-top: 16px; }
+        .sc-link.v-blocks .year { font-size: 170px; margin: 0 0 0 -6px; }
+        .sc-link.v-blocks .hr { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 24px; padding-bottom: 12px; } .sc-link.v-blocks .ttl, .sc-link.v-blocks .st { margin: 0; }
+        .sc-link.v-blocks .stripw { margin-top: auto; --c: 17px; --g: 3.2px; } .sc-link.v-blocks .strip i { border-radius: 3px; }
+        .sc-link.v-blocks .bfacts { margin-top: 26px; gap: 44px; font-size: 16px; color: var(--dim); align-items: flex-end; }
+        .sc-link.v-blocks .bfacts b { font-size: 24px; margin-bottom: 4px; } .sc-link.v-blocks .bfacts .site { margin-left: auto; } .sc-link.v-blocks .bfacts .site b { font-size: 18px; margin: 0; }
+
         .sc-story { width: 1080px; height: 1920px; padding: 140px 76px 150px; display: flex; flex-direction: column; }
         .sc-story::before { background: radial-gradient(100% 50% at 50% 0%, rgba(var(--a), 0.3), transparent 70%), linear-gradient(180deg, rgba(9, 11, 18, 0.6) 0%, rgba(9, 11, 18, 0.9) 45%, rgba(9, 11, 18, 0.97) 100%); }
         .sc-story .brand { font-size: 34px; }
         .sc-story .slot { margin-top: 44px; } .sc-story .px { font-size: 20px; } .sc-story .slot i { width: 14px; height: 14px; }
         .sc-story .year { font-size: 380px; margin: 20px 0 0 -14px; }
-        .sc-story .ttl { margin-top: 34px; font: 800 62px/1 var(--display); text-transform: uppercase; color: #fff; }
-        .sc-story .ttl small { display: block; margin-top: 12px; font: 500 30px/1.25 var(--body); color: var(--dim); text-transform: none; }
+        .sc-story .ttl { margin-top: 34px; font-size: 62px; } .sc-story .ttl small { margin-top: 12px; font-size: 30px; line-height: 1.25; }
         .sc-story .st { margin-top: 44px; display: grid; grid-template-columns: repeat(4, auto); justify-content: space-between; }
-        .sc-story .st .num { font-weight: 800; font-size: 76px; line-height: 1; }
-        .sc-story .st span { display: block; margin-top: 8px; font-size: 26px; color: var(--dim); }
-        .sc-story .r { margin-top: 46px; display: flex; flex-direction: column; gap: 14px; }
-        .sc-story .r > .px { color: rgb(var(--a)); margin-bottom: 6px; }
-        .sc-story .sc-row { grid-template-columns: 46px 180px minmax(0, 1fr) auto; gap: 22px; padding: 10px 26px 10px 10px; border-radius: 22px; font-size: 40px; }
-        .sc-story .sc-row .th { width: 180px; height: 84px; border-radius: 12px; }
+        .sc-story .st .num { font-size: 76px; } .sc-story .st span { margin-top: 8px; font-size: 26px; }
+        .sc-story .r { margin-top: 46px; gap: 14px; } .sc-story .r > .px { margin-bottom: 6px; }
+        .sc-story .sc-row { grid-template-columns: 52px 250px minmax(0, 1fr) auto; gap: 22px; min-height: 106px; padding: 10px 26px 10px 18px; border-radius: 12px; font-size: 40px; }
         .sc-story .sc-row h3 { font-size: 33px; } .sc-story .sc-row .v { font-size: 36px; }
         .sc-story .foot { margin-top: auto; padding-top: 30px; font-size: 26px; color: var(--dim); white-space: nowrap; }
-        .sc-story .foot div { display: flex; align-items: center; justify-content: space-between; gap: 30px; margin-top: 26px; font-size: 24px; }
+        .sc-story .foot .fl { display: flex; align-items: center; justify-content: space-between; gap: 30px; margin-top: 26px; font-size: 24px; }
         .sc-story .foot b { color: var(--text); font: 700 24px/1 var(--display); }
-        .sc-story .strip { display: grid; grid-template-rows: repeat(7, 14px); grid-auto-flow: column; grid-auto-columns: 14px; gap: 3.4px; }
-        .sc-story .strip i { border-radius: 3px; }
+        .sc-story .stripw { --c: 14px; --g: 3.4px; } .sc-story .strip i { border-radius: 3px; }
+        /* Story cover: the #1 game's art sharp over the top half, the year under it */
+        .sc-story.v-cover::before { z-index: 0; background: linear-gradient(180deg, rgba(9, 11, 18, 0.55) 0%, rgba(9, 11, 18, 0) 14%, rgba(9, 11, 18, 0) 30%, rgba(9, 11, 18, 0.9) 50%, var(--bg) 58%); }
+        .sc-story.v-cover > * { position: relative; z-index: 1; }
+        .sc-story.v-cover .covart { position: absolute; z-index: -1; inset: 0 0 auto; width: 100%; height: 1120px; object-position: 60% 30%; }
+        .sc-story.v-cover .game { margin-top: auto; }
+        .sc-story.v-cover .game h3 { margin: 18px 0 14px; font-size: 84px; } .sc-story.v-cover .game p { font-size: 30px; }
+        .sc-story.v-cover .year { font-size: 330px; margin-top: 46px; }
+        .sc-story.v-cover .foot { margin-top: 50px; padding: 0; }
+        /* Story blocks: the twelve months as blocks */
+        .sc-story.v-blocks .months { margin-top: 56px; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 40px 34px; }
+        .sc-story.v-blocks .mo .px { margin-bottom: 12px; }
+        .sc-story.v-blocks .mo .cells { gap: 4px; grid-auto-rows: calc((100cqw - 24px) / 7); } .sc-story.v-blocks .mo .cells i { border-radius: 4px; }
+        .sc-story.v-blocks .cells i.best { outline-width: 3px; }
     </style>
 </head>
 <body>
@@ -370,7 +454,8 @@
     (() => {
         const D = JSON.parse(document.getElementById('recap').textContent);
         const R = D.recap, YEARS = D.years, BASE = D.base, T = R.totals;
-        const CARD = new URLSearchParams(location.search).get('card');
+        const Q = new URLSearchParams(location.search), CARD = Q.get('card');
+        const STYLE = ['cover', 'blocks'].includes(Q.get('style')) ? Q.get('style') : 'card';     // which of the three share pictures
         const RA_ICON = BASE + 'assets/icon-ra.png', ICON = { ra: RA_ICON, steam: BASE + 'assets/icon-steam.png', xbox: BASE + 'assets/icon-xbox.png' };
         const PLATFORM = { ra: 'RetroAchievements', steam: 'Steam', xbox: 'Xbox' }, PCOLOR = { ra: 'var(--ra)', steam: 'var(--steam)', xbox: 'var(--xbox)' };
         // Card colours, like the translucent plastics memory cards came in; a year keeps its colour
@@ -409,18 +494,20 @@
         const bigArt = (g, w = 1280) => [sized(g, g.hero, w), g.platform === 'steam' ? g.cover : null, g.shot, sized(g, g.cover, 424), sized(g, g.icon, 300)];
         const midArt = g => [g.heroThumb, g.platform === 'steam' ? g.cover : null, g.shot, sized(g, g.hero, 640), sized(g, g.cover, 424), sized(g, g.icon, 300)];
         const pix = g => g.platform === 'ra' && !g.hero;      // RA screenshots and icons are pixel art: scale them crisp
-        // Small banner: wide art where the platform has it, else the square icon over its own blur
-        const thumb = (g, w = 200) => {
-            const wide = g.platform === 'steam' || (g.platform === 'ra' && g.cover);
-            const list = wide ? [g.cover, g.icon] : [sized(g, g.icon, w), sized(g, g.cover, w)];
-            return `<span class="th${g.platform === 'ra' && !wide ? ' pix' : ''}">${img(list, 'bg')}${img(list, 'fg', '')}</span>`;
+        // Row art: wide art behind the left of a row (hero, else cover or screenshot); only a square icon left = blurred, as colour
+        const rowArt = g => {
+            const steam = g.platform === 'steam';
+            const wide = [g.heroThumb, steam ? g.hero : sized(g, g.hero, 640), steam ? g.cover : sized(g, g.cover, 424), g.shot].filter(Boolean);
+            return img([...wide, sized(g, g.icon, 300)], 'rowart' + (wide.length ? '' : ' soft'));
         };
         const tierTag = (t, label) => t ? `<span class="tag ${t}">${t === 'completed' ? '★' : '⚑'} ${esc(label ?? (t === 'completed' ? 'Completed' : 'Beaten'))}</span>` : '';
         const platTag = g => `<span class="tag"><img src="${ICON[g.platform]}" alt="">${esc(g.console ?? PLATFORM[g.platform])}</span>`;
         const svg = { share: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M16 6l-4-4-4 4M12 2v14"/></svg>',
             link: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg>',
             down: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13M6 11l6 6 6-6M4 21h16"/></svg>',
-            x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>' };
+            x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+            play: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 4.5v15l12-7.5z"/></svg>',
+            again: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5"/></svg>' };
 
         const byTime = R.rankBy === 'time';
         const finished = T.completed + T.beaten;
@@ -454,20 +541,77 @@
         };
         const yearCells = () => pad(JAN1) + R.heat.map((_, i) => cell(i)).join('');   // weeks as columns, Monday on top
 
-        // ── Share images ──────────────────────────────────────────────────────────────
+        // The same days as one strip: weeks as columns, the months named above
+        const wk0 = (new Date(JAN1).getUTCDay() + 6) % 7;
+        const strip = (labels = true) => `<div class="stripw">${labels ? `<div class="mlab px">${MONTHS.map((m, i) => `<span style="grid-column:${Math.floor((Math.round((Date.UTC(R.year, i, 1) - JAN1) / 864e5) + wk0) / 7) + 1}">${m}</span>`).join('')}</div>` : ''}<span class="strip cells">${yearCells()}</span></div>`;
+
+        // Pieces the page, the story and the share pictures all draw
+        const daysSoFar = R.asOf ? Math.round((Date.parse(R.asOf) - JAN1) / 864e5) + 1 : R.heat.length;
+        const monthTotal = m => R.months[m].ra + R.months[m].steam + R.months[m].xbox;
+        const listName = byTime ? 'Most played' : 'Most unlocked';
+        const gameFacts = g => [
+            g.minutes ? { v: time(g.minutes), l: 'played' } : null,
+            { v: n(g.unlocks), l: plural(g.unlocks, 'unlock') },
+            { v: `${Math.round(g.share)}%`, l: byTime ? 'of play time' : 'of all unlocks' },
+        ].filter(Boolean);
+        const rowVal = g => byTime && g.minutes ? [time(g.minutes), `${n(g.unlocks)} ${plural(g.unlocks, 'unlock')}`] : [n(g.unlocks), plural(g.unlocks, 'unlock')];
+        // A ranked game: its art fading out from the left behind the rank, the name and the numbers
+        const rowHtml = (g, rank, tag = 'div', cls = '', attrs = '') => `
+            <${tag} class="grow ${cls}" ${attrs}>${rowArt(g)}
+                <span class="rk">${rank}</span><span></span>
+                <div style="min-width:0"><h3>${esc(g.name)}</h3><div class="meta"><img src="${ICON[g.platform]}" alt="">
+                    ${g.tier ? `<span class="${g.tier === 'completed' ? 'gold' : 'silver'}">${g.tier === 'completed' ? '★ Completed' : '⚑ Beaten'}</span>` : `<span>${esc(g.console ?? PLATFORM[g.platform])}</span>`}</div></div>
+                <div class="val"><div class="num">${rowVal(g)[0]}</div><span>${rowVal(g)[1]}</span></div>
+                <i class="meter" style="width:${Math.max(2, 100 * g.share / top1.share)}%"></i>
+            </${tag}>`;
+        const tileHtml = (g, tag = 'div', cls = '', attrs = '') => `
+            <${tag} class="dn ${cls} ${g.tier}${pix(g) ? ' pix' : ''}" ${attrs}>
+                ${img(midArt(g), 'art')}${tierTag(g.tier, g.label)}
+                <h3>${esc(g.name)}</h3><p><img src="${ICON[g.platform]}" alt=""><span>${g.console ? `${esc(g.console)} · ` : ''}${day(g.day)}${!g.console && g.fact?.pct != null ? ` · ${g.fact.pct}% rarity` : ''}</span></p>
+            </${tag}>`;
+        const monthsHtml = `<div class="months">${MONTHS.map((name, m) => `<div class="mo${R.peakMonth === m ? ' peak' : ''}"><div class="px"><span>${name}</span><b>${monthTotal(m) || ''}</b></div><div class="cells">${monthCells(m)}</div></div>`).join('')}</div>`;
+        const minis = cls => `
+            <div class="mini ${cls}"><div class="px">Longest streak</div><div class="num">${R.streak.days}<small>${plural(R.streak.days, 'day')}</small></div><p>${R.streak.days > 1 ? `${day(R.streak.from)} to ${day(R.streak.to)}` : 'No two days in a row'}</p></div>
+            ${R.bestDay ? `<div class="mini ${cls}"><div class="px">Biggest day</div><div class="num">${R.bestDay.unlocks}<small>${plural(R.bestDay.unlocks, 'unlock')}</small></div><p>${day(R.bestDay.day)} · ${esc(R.bestDay.game.name)}</p></div>` : ''}
+            ${R.peakMonth != null ? `<div class="mini ${cls}"><div class="px">Busiest month</div><div class="num">${MONTHS_LONG[R.peakMonth].slice(0, 3)}<small>${n(monthTotal(R.peakMonth))} unlocks</small></div><p>${byTime && R.months[R.peakMonth].minutes ? `${time(R.months[R.peakMonth].minutes)} played` : `${Math.round(100 * monthTotal(R.peakMonth) / T.unlocks)}% of the year`}</p></div>` : ''}
+            <div class="mini ${cls}"><div class="px">Rare finds</div><div class="num gold">${n(T.rare)}<small>under 10%</small></div><p>${T.unlocks ? `${Math.round(100 * T.rare / T.unlocks)}% of all unlocks` : ''}</p></div>`;
+        // ── Share pictures: ?card=link|story in one of three styles (&style=cover|blocks, none = card) ──
         if (CARD === 'link' || CARD === 'story') {
-            const rows = R.top.slice(0, 5).map((g, i) => `<div class="sc-row"><span class="rk">${i + 1}</span>${thumb(g, 424)}<h3>${esc(g.name)}</h3>
-                <span class="v">${byTime && g.minutes ? time(g.minutes) : n(g.unlocks)}<small>${byTime && g.minutes ? `${n(g.unlocks)} ${plural(g.unlocks, 'unlock')}` : plural(g.unlocks, 'unlock')}</small></span></div>`).join('');
-            const st = headline.slice(0, 4).map(h => `<div><div class="num">${h.v}${h.unit ?? ''}</div><span>${h.lab}</span></div>`).join('');
-            const head = `${brand}<div class="slot px"><i></i>${esc(R.user.name)} <b>· ${R.partial ? `so far, to ${day(R.asOf)}` : 'year in games'}</b></div>
-                <h1 class="year"${yearArt}>${R.year}</h1><div class="ttl">${esc(R.title.name)}<small>${esc(R.title.why)}</small></div>`;
-            const list = `<div class="r"><div class="px">${byTime ? 'Most played' : 'Most unlocked'}</div>${rows}</div>`;
+            const rows = R.top.slice(0, 5).map((g, i) => `<div class="sc-row">${rowArt(g)}<span class="rk">${i + 1}</span><span></span><h3>${esc(g.name)}</h3>
+                <span class="v">${rowVal(g)[0]}<small>${rowVal(g)[1]}</small></span></div>`).join('');
+            const st = `<div class="st">${headline.slice(0, 4).map(h => `<div><div class="num">${h.v}${h.unit ?? ''}</div><span>${h.lab}</span></div>`).join('')}</div>`;
+            const slot = `<div class="slot px"><i></i>${esc(R.user.name)} <b>· ${R.partial ? `so far, to ${day(R.asOf)}` : 'year in games'}</b></div>`;
+            const year = `<h1 class="year"${yearArt}>${R.year}</h1>`;
+            const ttl = `<div class="ttl">${esc(R.title.name)}<small>${esc(R.title.why)}</small></div>`;
+            const list = `<div class="r"><div class="px">${listName}</div>${rows}</div>`;
+            const bg = top1 ? img(bigArt(top1), 'bgart') : '';
+            const cov = top1 ? img(bigArt(top1, 1920), 'covart' + (pix(top1) ? ' pixart' : '')) : '';
+            const game = top1 ? `<div class="game"><div class="px">${listName}</div><h3>${esc(top1.name)}</h3>
+                <p>${gameFacts(top1).map(f => `<b>${f.v}</b> ${f.l}`).join(' · ')}</p></div>` : '';
+            const site = `${esc(D.site.replace(/^https?:\/\//, ''))}/memory-card/${R.year}`;
+            const days = `${n(T.activeDays)} of ${daysSoFar} days played`;
+            const foot = body => `<div class="foot">${body}<div class="fl"><b>${site}</b><span>${days}</span></div></div>`;
+            const bfacts = [
+                [n(T.activeDays), `of ${daysSoFar} days played`],
+                [`${R.streak.days} ${plural(R.streak.days, 'day')}`, 'longest streak'],
+                R.bestDay ? [`${R.bestDay.unlocks} ${plural(R.bestDay.unlocks, 'unlock')}`, `biggest day, ${day(R.bestDay.day)}`] : null,
+                R.peakMonth != null ? [MONTHS_LONG[R.peakMonth], 'busiest month'] : null,
+            ].filter(Boolean).map(([v, l]) => `<div><b>${v}</b>${l}</div>`).join('');
+            const cards = {
+                link: {
+                    card: `${bg}<div class="l">${brand}${slot}${year}${ttl}${st}</div>${list}`,
+                    cover: `${cov || bg}<div class="l">${brand}${slot}${year}${ttl}${st}</div>${game}`,
+                    blocks: `${bg}${brand}${slot}<div class="hd">${year}<div class="hr">${ttl}${st}</div></div>${strip()}<div class="bfacts">${bfacts}<div class="site"><b>${site}</b></div></div>`,
+                },
+                story: {
+                    card: `${bg}${brand}${slot}${year}${ttl}${st}${list}${foot(strip())}`,
+                    cover: `${cov || bg}${brand}${slot}${game}${year}${ttl}${st}${foot(strip())}`,
+                    blocks: `${bg}${brand}${slot}${year}${ttl}${st}${monthsHtml}${foot('')}`,
+                },
+            };
             document.body.classList.add('shot');
-            document.getElementById('app').innerHTML = CARD === 'link'
-                ? `<div class="shotc sc-link">${top1 ? img(bigArt(top1), 'bgart') : ''}<div class="l">${head}<div class="st">${st}</div></div>${list}</div>`
-                : `<div class="shotc sc-story">${top1 ? img(bigArt(top1), 'bgart') : ''}${head}<div class="st">${st}</div>${list}
-                    <div class="foot"><span class="strip cells">${yearCells()}</span>
-                    <div><b>${esc(D.site.replace(/^https?:\/\//, ''))}/memory-card/${R.year}</b><span>${n(T.activeDays)} of ${R.asOf ? Math.round((Date.parse(R.asOf) - JAN1) / 864e5) + 1 : R.heat.length} days played</span></div></div></div>`;
+            document.getElementById('app').innerHTML = `<div class="shotc sc-${CARD} v-${STYLE}">${cards[CARD][STYLE]}</div>`;
+            document.querySelectorAll('img.pixart').forEach(i => { i.style.imageRendering = 'pixelated'; });
             // The renderer waits for this: fonts in, every image loaded or given up
             const settled = () => [...document.images].every(i => i.complete && (i.naturalWidth || i.dataset.next == null || i.style.visibility === 'hidden'));
             const wait = () => document.fonts.ready.then(() => settled() ? (document.body.dataset.ready = '1') : setTimeout(wait, 80));
@@ -505,11 +649,6 @@
                     ${T.rare ? `<div class="sub"><span class="chip gold">${n(T.rare)} rare</span></div>` : ''}</div>`}
             </div>`;
 
-        const gameFacts = g => [
-            g.minutes ? { v: time(g.minutes), l: 'played' } : null,
-            { v: n(g.unlocks), l: plural(g.unlocks, 'unlock') },
-            { v: `${Math.round(g.share)}%`, l: byTime ? 'of play time' : 'of all unlocks' },
-        ].filter(Boolean);
         const topHtml = !top1 ? '' : `
             <section><div class="sh rv"><h2>${byTime ? 'Most played' : 'Most unlocked'}</h2><span class="px">Top ${R.top.length}</span></div>
             <div class="top">
@@ -519,40 +658,24 @@
                     <div class="in"><div class="tags">${platTag(top1)}${tierTag(top1.tier)}</div><h3>${esc(top1.name)}</h3>
                     <div class="facts">${gameFacts(top1).map(f => `<div class="fact"><div class="num">${f.v}</div><span>${f.l}</span></div>`).join('')}</div></div>
                 </a>
-                <div class="rows">${R.top.slice(1).map((g, i) => `
-                    <a class="grow rv" href="${esc(g.url ?? '#')}" target="_blank" rel="noopener" style="transition-delay:${(i + 1) * 60}ms">
-                        <span class="rk">${i + 2}</span>${thumb(g)}
-                        <div style="min-width:0"><h3>${esc(g.name)}</h3><div class="meta"><img src="${ICON[g.platform]}" alt="">
-                            ${g.tier ? `<span class="${g.tier === 'completed' ? 'gold' : 'silver'}">${g.tier === 'completed' ? '★ Completed' : '⚑ Beaten'}</span>` : `<span>${esc(g.console ?? PLATFORM[g.platform])}</span>`}</div></div>
-                        <div class="val"><div class="num">${byTime && g.minutes ? time(g.minutes) : n(g.unlocks)}</div><span>${byTime && g.minutes ? `${n(g.unlocks)} ${plural(g.unlocks, 'unlock')}` : plural(g.unlocks, 'unlock')}</span></div>
-                        <i class="meter" style="width:${Math.max(2, 100 * g.share / top1.share)}%"></i>
-                    </a>`).join('')}</div>
+                <div class="rows">${R.top.slice(1).map((g, i) => rowHtml(g, i + 2, 'a', 'rv', `href="${esc(g.url ?? '#')}" target="_blank" rel="noopener" style="transition-delay:${(i + 1) * 60}ms"`)).join('')}</div>
             </div></section>`;
 
-        const used = T.activeDays, daysSoFar = R.asOf ? Math.round((Date.parse(R.asOf) - Date.UTC(R.year, 0, 1)) / 864e5) + 1 : R.heat.length;
-        const monthTotal = m => R.months[m].ra + R.months[m].steam + R.months[m].xbox;
         const blocksHtml = `
-            <section><div class="sh rv"><h2>${n(used)} blocks used</h2><span class="px">of ${daysSoFar} days</span></div>
+            <section><div class="sh rv"><h2>${n(T.activeDays)} blocks used</h2><span class="px">of ${daysSoFar} days</span></div>
             <div class="card rv">
-                <div class="months">${MONTHS.map((name, m) => `<div class="mo${R.peakMonth === m ? ' peak' : ''}"><div class="px"><span>${name}</span><b>${monthTotal(m) || ''}</b></div><div class="cells">${monthCells(m)}</div></div>`).join('')}</div>
+                ${monthsHtml}
                 <div class="key"><span>Fewer<span class="cells"><i class="l1"></i><i class="l2"></i><i class="l3"></i><i class="l4"></i></span>more unlocks</span>
                     ${byTime ? `<span><i class="one" style="background:rgba(var(--a),0.2)"></i>Played, no unlock</span>` : ''}
                     ${R.bestDay ? `<span><i class="one" style="background:rgb(var(--a));outline:2px solid #fff;outline-offset:1px;margin:0 3px"></i>Biggest day</span>` : ''}</div>
             </div>
             <div class="duo">
-                <div class="mini rv"><div class="px">Longest streak</div><div class="num">${R.streak.days}<small>${plural(R.streak.days, 'day')}</small></div><p>${R.streak.days > 1 ? `${day(R.streak.from)} to ${day(R.streak.to)}` : 'No two days in a row'}</p></div>
-                ${R.bestDay ? `<div class="mini rv"><div class="px">Biggest day</div><div class="num">${R.bestDay.unlocks}<small>${plural(R.bestDay.unlocks, 'unlock')}</small></div><p>${day(R.bestDay.day)} · ${esc(R.bestDay.game.name)}</p></div>` : ''}
-                ${R.peakMonth != null ? `<div class="mini rv"><div class="px">Busiest month</div><div class="num">${MONTHS_LONG[R.peakMonth].slice(0, 3)}<small>${n(monthTotal(R.peakMonth))} unlocks</small></div><p>${byTime && R.months[R.peakMonth].minutes ? `${time(R.months[R.peakMonth].minutes)} played` : `${Math.round(100 * monthTotal(R.peakMonth) / T.unlocks)}% of the year`}</p></div>` : ''}
-                <div class="mini rv"><div class="px">Rare finds</div><div class="num gold">${n(T.rare)}<small>under 10%</small></div><p>${T.unlocks ? `${Math.round(100 * T.rare / T.unlocks)}% of all unlocks` : ''}</p></div>
+                ${minis('rv')}
             </div></section>`;
 
         const doneHtml = !R.completions.length ? '' : `
             <section><div class="sh rv"><h2>Seen through</h2><span class="px">${T.completed ? `★ ${T.completed} ` : ''}${T.beaten ? `⚑ ${T.beaten}` : ''}</span></div>
-            <div class="done">${R.completions.map((g, i) => `
-                <a class="dn rv ${g.tier}${pix(g) ? ' pix' : ''}" href="${esc(g.url ?? '#')}" target="_blank" rel="noopener" style="transition-delay:${Math.min(i, 7) * 40}ms">
-                    ${img(midArt(g), 'art')}${tierTag(g.tier, g.label)}
-                    <h3>${esc(g.name)}</h3><p><img src="${ICON[g.platform]}" alt=""><span>${g.console ? `${esc(g.console)} · ` : ''}${day(g.day)}${!g.console && g.fact?.pct != null ? ` · ${g.fact.pct}% rarity` : ''}</span></p>
-                </a>`).join('')}</div></section>`;
+            <div class="done">${R.completions.map((g, i) => tileHtml(g, 'a', 'rv', `href="${esc(g.url ?? '#')}" target="_blank" rel="noopener" style="transition-delay:${Math.min(i, 7) * 40}ms"`)).join('')}</div></section>`;
 
         const rareHtml = !R.rarest.length ? '' : `
             <section><div class="sh rv"><h2>Rarest finds</h2><span class="px">One per game</span></div>
@@ -612,7 +735,7 @@
             <div class="backdrop">${top1 ? img(bigArt(top1), '') : ''}</div>
             <div class="wrap">
                 <div class="bar"><a href="${BASE}" aria-label="Savepoint home">${brand}</a><span class="sp"></span>
-                    <button class="btn go" data-share>${svg.share}Share</button></div>
+                    <button class="btn go" data-play>${svg.play}Play</button><button class="btn" data-share>${svg.share}Share</button></div>
                 <div class="hero">${hero}</div>
                 ${topHtml}${blocksHtml}${doneHtml}${rareHtml}${rhythmHtml}${endsHtml}${slotsHtml}
                 <div class="cta rv"><h2>Pass the card around</h2><p>${esc(R.user.name)}’s ${R.year}, as a picture or a link.</p>
@@ -640,7 +763,9 @@
         // ── Sharing: the pictures are rendered at deploy time, so sharing is fetching a file ──
         const pageUrl = `${D.site}/memory-card/${R.year}/`;
         const shareTitle = `${R.user.name}'s Memory Card ${R.year}`;
-        const imageUrl = kind => `${BASE}memory-card/share/${R.year}-${kind}.jpg`;
+        const STYLES = [['card', 'Card'], ['cover', 'Cover'], ['blocks', 'Blocks']];
+        const picName = (kind, style = 'card') => `${R.year}-${kind}${style === 'card' ? '' : `-${style}`}.jpg`;
+        const imageUrl = (kind, style) => `${BASE}memory-card/share/${picName(kind, style)}`;
         const copy = async (btn) => {
             const label = btn.querySelector('span') ?? btn, old = label.textContent;
             try { await navigator.clipboard.writeText(pageUrl); label.textContent = 'Link copied'; }
@@ -648,24 +773,26 @@
             setTimeout(() => { label.textContent = old; }, 1600);
         };
         const openShare = () => {
-            let kind = 'story';
+            let kind = 'story', style = 'card';
             const el = document.createElement('div');
             el.className = 'scrim';
             el.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-label="Share ${R.year}">
-                <header><h2>Share ${R.year}</h2><div class="seg"><button data-kind="story" class="on">Story</button><button data-kind="link">Wide</button></div>
-                    <button class="x" data-close aria-label="Close">${svg.x}</button></header>
+                <header><h2>Share ${R.year}</h2><button class="x" data-close aria-label="Close">${svg.x}</button></header>
+                <div class="pick"><div class="seg" aria-label="Shape"><button data-kind="story">Story</button><button data-kind="link">Wide</button></div>
+                    <div class="seg" aria-label="Style">${STYLES.map(([id, name]) => `<button data-style="${id}">${name}</button>`).join('')}</div></div>
                 <div class="pv"></div>
                 <div class="acts"><button class="btn go" data-send>${svg.share}<span>Share picture</span></button><a class="btn" data-save download>${svg.down}Save picture</a></div>
                 <div class="linkrow"><span>${esc(pageUrl.replace(/^https?:\/\//, ''))}</span><button class="btn" data-copy>${svg.link}<span>Copy link</span></button></div></div>`;
             const pv = el.querySelector('.pv'), save = el.querySelector('[data-save]'), send = el.querySelector('[data-send]');
             const show = () => {
                 el.querySelectorAll('[data-kind]').forEach(b => b.classList.toggle('on', b.dataset.kind === kind));
+                el.querySelectorAll('[data-style]').forEach(b => b.classList.toggle('on', b.dataset.style === style));
                 const pic = new Image();
-                pic.alt = `${shareTitle}, ${kind === 'story' ? 'story picture' : 'wide picture'}`;
+                pic.alt = `${shareTitle}, ${kind === 'story' ? 'story picture' : 'wide picture'}, ${style}`;
                 pic.onload = () => { pv.replaceChildren(pic); };
                 pic.onerror = () => { pv.innerHTML = '<p>The picture for this year isn’t built yet. The link still works.</p>'; };
-                pic.src = imageUrl(kind);
-                save.href = imageUrl(kind); save.download = `memory-card-${R.year}-${kind}.jpg`;
+                pic.src = imageUrl(kind, style);
+                save.href = imageUrl(kind, style); save.download = `memory-card-${picName(kind, style)}`;
             };
             const close = () => { el.remove(); document.documentElement.style.overflow = ''; document.removeEventListener('keydown', onKey); };
             const onKey = e => { if (e.key === 'Escape') close(); };
@@ -673,12 +800,13 @@
                 const t = e.target.closest('button, a');
                 if (e.target === el || t?.dataset.close != null) return close();
                 if (t?.dataset.kind) { kind = t.dataset.kind; return show(); }
+                if (t?.dataset.style) { style = t.dataset.style; return show(); }
                 if (t?.dataset.copy != null) return copy(t);
                 if (t?.dataset.send != null) {
                     const label = send.querySelector('span');
                     try {
-                        const blob = await (await fetch(imageUrl(kind))).blob();
-                        const file = new File([blob], `memory-card-${R.year}-${kind}.jpg`, { type: 'image/jpeg' });
+                        const blob = await (await fetch(imageUrl(kind, style))).blob();
+                        const file = new File([blob], `memory-card-${picName(kind, style)}`, { type: 'image/jpeg' });
                         if (navigator.canShare?.({ files: [file] })) await navigator.share({ files: [file], title: shareTitle, text: `${shareTitle} ${pageUrl}` });
                         else if (navigator.share) await navigator.share({ title: shareTitle, url: pageUrl });
                         else { save.click(); label.textContent = 'Saved instead'; setTimeout(() => { label.textContent = 'Share picture'; }, 1600); }
@@ -691,10 +819,80 @@
             show();
             el.querySelector('[data-close]').focus();
         };
+        // ── Story: the year played back as slides. Each bar on top fills while its slide shows and its end moves on;
+        //    tap right / left to step, hold to pause. Slides with nothing to show are left out ──
+        const openStory = () => {
+            const bg = top1 ? img(bigArt(top1), 'sbg') : '';
+            const more = R.completions.length - 6;
+            const slides = [
+                { cls: 's-intro', html: `${bg}<div class="slot px sa"><i></i>Slot ${slotNo} <b>of ${YEARS.length}</b></div><div class="year sa"${yearArt}>${R.year}</div>
+                    <h2 class="sa">${esc(R.user.name)}’s year in games</h2>
+                    <div class="title sa"><div class="px">Title earned</div><h2>${esc(R.title.name)}</h2><p>${esc(R.title.why)}</p></div>` },
+                { cls: 's-nums', html: `${bg}<div class="px sa">${R.partial ? `So far, to ${day(R.asOf)}` : 'Year complete'}</div><h2 class="sa">The numbers</h2>
+                    <div class="snums">${headline.map(h => `<div class="snum sa"><div class="num">${h.v}${h.unit ? '<small>hours</small>' : ''}</div><span>${h.lab}</span></div>`).join('')}</div>` },
+                top1 && { cls: 's-game', html: `${img(bigArt(top1), 'sart' + (pix(top1) ? ' pixart' : ''))}<div class="px sa">Save file 01 · ${listName}</div><h2 class="name sa">${esc(top1.name)}</h2>
+                    <div class="tags sa">${platTag(top1)}${tierTag(top1.tier)}</div>
+                    <div class="facts sa">${gameFacts(top1).map(f => `<div class="fact"><div class="num">${f.v}</div><span>${f.l}</span></div>`).join('')}</div>` },
+                R.top.length > 1 && { cls: 's-top', ms: 7000, html: `${bg}<div class="px sa">Top ${R.top.length}</div><h2 class="sa">${listName}</h2>
+                    <div class="rows">${R.top.map((g, i) => rowHtml(g, i + 1, 'div', 'sa')).join('')}</div>` },
+                R.completions.length && { cls: 's-done', ms: 7000, html: `${bg}<div class="px sa">${T.completed ? `★ ${T.completed} ` : ''}${T.beaten ? `⚑ ${T.beaten}` : ''}</div><h2 class="sa">Seen through</h2>
+                    <div class="done">${R.completions.slice(0, 6).map(g => tileHtml(g, 'div', 'sa')).join('')}</div>${more > 0 ? `<p class="lead sa">and ${more} more</p>` : ''}` },
+                { cls: 's-blocks', html: `${bg}<div class="px sa">of ${daysSoFar} days</div><h2 class="sa">${n(T.activeDays)} blocks used</h2><div class="sa">${strip()}</div><div class="duo">${minis('sa')}</div>` },
+                { cls: 's-end', html: `${bg}<img class="spic sa" src="${imageUrl('story')}" alt="" onerror="this.remove()"><h2 class="sa">${R.year} saved</h2><p class="lead sa">Pass the card around.</p>
+                    <div class="btns sa"><button class="btn go" data-share>${svg.share}Share</button><button class="btn" data-replay>${svg.again}Replay</button></div>` },
+            ].filter(Boolean);
+            let at = 0, held = false, holdTimer = 0;
+            const el = document.createElement('div');
+            el.className = 'story';
+            el.innerHTML = `<div class="frame" role="dialog" aria-modal="true" aria-label="${R.year} played back">
+                <div class="sbars">${slides.map(() => '<i><b></b></i>').join('')}</div>
+                <div class="stop">${brand}<button class="x" data-close aria-label="Close">${svg.x}</button></div><div class="stage"></div></div>`;
+            const frame = el.firstElementChild, stage = el.querySelector('.stage'), bars = [...el.querySelectorAll('.sbars i')];
+            const go = k => {
+                if (k < 0 || k >= slides.length) return;
+                at = k;
+                bars.forEach(b => { b.className = ''; });
+                void frame.offsetWidth;                                  // so a bar shown again starts over
+                bars.forEach((b, j) => { b.className = j < at ? 'done' : j === at ? 'on' : ''; });
+                el.style.setProperty('--dur', `${slides[at].ms ?? 6000}ms`);
+                stage.className = `stage ${slides[at].cls}`;
+                stage.innerHTML = slides[at].html;
+                stage.querySelectorAll('.sa').forEach((e, i) => e.style.setProperty('--i', i));
+                stage.querySelectorAll('img.pixart').forEach(i => { i.style.imageRendering = 'pixelated'; });
+            };
+            const close = () => { el.remove(); document.documentElement.style.overflow = ''; document.removeEventListener('keydown', onKey); };
+            const hold = on => { held = on; el.classList.toggle('paused', on); };
+            const onKey = e => {
+                if (e.key === 'Escape') close();
+                else if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(at + 1); }
+                else if (e.key === 'ArrowLeft') go(at - 1);
+            };
+            el.addEventListener('animationend', e => { if (e.animationName === 'sbar') go(at + 1); });
+            el.addEventListener('contextmenu', e => e.preventDefault());
+            frame.addEventListener('pointerdown', e => { if (!e.target.closest('button')) holdTimer = setTimeout(() => hold(true), 220); });
+            frame.addEventListener('pointercancel', () => { clearTimeout(holdTimer); hold(false); });
+            frame.addEventListener('pointerup', e => {
+                clearTimeout(holdTimer);
+                if (held) return hold(false);
+                if (e.target.closest('button')) return;
+                const box = frame.getBoundingClientRect();
+                go(e.clientX - box.left < box.width * 0.3 ? at - 1 : at + 1);
+            });
+            el.addEventListener('click', e => {
+                const t = e.target.closest('button');
+                if (e.target === el || t?.dataset.close != null) return close();
+                if (t?.dataset.replay != null) return go(0);
+                if (t?.dataset.share != null) { close(); openShare(); }
+            });
+            document.addEventListener('keydown', onKey);
+            document.documentElement.style.overflow = 'hidden';
+            document.body.append(el);
+            go(0);
+        };
         document.addEventListener('click', e => {
-            const t = e.target.closest('[data-share], [data-copy]');
-            if (!t || t.closest('.scrim')) return;
-            if (t.dataset.share != null) openShare(); else copy(t);
+            const t = e.target.closest('[data-share], [data-copy], [data-play]');
+            if (!t || t.closest('.scrim, .story')) return;
+            if (t.dataset.play != null) openStory(); else if (t.dataset.share != null) openShare(); else copy(t);
         });
     })();
     </script>

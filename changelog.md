@@ -2,7 +2,7 @@
 
 ## v26.11.15
 
-Memory Card: a showcase page for every year in games, with a picture and a link to share. The first two Legend of Heroes games form a new Iselhasa sub-series
+Memory Card: a showcase page for every year in games, played back as slides, with pictures in three styles and a link to share. The first two Legend of Heroes games form a new Iselhasa sub-series
 
 ### RetroAchievements
 
@@ -19,6 +19,12 @@ Memory Card: a showcase page for every year in games, with a picture and a link 
 - improved: **Memory Card** titles: 21 to earn, picked by what made the year different
   Each year gets the title it stands out in most against your other years, and no title repeats two years in a row.
 - fix: **Memory Card** no longer counts achievement farms as finished games
+- new: **Memory Card** plays the year back as slides
+  Press Play: the year, the numbers, the top game, the top five, finished games and the save blocks, one screen each. Tap to step, hold to pause.
+- new: **Memory Card** share pictures in three styles: Card, Cover and Blocks
+  Pick the style in the Share sheet, for both the story and the wide picture.
+- improved: **Memory Card** game rows and finished games show their art
+  Each top game has its art fading into the row; finished games are tiles with a gold or silver edge. Corners are less round.
 - improved: **The Legend of Heroes** shared series gains the Iselhasa games
   Same move as on the RA profile: eight versions of the first two games, out of Dragon Slayer.
 

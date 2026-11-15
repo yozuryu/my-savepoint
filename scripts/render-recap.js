@@ -1,7 +1,8 @@
 #!/usr/bin/env node
-// Memory Card share pictures: screenshots each year's page in its two card modes with headless Chrome
+// Memory Card share pictures: screenshots each year's page in its card modes with headless Chrome
 //   memory-card/share/{YYYY}-link.jpg    1200 × 630, the link preview (og:image)
-//   memory-card/share/{YYYY}-story.jpg   1080 × 1920, the picture the page's Share sheet hands out
+//   memory-card/share/{YYYY}-story.jpg   1080 × 1920, the picture the page's Share sheet opens with
+//   …-link-cover.jpg, -link-blocks.jpg, -story-cover.jpg, -story-blocks.jpg   the other styles the Share sheet offers
 // Run after build-recap.js (it reads memory-card/years.json). No npm dependency: Chrome is driven over
 // --remote-debugging-pipe. Needs the network (fonts, game art).
 //   node scripts/render-recap.js [siteRoot] [year …]     (default: the repo, every year; CHROME=/path/to/chrome)
@@ -15,7 +16,9 @@ const args = process.argv.slice(2);
 const ROOT = path.resolve(args.find(a => !/^\d{4}$/.test(a) && !a.startsWith('--')) || path.join(__dirname, '..'));
 const only = args.filter(a => /^\d{4}$/.test(a)).map(Number);
 const OUT = path.join(ROOT, 'memory-card', 'share');
-const CARDS = [{ kind: 'link', w: 1200, h: 630 }, { kind: 'story', w: 1080, h: 1920 }];
+const STYLES = ['card', 'cover', 'blocks'];             // 'card' keeps the plain file name: it is the og:image
+const CARDS = [{ kind: 'link', w: 1200, h: 630 }, { kind: 'story', w: 1080, h: 1920 }]
+    .flatMap(c => STYLES.map(style => ({ ...c, style, query: `card=${c.kind}${style === 'card' ? '' : `&style=${style}`}`, name: `${c.kind}${style === 'card' ? '' : `-${style}`}` })));
 const READY_TIMEOUT_MS = 25000;
 
 function findChrome() {
@@ -73,21 +76,21 @@ const server = http.createServer((req, res) => {
         const { sessionId } = await send('Target.attachToTarget', { targetId, flatten: true });
         const tab = (method, params) => send(method, params, sessionId);
         await tab('Page.enable');
-        for (const year of years) for (const { kind, w, h } of CARDS) {
+        for (const year of years) for (const { w, h, query, name } of CARDS) {
             await tab('Emulation.setDeviceMetricsOverride', { width: w, height: h, deviceScaleFactor: 1, mobile: false });
-            await tab('Page.navigate', { url: `${origin}/memory-card/${year}/?card=${kind}` });
+            await tab('Page.navigate', { url: `${origin}/memory-card/${year}/?${query}` });
             // The page sets body[data-ready] once its fonts and images have settled
             const start = Date.now();
             let ready = false;
             while (!ready && Date.now() - start < READY_TIMEOUT_MS) {
                 await new Promise(r => setTimeout(r, 150));
-                const r = await tab('Runtime.evaluate', { expression: `location.search.includes('card=${kind}') && document.body?.dataset.ready === '1'` }).catch(() => null);
+                const r = await tab('Runtime.evaluate', { expression: `location.search === '?${query}' && document.body?.dataset.ready === '1'` }).catch(() => null);
                 ready = r?.result?.value === true;
             }
-            if (!ready) { failed++; console.log(`  ${year} ${kind}: not ready after ${READY_TIMEOUT_MS / 1000}s, rendered as is`); }
+            if (!ready) { failed++; console.log(`  ${year} ${name}: not ready after ${READY_TIMEOUT_MS / 1000}s, rendered as is`); }
             await new Promise(r => setTimeout(r, 150));
             const shot = await tab('Page.captureScreenshot', { format: 'jpeg', quality: 86, clip: { x: 0, y: 0, width: w, height: h, scale: 1 } });
-            fs.writeFileSync(path.join(OUT, `${year}-${kind}.jpg`), Buffer.from(shot.data, 'base64'));
+            fs.writeFileSync(path.join(OUT, `${year}-${name}.jpg`), Buffer.from(shot.data, 'base64'));
         }
         const kb = fs.readdirSync(OUT).reduce((s, f) => s + fs.statSync(path.join(OUT, f)).size, 0) / 1024;
         console.log(`recap pictures: ${years.length} years × ${CARDS.length}, share/ ${(kb / 1024).toFixed(1)} MB${failed ? `, ${failed} not settled` : ''}`);
