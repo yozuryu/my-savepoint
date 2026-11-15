@@ -455,7 +455,7 @@
         // ── Share images ──────────────────────────────────────────────────────────────
         if (CARD === 'link' || CARD === 'story') {
             const rows = R.top.slice(0, 5).map((g, i) => `<div class="sc-row"><span class="rk">${i + 1}</span>${thumb(g, 424)}<h3>${esc(g.name)}</h3>
-                <span class="v">${byTime ? time(g.minutes) : n(g.unlocks)}<small>${byTime ? `${n(g.unlocks)} ${plural(g.unlocks, 'unlock')}` : plural(g.unlocks, 'unlock')}</small></span></div>`).join('');
+                <span class="v">${byTime && g.minutes ? time(g.minutes) : n(g.unlocks)}<small>${byTime && g.minutes ? `${n(g.unlocks)} ${plural(g.unlocks, 'unlock')}` : plural(g.unlocks, 'unlock')}</small></span></div>`).join('');
             const st = headline.slice(0, 4).map(h => `<div><div class="num">${h.v}${h.unit ?? ''}</div><span>${h.lab}</span></div>`).join('');
             const head = `${brand}<div class="slot px"><i></i>${esc(R.user.name)} <b>· ${R.partial ? `so far, to ${day(R.asOf)}` : 'year in games'}</b></div>
                 <h1 class="year"${yearArt}>${R.year}</h1><div class="ttl">${esc(R.title.name)}<small>${esc(R.title.why)}</small></div>`;
@@ -522,7 +522,7 @@
                         <span class="rk">${i + 2}</span>${thumb(g)}
                         <div style="min-width:0"><h3>${esc(g.name)}</h3><div class="meta"><img src="${ICON[g.platform]}" alt="">
                             ${g.tier ? `<span class="${g.tier === 'completed' ? 'gold' : 'silver'}">${g.tier === 'completed' ? '★ Completed' : '⚑ Beaten'}</span>` : `<span>${esc(g.console ?? PLATFORM[g.platform])}</span>`}</div></div>
-                        <div class="val"><div class="num">${byTime ? time(g.minutes) : n(g.unlocks)}</div><span>${byTime ? `${n(g.unlocks)} ${plural(g.unlocks, 'unlock')}` : plural(g.unlocks, 'unlock')}</span></div>
+                        <div class="val"><div class="num">${byTime && g.minutes ? time(g.minutes) : n(g.unlocks)}</div><span>${byTime && g.minutes ? `${n(g.unlocks)} ${plural(g.unlocks, 'unlock')}` : plural(g.unlocks, 'unlock')}</span></div>
                         <i class="meter" style="width:${Math.max(2, 100 * g.share / top1.share)}%"></i>
                     </a>`).join('')}</div>
             </div></section>`;
