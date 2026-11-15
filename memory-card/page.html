@@ -255,6 +255,13 @@
         .seg { display: inline-flex; padding: 3px; border-radius: 999px; background: rgba(255, 255, 255, 0.06); border: 1px solid var(--line); }
         .seg button { height: 28px; padding: 0 12px; border-radius: 999px; font: 600 12.5px/1 var(--body); color: var(--dim); }
         .seg button.on { background: rgb(var(--a)); color: #071018; }
+        .thumbs { display: flex; gap: 8px; overflow-x: auto; margin: 0 -16px 12px; padding: 0 16px; scrollbar-width: none; }
+        .thumbs::-webkit-scrollbar { display: none; }
+        .th { flex: none; height: 88px; padding: 0; border-radius: 6px; overflow: hidden; border: 2px solid transparent; background: #0a0c13; opacity: 0.55; transition: opacity 160ms, border-color 160ms; }
+        .thumbs.k-link .th { height: 60px; }
+        .th img { height: 100%; width: auto; max-width: none; aspect-ratio: 9 / 16; object-fit: cover; display: block; }
+        .thumbs.k-link .th img { aspect-ratio: 1200 / 630; }
+        .th.on { border-color: rgb(var(--a)); opacity: 1; }
         .x { width: 34px; height: 34px; border-radius: 50%; background: rgba(255, 255, 255, 0.07); display: grid; place-items: center; }
         .x svg { width: 16px; height: 16px; }
         .pv { display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr); place-items: center; padding: 10px; height: min(46vh, 380px); border-radius: 6px; background: #0a0c13; border: 1px solid var(--line); overflow: hidden; }
@@ -314,6 +321,8 @@
         /* ── Story: the year played back as slides (the Play button). Tap right / left, hold to pause. Every slide is a full
               card, also rendered as a picture (?card=slide&s=<key>, 450 × 800 at 2.4×) so it can be shared from the story ── */
         .story { position: fixed; inset: 0; z-index: 60; background: #04050a; display: grid; place-items: center; animation: fade 200ms ease-out backwards; }
+        .story, .story * { -webkit-tap-highlight-color: transparent; }
+        .story [hidden] { display: none; }
         .story .frame { position: relative; width: 100%; height: 100%; overflow: hidden; background: var(--bg); isolation: isolate; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; touch-action: manipulation; cursor: pointer; }
         .story .frame::before { content: ''; position: absolute; inset: 0; z-index: -1;
             background: radial-gradient(120% 60% at 80% 0%, rgba(var(--a), 0.26), transparent 62%), linear-gradient(180deg, rgba(9, 11, 18, 0.6) 0%, rgba(9, 11, 18, 0.86) 60%, rgba(9, 11, 18, 0.96) 100%); }
@@ -372,14 +381,13 @@
         .stage .bars { height: 52px; margin-top: 10px; gap: 2px; }
         .stage .rare { gap: 6px; } .stage .rr { padding: 8px 12px 8px 8px; } .stage .rr .ic, .stage .end .ic { width: 46px; height: 46px; }
         .stage .ends { gap: 6px; grid-template-columns: 1fr; } .stage .end { padding: 10px 12px; } .stage .end h3 { margin: 5px 0 1px; font-size: 15px; }
-        .stage.s-end { text-align: center; } .stage .btns { display: flex; gap: 8px; justify-content: center; }
+        .stage.s-end { text-align: center; } .stage.s-end .lead b { color: var(--text, #fff); font-weight: 700; }
+        .sfan { position: relative; height: 250px; margin-bottom: 10px; pointer-events: none; }
+        .sfan img { position: absolute; left: 50%; top: 0; height: 100%; width: auto; max-width: none; aspect-ratio: 9 / 16; margin-left: -70px; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 14px 34px rgba(0, 0, 0, 0.55);
+            transform: translateX(var(--x)) rotate(var(--r)); transform-origin: 50% 120%; animation: sfan 520ms cubic-bezier(.2, .8, .2, 1) calc(120ms + var(--i) * 80ms) backwards; }
+        .sfan img:nth-child(2) { z-index: 1; }
+        @keyframes sfan { from { opacity: 0; transform: translateX(0) rotate(0) scale(0.9); } } .stage .btns { display: flex; gap: 8px; justify-content: center; }
         .stage .btn { height: 42px; padding: 0 18px; font-size: 14px; }
-        .spicks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-        .spk { position: relative; aspect-ratio: 9 / 16; border-radius: 6px; overflow: hidden; border: 1px solid var(--line); background: #10131c; }
-        .spk img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .spk span { position: absolute; right: 5px; bottom: 5px; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: rgb(var(--a)); color: #071018; }
-        .spk span svg { width: 13px; height: 13px; }
-        .spk:active { transform: scale(0.96); }
         @media (min-width: 720px) {
             .story .frame { width: auto; height: min(100dvh - 40px, 900px); aspect-ratio: 9 / 16; border-radius: 10px; border: 1px solid var(--line); }
         }
@@ -873,26 +881,37 @@
             } catch (err) { return err?.name === 'AbortError' ? 'cancelled' : 'failed'; }
         };
         const openShare = () => {
-            let kind = 'story', style = 'card';
+            // One picture is picked from thumbnails: the three styles in either shape, and in the story shape every slide too
+            let kind = 'story', pick = 'card';
+            const picks = () => [...STYLES.map(([id, name]) => ({ id, name, url: imageUrl(kind, id), file: picName(kind, id) })),
+                ...(kind === 'story' ? SLIDES.map(x => ({ id: `slide-${x.key}`, name: x.name, url: slidePic(x.key), file: `${R.year}-slide-${x.key}.jpg` })) : [])];
             const el = document.createElement('div');
             el.className = 'scrim';
             el.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-label="Share ${R.year}">
                 <header><h2>Share ${R.year}</h2><button class="x" data-close aria-label="Close">${svg.x}</button></header>
-                <div class="pick"><div class="seg" aria-label="Shape"><button data-kind="story">Story</button><button data-kind="link">Wide</button></div>
-                    <div class="seg" aria-label="Style">${STYLES.map(([id, name]) => `<button data-style="${id}">${name}</button>`).join('')}</div></div>
+                <div class="pick"><div class="seg" aria-label="Shape"><button data-kind="story">Story</button><button data-kind="link">Wide</button></div></div>
+                <div class="thumbs" aria-label="Picture"></div>
                 <div class="pv"></div>
                 <div class="acts"><button class="btn go" data-send>${svg.share}<span>Share picture</span></button><a class="btn" data-save download>${svg.down}Save picture</a></div>
                 <div class="linkrow"><span>${esc(pageUrl.replace(/^https?:\/\//, ''))}</span><button class="btn" data-copy>${svg.link}<span>Copy link</span></button></div></div>`;
-            const pv = el.querySelector('.pv'), save = el.querySelector('[data-save]'), send = el.querySelector('[data-send]');
+            const pv = el.querySelector('.pv'), save = el.querySelector('[data-save]'), send = el.querySelector('[data-send]'), thumbs = el.querySelector('.thumbs');
+            let cur, drawn;
             const show = () => {
+                const list = picks();
+                cur = list.find(x => x.id === pick) ?? list[0]; pick = cur.id;
                 el.querySelectorAll('[data-kind]').forEach(b => b.classList.toggle('on', b.dataset.kind === kind));
-                el.querySelectorAll('[data-style]').forEach(b => b.classList.toggle('on', b.dataset.style === style));
+                if (drawn !== kind) {
+                    drawn = kind;
+                    thumbs.className = `thumbs k-${kind}`;
+                    thumbs.innerHTML = list.map(x => `<button class="th" data-pick="${x.id}" aria-label="${esc(x.name)}" title="${esc(x.name)}"><img src="${x.url}" alt="" loading="lazy" onerror="this.parentNode.remove()"></button>`).join('');
+                }
+                thumbs.querySelectorAll('.th').forEach(b => b.classList.toggle('on', b.dataset.pick === pick));
                 const pic = new Image();
-                pic.alt = `${shareTitle}, ${kind === 'story' ? 'story picture' : 'wide picture'}, ${style}`;
+                pic.alt = `${shareTitle}, ${kind === 'story' ? 'story picture' : 'wide picture'}, ${cur.name}`;
                 pic.onload = () => { pv.replaceChildren(pic); };
                 pic.onerror = () => { pv.innerHTML = '<p>The picture for this year isn’t built yet. The link still works.</p>'; };
-                pic.src = imageUrl(kind, style);
-                save.href = imageUrl(kind, style); save.download = `memory-card-${picName(kind, style)}`;
+                pic.src = cur.url;
+                save.href = cur.url; save.download = `memory-card-${cur.file}`;
             };
             const close = () => { el.remove(); document.documentElement.style.overflow = ''; document.removeEventListener('keydown', onKey); };
             const onKey = e => { if (e.key === 'Escape') close(); };
@@ -900,10 +919,10 @@
                 const t = e.target.closest('button, a');
                 if (e.target === el || t?.dataset.close != null) return close();
                 if (t?.dataset.kind) { kind = t.dataset.kind; return show(); }
-                if (t?.dataset.style) { style = t.dataset.style; return show(); }
+                if (t?.dataset.pick) { pick = t.dataset.pick; t.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' }); return show(); }
                 if (t?.dataset.copy != null) return copy(t);
                 if (t?.dataset.send != null) {
-                    const label = send.querySelector('span'), got = await sendPic(imageUrl(kind, style), `memory-card-${picName(kind, style)}`);
+                    const label = send.querySelector('span'), got = await sendPic(cur.url, `memory-card-${cur.file}`);
                     if (got === 'saved' || got === 'failed') { label.textContent = got === 'saved' ? 'Saved instead' : 'Couldn’t share'; setTimeout(() => { label.textContent = 'Share picture'; }, 1600); }
                 }
             });
@@ -914,11 +933,13 @@
             el.querySelector('[data-close]').focus();
         };
         // ── Story: the slides played back. Each bar on top fills while its slide shows and its end moves on; tap right / left
-        //    to step, hold to pause. The share button sends the picture of the slide on screen; the last slide offers them all ──
+        //    to step, hold to pause. The share button sends the picture of the slide on screen; the last slide opens the Share sheet ──
         const openStory = () => {
-            const slides = [...SLIDES.map(x => ({ ...x, ms: 8000 })), { key: null, cls: 'end', ms: 8000, html: `<h2 class="sa">${R.year} saved</h2><div class="px sa" style="color:rgb(var(--a))">Share a card</div>
-                <div class="spicks">${SLIDES.map(x => `<button class="spk sa pop" data-pic="${x.key}" aria-label="Share ${esc(x.name)}"><img src="${slidePic(x.key)}" alt="" onerror="this.parentNode.remove()"><span>${svg.share}</span></button>`).join('')}</div>
-                <div class="btns sa"><button class="btn" data-replay>${svg.again}Replay</button><button class="btn" data-share>More pictures</button></div>` }];
+            const slides = [...SLIDES.map(x => ({ ...x, ms: 8000 })), { key: null, cls: 'end', ms: 8000, html: `<div class="sfan sa">${(n => SLIDES.slice(0, 3).map((x, i) => `<img src="${slidePic(x.key)}" alt="" style="--r:${(i - (n - 1) / 2) * 9}deg;--x:${(i - (n - 1) / 2) * 62}px;--i:${i}" onerror="this.remove()">`).join(''))(Math.min(3, SLIDES.length))}</div>
+                <div class="slot px sa" style="justify-content:center"><i></i>Slot ${slotNo} <b>of ${YEARS.length} · saved</b></div>
+                <h2 class="sa">${R.year} saved</h2>
+                <p class="lead sa">${esc(R.title.name)} · ${headline.slice(0, 3).map(h => `<b>${h.v}</b> ${h.unit ? 'hours' : h.lab.toLowerCase()}`).join(' · ')}</p>
+                <div class="btns sa"><button class="btn go" data-share>${svg.share}Share ${R.year}</button></div>` }];
             let at = 0, held = false, holdTimer = 0, toastTimer = 0;
             const el = document.createElement('div');
             el.className = 'story';
@@ -975,9 +996,7 @@
             el.addEventListener('click', e => {
                 const t = e.target.closest('button');
                 if (e.target === el || t?.dataset.close != null) return close();
-                if (t?.dataset.replay != null) return go(0);
                 if (t?.dataset.shot != null) return sharePic(slides[at].key);
-                if (t?.dataset.pic) return sharePic(t.dataset.pic);
                 if (t?.dataset.share != null) { close(); openShare(); }
             });
             document.addEventListener('keydown', onKey);
