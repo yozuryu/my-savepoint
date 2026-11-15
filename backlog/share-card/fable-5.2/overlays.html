@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Fable 5.2 overlays</title>
+<!--
+  Fable 5.2 overlay system: six stickers for the top of a story, a Reel or a clip. One chassis, one hero each.
+  Open the file for the design sheet, or add ?shape=plate&game=rof9 for one sticker alone on a transparent page.
+  Game data: overlay-data.js (the stickers' GAMES array). Rules: README.md § Overlay system.
+-->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700;800&display=swap">
+<style>
+* { box-sizing: border-box; margin: 0; }
+:root {
+  --base: #080c14; --ink: #fff; --ink2: #c6d4df; --ink3: #8f98a0; --gold: #e5b143; --silver: #b8c4ce; --hc: #ff6b6b;
+  --disp: 'Oxanium', 'Segoe UI', system-ui, sans-serif; --sans: 'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
+}
+body { font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: antialiased; background: transparent; }
+img { display: block; }
+
+/* Chassis: the same frame, header, numerals and bottom bar in every shape. --rgb is the state colour. */
+.ov { position: relative; overflow: hidden; border-radius: 18px; background: var(--base); --c: rgb(var(--rgb)); border: 1px solid rgba(var(--rgb), .4);
+  box-shadow: 0 8px 22px rgba(0,0,0,.5); display: flex; flex-direction: column; padding: 12px 14px 0; text-align: left; }
+.ov.beaten { border-color: rgba(184,196,206,.65); }
+.ov.fin { border: 1.5px solid var(--c); box-shadow: 0 0 20px rgba(var(--rgb), .5), 0 8px 22px rgba(0,0,0,.5); }
+.ov > :not(.art) { position: relative; }
+.art { position: absolute; inset: 0; overflow: hidden; }
+.art img { width: 100%; height: 100%; object-fit: cover; }
+.art.blur img { filter: blur(12px) saturate(1.1); transform: scale(1.5); }
+.art::after { content: ''; position: absolute; inset: 0; }
+
+.hd { display: flex; align-items: center; justify-content: space-between; gap: 8px; height: 20px; flex: none; }
+.k, .me { display: flex; align-items: center; height: 20px; border-radius: 10px; background: rgba(8,12,20,.72); white-space: nowrap; }
+.k { gap: 6px; padding: 0 8px 0 4px; font: 600 11px/1 var(--disp); letter-spacing: .14em; text-transform: uppercase; color: var(--c); }
+.k .pf { width: 14px; height: 14px; flex: none; } .k .pf.round { border-radius: 50%; }
+.k .st { padding-top: 1px; }
+.k .st.solid { background: var(--c); color: var(--base); font-weight: 700; padding: 3px 6px 2px; border-radius: 4px; margin-right: -4px; }
+.k .st.line { border: 1px solid var(--c); padding: 2px 6px 1px; border-radius: 4px; margin-right: -4px; }
+.k .hc { color: var(--hc); font-style: normal; padding-top: 1px; }
+.me { gap: 5px; padding: 0 8px 0 2px; font: 600 11px/1 var(--sans); color: var(--ink2); }
+.me img { width: 16px; height: 16px; border-radius: 50%; }
+
+.num { font-family: var(--disp); font-weight: 800; letter-spacing: -.02em; line-height: .9; color: var(--c); white-space: nowrap; }
+.num small { font-size: .5em; margin-left: 1px; }
+.t { font-weight: 600; line-height: 1.2; text-wrap: balance; overflow-wrap: anywhere; }
+.sub, .lab { font-size: 11px; line-height: 1.2; color: var(--ink3); }
+.lab { white-space: nowrap; }
+.sub { color: var(--ink2); margin-top: 4px; }
+.val { font: 700 15px/1 var(--disp); color: #fff; white-space: nowrap; } .val small { font-weight: 500; font-size: 11px; color: var(--ink3); }
+.st2 { display: flex; flex-direction: column; gap: 4px; padding-bottom: 2px; } .st2.r { margin-left: auto; text-align: right; }
+.bar { height: 5px; background: rgba(255,255,255,.13); margin: 0 -14px; display: flex; flex: none; }
+.bar i { display: block; height: 100%; min-width: 8px; background: var(--c); box-shadow: 0 0 10px var(--c); }
+.bar i.old { opacity: .45; box-shadow: none; min-width: 0; }
+.px { image-rendering: pixelated; }
+/* Badges only at whole-number scales of 64 once exported at 3×: 42.67 (2×), 64 (3×), 85.33 (4×). */
+.b2 { width: 42.667px; height: 42.667px; border-radius: 5px; } .b3 { width: 64px; height: 64px; border-radius: 7px; } .b4 { width: 85.333px; height: 85.333px; border-radius: 9px; }
+.more { display: grid; place-items: center; background: rgba(255,255,255,.08); font: 700 15px/1 var(--disp); color: var(--c); }
+
+/* Plate: the percentage beside the game's art. */
+.plate { width: 320px; height: 176px; }
+.plate .art { left: 36%; } .plate .art::after { background: linear-gradient(90deg, var(--base), rgba(8,12,20,.5) 50%, rgba(8,12,20,.12)), linear-gradient(0deg, rgba(8,12,20,.92), rgba(8,12,20,0) 60%); }
+.plate .t { font-size: 16px; width: 205px; margin-top: 9px; }
+.plate .row, .tile .row { margin-top: auto; display: flex; align-items: flex-end; gap: 12px; padding-bottom: 12px; }
+.plate .num { font-size: 54px; }
+
+/* Tile: the percentage on the art. */
+.tile { width: 220px; height: 220px; }
+.tile .art::after { background: linear-gradient(0deg, var(--base) 10%, rgba(8,12,20,.82) 48%, rgba(8,12,20,.12) 82%); }
+.tile .me { padding: 0 2px; font-size: 0; gap: 0; }
+.tile .t { font-size: 15px; margin-top: auto; } .tile .row { margin-top: 8px; gap: 6px; } .tile .num { font-size: 44px; }
+
+/* Unlock: one achievement. */
+.unlock { width: 300px; }
+.unlock .art { opacity: .32; } .unlock .art::after { background: linear-gradient(90deg, var(--base) 25%, rgba(8,12,20,.3)); }
+.unlock .body { display: flex; align-items: center; gap: 14px; margin: 12px 0; }
+.unlock .bdg { flex: none; outline: 2px solid rgba(255,255,255,.22); } .unlock .bdg.rare { outline-color: var(--gold); box-shadow: 0 0 22px rgba(229,177,67,.6); }
+.unlock .t { font-size: 17px; }
+.rar { display: flex; align-items: baseline; gap: 6px; margin-top: 8px; } .rar .num { font-size: 26px; color: #fff; } .rar.rare .num { color: var(--gold); }
+.rar u { text-decoration: none; font: 700 11px/1 var(--disp); letter-spacing: .14em; color: var(--base); background: var(--gold); padding: 3px 5px 2px; border-radius: 3px; align-self: center; }
+.ft { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 9px 0 10px; border-top: 1px solid rgba(255,255,255,.12); }
+.ft .t { font-size: 12px; font-weight: 500; color: var(--ink2); }
+
+/* Session: what one sitting added. */
+.session { width: 320px; }
+.srow { display: flex; align-items: center; gap: 12px; margin: 12px 0 10px; } .srow .num { font-size: 58px; } .srow .t { font-size: 14px; margin-top: 3px; }
+.srow .lab { font-size: 12px; color: var(--ink2); }
+.bdgs { display: flex; gap: 7.2px; margin-bottom: 11px; }
+
+/* Finish: the state, said once. */
+.finish { width: 300px; height: 200px; }
+.finish .art { opacity: .6; } .finish .art::after { background: linear-gradient(0deg, var(--base) 22%, rgba(8,12,20,.55) 70%, rgba(8,12,20,.3)); }
+.finish .big { font-size: 34px; letter-spacing: .02em; margin-top: 16px; text-shadow: 0 0 22px rgba(var(--rgb), .55); }
+.finish .t { font-size: 15px; margin-top: 8px; }
+.facts { margin-top: auto; display: flex; padding-bottom: 12px; }
+.facts div { display: flex; flex-direction: column; gap: 4px; padding-right: 14px; margin-right: 14px; border-right: 1px solid rgba(255,255,255,.16); } .facts div:last-child { border: 0; margin: 0; padding: 0; }
+.facts .val { font-size: 18px; }
+
+/* Wall: the badges, always in full rows. */
+.wall { width: 320px; }
+.wh { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin: 10px 0 11px; } .wh .t { font-size: 15px; } .wh .num { font-size: 28px; }
+.grid { display: grid; justify-content: space-between; row-gap: 7.2px; margin-bottom: 11px; }
+.grid.n3 { grid-template-columns: repeat(3, 85.333px); } .grid.n4, .grid.n8 { grid-template-columns: repeat(4, 64px); row-gap: 12px; } .grid.n6, .grid.n12 { grid-template-columns: repeat(6, 42.667px); }
+
+/* Design sheet */
+body.sheet { background: #0d121b; padding: 40px 44px 60px; width: 1560px; }
+.sheet h2 { font: 800 34px/1 var(--disp); letter-spacing: .01em; } .sheet h2 em { font-style: normal; color: var(--gold); }
+.sheet .by { font: 600 12px/1 var(--disp); letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+.sheet .lead { font-size: 15px; line-height: 1.5; color: var(--ink2); max-width: 900px; margin: 12px 0 0; }
+.sheet section { margin-top: 44px; }
+.sheet h3 { font: 700 14px/1 var(--disp); letter-spacing: .16em; text-transform: uppercase; color: #fff; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,.14); margin-bottom: 22px; display: flex; gap: 14px; align-items: baseline; }
+.sheet h3 span { font: 500 13px/1 var(--sans); letter-spacing: 0; text-transform: none; color: var(--ink3); }
+.flow { display: flex; flex-wrap: wrap; gap: 30px 28px; align-items: flex-start; }
+.cell > p { font-size: 12px; color: var(--ink3); margin-top: 10px; max-width: 320px; line-height: 1.35; } .cell > p b { color: var(--ink2); font-weight: 600; }
+.stories { display: flex; gap: 28px; }
+.story { position: relative; width: 270px; height: 480px; border-radius: 14px; overflow: hidden; background: #111 center / cover; }
+.story .safe { position: absolute; left: 0; right: 0; top: 0; height: 62px; border-bottom: 1px dashed rgba(255,255,255,.55); background: rgba(0,0,0,.35); font-size: 10px; color: rgba(255,255,255,.75); display: grid; place-items: center; }
+.story .safe.b { top: auto; bottom: 0; border-bottom: 0; border-top: 1px dashed rgba(255,255,255,.55); }
+.story .put { position: absolute; transform-origin: 0 0; transform: scale(.5); }
+.rules { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.rules div { border-top: 2px solid var(--gold); padding-top: 12px; } .rules b { font: 700 13px/1.2 var(--disp); letter-spacing: .1em; text-transform: uppercase; display: block; margin-bottom: 6px; } .rules p { font-size: 13px; line-height: 1.45; color: var(--ink2); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="overlay-data.js"></script>
+<script>
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const FIN = { mastered: 'Mastered', perfect: 'Perfect', completed: 'Completed' };
+const done = g => g.status in FIN;
+// One accent: the state. In progress = the platform, beaten and completed = silver, mastered and perfect = gold.
+const rgb = g => g.status === 'progress' ? RGB[g.platform] : g.status === 'mastered' || g.status === 'perfect' ? RGB.gold : RGB.silver;
+const cls = g => done(g) ? 'fin' : g.status === 'beaten' ? 'beaten' : '';
+const pctOf = g => { const p = Math.round(100 * g.unlocked / g.total); return p === 0 && g.unlocked ? '<1' : p; };
+const src = f => /^(https?:|\.\.?\/)/.test(f) ? f : I + f;
+const img = (f, c, px) => `<img class="${c}${px ? ' px' : ''}" src="${src(f)}" alt="">`;
+const open = (g, shape) => `<div class="ov ${shape} ${cls(g)}" style="--rgb:${rgb(g)}">`;
+const art = g => { const a = g.art.hero || g.art.shot; return `<div class="art${a ? '' : ' blur'}"><img src="${src(a || g.art.icon)}" alt=""></div>`; };
+const me = `<div class="me"><img src="${I}avatar.jpg" alt="">Yozuryu</div>`;
+// Kicker: platform icon + the state. A finished game gets the solid chip, a beaten one the outlined chip.
+const kick = (g, text) => `<div class="k">${PLAT[g.platform].icon}<span class="st${text ? '' : done(g) ? ' solid' : g.status === 'beaten' ? ' line' : ''}">${
+  text || (done(g) ? '★ ' + FIN[g.status] : g.status === 'beaten' ? 'Beaten' : PLAT[g.platform].name)}</span>${!text && g.status === 'progress' && g.mode === 'hc' ? '<i class="hc">HC</i>' : ''}</div>`;
+const hd = (g, text) => `<div class="hd">${kick(g, text)}${me}</div>`;
+const num = g => `<span class="num">${pctOf(g)}<small>%</small></span>`;
+const bar = g => `<div class="bar"><i style="width:${100 * g.unlocked / g.total}%"></i></div>`;
+// Second number: time played, or gamerscore on Xbox (no playtime there).
+const second = g => g.played ? [g.played, 'played'] : [`${g.gs}/${g.gsTotal}`, 'gamerscore'];
+const raLine = g => g.platform === 'ra' ? `${g.console} · ${g.mode === 'hc' ? 'Hardcore' : 'Softcore'}` : '';
+
+function plate(g) {
+  const [v, l] = second(g);
+  return `${open(g, 'plate')}${art(g)}${hd(g)}<div class="t" data-fit="2,12">${esc(g.title)}</div>${raLine(g) ? `<div class="sub">${raLine(g)}</div>` : ''}
+    <div class="row">${num(g)}<div class="st2"><b class="val">${g.unlocked}/${g.total}</b><span class="lab">achievements</span></div><div class="st2 r"><b class="val">${v}</b><span class="lab">${l}</span></div></div>${bar(g)}</div>`;
+}
+function tile(g) {
+  const [v] = second(g);
+  return `${open(g, 'tile')}${art(g)}${hd(g)}<div class="t" data-fit="2,12">${esc(g.title)}</div>
+    <div class="row">${num(g)}<div class="st2 r"><b class="val">${g.unlocked}/${g.total}</b><span class="lab">${g.played ? v + ' played' : g.gs + ' G'}</span></div></div>${bar(g)}</div>`;
+}
+function unlock(g) {
+  const u = g.unlock, rare = u.pct < 10, p = u.pct < 1 ? '<1' : u.pct;
+  return `${open(g, 'unlock')}${art(g)}${hd(g, u.label)}
+    <div class="body">${img(u.img, 'bdg b4' + (rare ? ' rare' : ''), u.px)}<div><div class="t" data-fit="2,13">${esc(u.name)}</div><div class="rar${rare ? ' rare' : ''}"><span class="num">${p}<small>%</small></span><span class="lab">of players</span>${rare ? '<u>RARE</u>' : ''}</div></div></div>
+    <div class="ft"><span class="t">${esc(g.title)}</span><b class="val">${g.unlocked}/${g.total}</b></div>${bar(g)}</div>`;
+}
+function session(g) {
+  const s = g.session, before = g.unlocked - s.gained, show = s.imgs.length > 6 ? s.imgs.slice(-5) : s.imgs;
+  return `${open(g, 'session')}${hd(g, 'Session · ' + s.date)}
+    <div class="srow"><span class="num">+${s.gained}</span><div><div class="lab">achievement${s.gained === 1 ? '' : 's'}</div><div class="t" data-fit="2,12">${esc(g.title)}</div></div></div>
+    <div class="bdgs">${show.map(f => img(f, 'b2', s.px)).join('')}${s.imgs.length > 6 ? `<span class="b2 more">+${s.imgs.length - 5}</span>` : ''}</div>
+    <div class="ft"><b class="val">${before} → ${g.unlocked} <small>of ${g.total}</small></b><b class="val">${pctOf(g)}%</b></div>
+    <div class="bar"><i class="old" style="width:${100 * before / g.total}%"></i><i style="width:${100 * s.gained / g.total}%"></i></div></div>`;
+}
+function finish(g) {
+  const [v, l] = second(g), date = (g.finish || '').replace(/^\S+\s/, '');
+  const sub = [raLine(g), date].filter(Boolean).join(' · ');
+  const facts = [[`${g.unlocked}/${g.total}`, 'achievements'], [v, l], g.days && [g.days, 'to finish']].filter(Boolean);
+  return `${open(g, 'finish')}${art(g)}${hd(g, PLAT[g.platform].name)}<div class="num big">${done(g) ? '★ ' + FIN[g.status] : 'Beaten'}</div>
+    <div class="t" data-fit="2,12">${esc(g.title)}</div>${sub ? `<div class="sub">${sub}</div>` : ''}
+    <div class="facts">${facts.map(([a, b]) => `<div><b class="val">${a}</b><span class="lab">${b}</span></div>`).join('')}</div>${bar(g)}</div>`;
+}
+// Full rows only: 3, 4, 6, 8 or 12 cells. When there are more unlocks than cells, the last cell counts the rest.
+function wall(g) {
+  const cells = [12, 8, 6, 4, 3].find(n => n <= g.recent.length), more = g.unlocked > cells;
+  const list = g.recent.slice().reverse().slice(0, more ? cells - 1 : cells), size = cells === 3 ? 'b4' : cells === 4 || cells === 8 ? 'b3' : 'b2';
+  return `${open(g, 'wall')}${hd(g)}<div class="wh"><div class="t" data-fit="2,12">${esc(g.title)}</div>${num(g)}</div>
+    <div class="grid n${cells}">${list.map(f => img(f, size, g.recentPx)).join('')}${more ? `<span class="${size} more">+${g.unlocked - list.length}</span>` : ''}</div>
+    <div class="ft"><span class="lab">Latest unlocks</span><b class="val">${g.unlocked}/${g.total}</b></div>${bar(g)}</div>`;
+}
+
+const SHAPES = { plate, tile, unlock, session, finish, wall };
+const INFO = {
+  plate: ['Plate', '320 × 176 · 1.8 : 1', 'Hero: the percentage. Every game'],
+  tile: ['Tile', '220 × 220 · 1 : 1', 'Hero: the percentage, on the art. Every game'],
+  unlock: ['Unlock', '300 × ~172 · 1.7 : 1', 'Hero: one badge and how rare it is. Every game with an unlock'],
+  session: ['Session', '320 × ~196 · 1.6 : 1', 'Hero: what one sitting added. Needs a session'],
+  finish: ['Finish', '300 × 200 · 3 : 2', 'Hero: the state. Beaten, completed, mastered and perfect only'],
+  wall: ['Wall', '320 × ~170–260', 'Hero: the badges, in full rows. Needs 3 or more unlocks'],
+};
+const CAN = (shape, g) => shape === 'session' ? !!g.session : shape === 'finish' ? g.status !== 'progress' : shape === 'wall' ? !!(g.recent && g.recent.length >= 3) : true;
+window.DESIGNS = Object.keys(SHAPES).flatMap(s => GAMES.filter(g => CAN(s, g)).map(g => ({ shape: s, game: g.key })));
+
+// Titles and achievement names are never cut: they shrink (to the minimum in data-fit) until they fit their lines.
+function fit(root) {
+  root.querySelectorAll('[data-fit]').forEach(el => {
+    const [lines, min] = el.dataset.fit.split(',').map(Number);
+    let fs = parseFloat(getComputedStyle(el).fontSize);
+    while (el.scrollHeight > lines * parseFloat(getComputedStyle(el).lineHeight) + 1 && fs > min) { fs -= .5; el.style.fontSize = fs + 'px'; }
+  });
+}
+
+const q = new URLSearchParams(location.search), root = document.getElementById('root'), by = k => GAMES.find(g => g.key === k);
+if (q.get('shape')) {
+  root.innerHTML = `<div class="wrap" style="display:inline-block;padding:22px 24px 30px">${SHAPES[q.get('shape')](by(q.get('game')))}</div>`;
+} else {
+  document.body.className = 'sheet';
+  const cells = s => GAMES.filter(g => CAN(s, g)).map(g => `<div class="cell">${SHAPES[s](g)}<p><b>${g.key}</b> · ${esc(g.note)}</p></div>`).join('');
+  const story = (bg, px, html, x, y) => `<figure class="story" style="background-image:url(${I}${bg})${px ? ';image-rendering:pixelated' : ''}"><div class="safe">Instagram UI</div><div class="put" style="left:${x}px;top:${y}px">${html}</div><div class="safe b">Instagram UI</div></figure>`;
+  root.innerHTML = `<div class="by">Design by Fable 5.2</div><h2>Overlays: <em>one system</em>, six shapes</h2>
+    <p class="lead">Stickers for the top of a story, a Reel or a clip. Every shape shares one chassis (frame, header, numerals, bottom bar) and has one hero. Every shape is drawn for every game it can show: Steam, RA and Xbox, in progress, beaten, completed, mastered and perfect, with long titles and without a screenshot. Transparent background, exported at 3×.</p>
+    <section><h3>On a story <span>1080 × 1920 at 25%. The dashed bands are Instagram's own UI</span></h3><div class="stories">
+      ${story('st-1658290-library_hero.jpg', 0, plate(by('eiyuden')), 14, 80)}${story('ra-shot-16244.png', 1, unlock(by('rof9')), 106, 300)}
+      ${story('ra-shot-16452.png', 1, finish(by('d7')), 60, 190)}${story('xb-hero-2116209805.jpg', 0, tile(by('sh2')), 146, 84)}</div></section>
+    ${Object.keys(SHAPES).map(s => `<section><h3>${INFO[s][0]} · ${INFO[s][1]} <span>${INFO[s][2]}</span></h3><div class="flow">${cells(s)}</div></section>`).join('')}
+    <section><h3>Rules</h3><div class="rules">
+      <div><b>One hero</b><p>Each shape answers one question: how far, which unlock, what today added, that it's finished, which badges.</p></div>
+      <div><b>One accent</b><p>The state colours the frame, the kicker, the hero and the bar. Platform colour in progress, silver beaten and completed, gold mastered and perfect.</p></div>
+      <div><b>Nothing cut</b><p>Titles and achievement names shrink to fit two lines. No ellipsis anywhere.</p></div>
+      <div><b>Nothing empty</b><p>The wall shows full rows only, and the rest as a count. A shape a game can't fill isn't offered.</p></div>
+    </div></section>`;
+}
+const ready = () => { fit(root); document.body.dataset.ready = '1'; };
+(document.fonts ? document.fonts.ready : Promise.resolve()).then(ready);
+</script>
+</body>
+</html>

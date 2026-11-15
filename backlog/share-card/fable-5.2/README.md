@@ -132,6 +132,38 @@ If the exceptions aren't wanted, drop both; the other eight follow the rule.
 - Xbox has no playtime: its cards show gamerscore in that slot.
 - Receipt and Session need a session with unlocks; Wall needs the full badge list (RA); Series needs a shared series with 3+ known games.
 
+## Overlay system (second pass)
+
+O1–O10 above are ten separate ideas, each drawn once for one game. This is the same language as a system: six shapes on one chassis, each drawn for every game it can show (39 stickers from the ten sticker games in `../overlay/`: Steam, RA and Xbox; in progress, beaten, completed, mastered, perfect; a long title; a game with no screenshot). Sheet: [`overlays/sheet.jpg`](overlays/sheet.jpg); stickers: `overlays/{shape}-{game}.webp`, transparent, 3×; source: [`overlays.html`](overlays.html).
+
+| Shape | Size | Hero | Offered when |
+|---|---|---|---|
+| Plate | 320 × 176 | The percentage, beside the art | Always |
+| Tile | 220 × 220 | The percentage, on the art | Always |
+| Unlock | 300 × ~172 | One badge and its rarity | The game has an unlock |
+| Session | 320 × ~196 | `+N` from one sitting | There is a session |
+| Finish | 300 × 200 | The state: Beaten, ★ Completed, ★ Mastered, ★ Perfect | Not in progress |
+| Wall | 320 × 170–260 | The latest badges | 3 or more unlocks |
+
+**Chassis** (the same in every shape): 18px radius on `#080c14`; the approved state frames (hairline in the platform colour, silver hairline when beaten, 1.5px + glow when finished); a header with the kicker pill on the left (platform icon + platform, red `HC` for RA hardcore, outlined `BEATEN`, solid `★` chip when finished) and the identity pill on the right; Oxanium 800 numerals in the state colour; a 5px progress bar along the bottom edge.
+
+**Rules beyond the set's own:**
+
+- **Nothing cut.** Titles and achievement names wrap to two lines and shrink (`data-fit="lines,min"`) until they fit. No ellipsis anywhere. `render-overlays.cjs` reports any sticker whose content still overflows.
+- **Nothing empty.** The Wall shows full rows only (3, 4, 6, 8 or 12 badges); when the game has more unlocks than cells, the last cell counts the rest (`+73`). A shape a game can't fill isn't offered (`CAN`).
+- **Nothing under 11px**, about 20px on a 1080 story with the sticker at 60% of its width.
+- **Badges at whole scales only:** 42.67 / 64 / 85.33 CSS px, which is 2× / 3× / 4× of RA's 64px at the 3× export; RA badges pixelated.
+- **Xbox** shows gamerscore where the others show time played. **Rare** (under 10%) turns the rarity gold and adds the `RARE` chip.
+- **Tile** has no room for a state chip and a name at 220px, so its identity is the avatar alone.
+- Every shape is inside the shape rule (square to 2 : 1), with no exceptions this time.
+
+**Against the six stickers** (`../overlay/`): this fixes their cut titles, the Shelf's empty dashed slots, the Stub's nearly empty finished state and the small secondary text. Not proven: nothing here has been placed on real footage or a real phone screenshot, and the session shapes have two samples.
+
+```sh
+PLAYWRIGHT=/path/to/node_modules/playwright SHARP=/path/to/node_modules/sharp node render-overlays.cjs            # everything
+PLAYWRIGHT=/path/to/node_modules/playwright SHARP=/path/to/node_modules/sharp node render-overlays.cjs sheet tile # some
+```
+
 ## Kept from the existing plan, and what changes
 
 - Kept: transparent 3× stickers with their own fill, the 250px story bands, centred cover backgrounds, whole-number pixel art, the state colours.

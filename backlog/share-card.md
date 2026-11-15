@@ -212,6 +212,8 @@ Samples: the stacked card in every state (Steam in progress / perfect / beaten, 
 
 A second, separate set next to the cards and stickers above: ten stories, ten posts, ten wide cards (1200 × 630, for feed posts and link previews) and ten overlays, each built around one hero. Rules, samples and the open questions are in [`fable-5.2/README.md`](share-card/fable-5.2/README.md); the sheet is [`fable-5.2/samples/sheet.jpg`](share-card/fable-5.2/samples/sheet.jpg). Nothing here replaces the approved mockups until it's picked.
 
+**Overlay system** (added 2026-11-15): a second pass at the overlays as one system instead of ten one-offs: six shapes (Plate, Tile, Unlock, Session, Finish, Wall) on one chassis, drawn for every sticker game (39 samples). Rules in the README's *Overlay system* section; sheet: [`fable-5.2/overlays/sheet.jpg`](share-card/fable-5.2/overlays/sheet.jpg).
+
 ### First round (history)
 
 [`overlay/compact/`](share-card/overlay/compact/): the six first-round mockups for LEGO 2K Drive (`sheet.jpg`, renders committed as WebP), from before the shape rule. Four of them (original, poster, cover-ring, logo-bar, all about 2.8 : 1) and the pill (6.6 : 1) are wider than the rule allows; the stacked one became **Stacked** above. `python3 genc.py .` and `node renderc.cjs` in `overlay/` rebuild them.
