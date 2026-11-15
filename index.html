@@ -1065,9 +1065,12 @@
           const g = await fetchJsonOnce(`./data/steam/games/${id}.json`);
           return g && g.unlocked >= 10 && g.unlocked / Math.max((g.playtimeForever ?? 0) / 60, 0.1) > 15 ? `steam:${id}` : null;
         }))).filter(Boolean), ...(farmMarks.farms ?? [])]);
-        // Idle games marked in the admin (data/hub/idle-games.json), hidden like Analytics' default view
+        // Games hidden in the admin (data/hub/hidden-games.json) are left out like farms. Idle games
+        // (data/hub/idle-games.json) only lose their playtime: left running isn't play, their unlocks still count
+        const hidden = new Set((await fetchJsonOnce('./data/hub/hidden-games.json'))?.games ?? []);
         const idle = new Set((await fetchJsonOnce('./data/hub/idle-games.json'))?.games ?? []);
-        const keep = (x) => !farms.has(`${x.platform}:${x.gameId}`) && !idle.has(`${x.platform}:${x.gameId}`);
+        const keep = (x) => !farms.has(`${x.platform}:${x.gameId}`) && !hidden.has(`${x.platform}:${x.gameId}`);
+        const keepPlay = (x) => keep(x) && !idle.has(`${x.platform}:${x.gameId}`);
 
         // Session minutes spread over local days (hours, top game) and local hours (time of day),
         // like Analytics' sessionDays and hourGrid
@@ -1085,7 +1088,7 @@
         const perGame = {};
         const perDay = Object.fromEntries(dayKeys.map(k => [k, { ra: 0, steam: 0 }]));
         const parts = { morning: 0, afternoon: 0, evening: 0, night: 0 };
-        for (const s of sessions.filter(keep)) {
+        for (const s of sessions.filter(keepPlay)) {
           for (const d of spread(s, nextDay)) {
             if (inPrev(d.t)) { prevMinutes += d.minutes; continue; }
             if (!inRange(d.t)) continue;

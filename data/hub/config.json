@@ -28,6 +28,7 @@
     }
   },
   "siteUrl": "yozuryu.github.io/gaming-hub",
+  "timezone": "Asia/Jakarta",
   "activity": {
     "visible": true
   },

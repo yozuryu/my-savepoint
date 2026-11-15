@@ -354,6 +354,7 @@ function SiteConfigModule() {
                     <Field label="Username"><input className="input" value={data.username} onChange={e => set('username', e.target.value)} /></Field>
                     <Field label="Motto" hint="Under the name in the hub header"><input className="input" value={data.motto} onChange={e => set('motto', e.target.value)} /></Field>
                     <Field label="Site URL"><input className="input" value={data.siteUrl} onChange={e => set('siteUrl', e.target.value)} /></Field>
+                    <Field label="Timezone" hint="Your days and hours on Memory Card, e.g. Europe/London; UTC when empty"><input className="input" value={data.timezone ?? ''} placeholder="UTC" onChange={e => set('timezone', e.target.value)} /></Field>
                 </Card>
 
                 <Card icon={Tag} title="Tags" note={
@@ -2129,8 +2130,9 @@ const XboxSeriesModule  = () => <SeriesModule cfg={SERIES_CONFIGS.xbox} />;
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // MODULE: Idle Games
-// Games left running (idle / clicker games): their playtime isn't play, so Analytics and the hub's
-// Analytics strip leave them out by default ("Hide idle"). RA and Steam only: Xbox has no playtime.
+// Games left running (idle / clicker games): their playtime isn't play, so Analytics, the hub's Analytics
+// strip, Playing and Memory Card leave out their playtime; their unlocks still count. RA and Steam only:
+// Xbox has no playtime.
 // data/hub/idle-games.json: { games: ["ra:45053", "steam:123"] }
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -2158,7 +2160,7 @@ function IdleGamesModule() {
             <SaveBar dirty={dirty} saving={saving} saved={saved} onSave={save} />
             <div className="p-6 grid gap-4 max-w-[1100px] lg:grid-cols-2 items-start">
                 <Card icon={Hourglass} title="Marked as idle" note={<span className="chip">{data.games.length}</span>}>
-                    <p className="text-[12px] text-[#8f98a0] -mt-1">Their playtime is left out of Analytics and the hub's Analytics card while <b className="text-[#c6d4df] font-medium">Hide idle</b> is on (the default).</p>
+                    <p className="text-[12px] text-[#8f98a0] -mt-1">Their <b className="text-[#c6d4df] font-medium">playtime</b> is left out of Analytics, the hub's Analytics card, Playing and Memory Card. Their unlocks still count.</p>
                     <div className="flex flex-col -mx-4 -mb-4 border-t border-[#1f2f3d]">
                         {data.games.length === 0 && <Empty icon={Hourglass} title="None marked" hint="Search for a game on the right" />}
                         {data.games.map(id => <GameFlagRow key={id} g={byId[id] ?? { title: id, consoleName: '' }} on label="Idle" onClick={() => toggle(id)} />)}
@@ -2170,6 +2172,56 @@ function IdleGamesModule() {
                         {!q && <Empty icon={Search} title="Type a title" />}
                         {q && found.length === 0 && <Empty icon={Search} title="No match" />}
                         {found.map(g => <GameFlagRow key={g.id} g={g} on={marked.has(g.id)} label={marked.has(g.id) ? 'Idle' : 'Mark'} onClick={() => toggle(g.id)} />)}
+                    </div>
+                </Card>
+            </div>
+        </div>
+    );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// MODULE: Hidden Games
+// Games left out by hand, for any reason: everything about them (unlocks, playtime, completions) is
+// dropped from Analytics, the hub's Analytics strip, Playing and Memory Card, like a farm. Any platform.
+// data/hub/hidden-games.json: { games: ["steam:575550"] }
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function HiddenGamesModule() {
+    const { data, load, update, dirty, saving, saved, save } = useSaver('data/hub/hidden-games.json');
+    const [games, setGames] = useState(null);
+    const [search, setSearch] = useState('');
+
+    useEffect(() => {
+        apiData('data/hub/hidden-games.json').catch(() => null).then(d => load({ games: d?.games ?? [] }));
+        Promise.all(['ra', 'steam', 'xbox'].map(p => SERIES_CONFIGS[p].loadGames().catch(() => []).then(gs => gs.map(g => ({
+            ...g, id: `${p}:${g.id}`, consoleName: g.consoleName ? `${PLATFORM_LABEL[p]} · ${g.consoleName}` : PLATFORM_LABEL[p],
+        }))))).then(lists => setGames(lists.flat().sort((a, b) => a.title.localeCompare(b.title))));
+    }, []);
+
+    if (!data || !games) return <SkPage />;
+    const marked = new Set(data.games);
+    const toggle = id => update({ ...data, games: marked.has(id) ? data.games.filter(x => x !== id) : [...data.games, id] });
+    const q = search.trim().toLowerCase();
+    const byId = Object.fromEntries(games.map(g => [g.id, g]));
+    const found = q ? games.filter(g => g.title.toLowerCase().includes(q)).slice(0, 60) : [];
+
+    return (
+        <div className="h-full overflow-y-auto">
+            <SaveBar dirty={dirty} saving={saving} saved={saved} onSave={save} />
+            <div className="p-6 grid gap-4 max-w-[1100px] lg:grid-cols-2 items-start">
+                <Card icon={EyeOff} title="Hidden" note={<span className="chip">{data.games.length}</span>}>
+                    <p className="text-[12px] text-[#8f98a0] -mt-1">Left out of <b className="text-[#c6d4df] font-medium">everything</b> in Analytics, the hub's Analytics card, Playing and Memory Card, like a farm. The profiles still list them.</p>
+                    <div className="flex flex-col -mx-4 -mb-4 border-t border-[#1f2f3d]">
+                        {data.games.length === 0 && <Empty icon={EyeOff} title="None hidden" hint="Search for a game on the right" />}
+                        {data.games.map(id => <GameFlagRow key={id} g={byId[id] ?? { title: id, consoleName: '' }} on label="Hidden" onClick={() => toggle(id)} />)}
+                    </div>
+                </Card>
+                <Card icon={Search} title="Hide a game" note={<span className="hint">Any platform</span>}>
+                    <SearchInput value={search} onChange={setSearch} placeholder="Search RA, Steam and Xbox games" />
+                    <div key={q} className="flex flex-col -mx-4 -mb-4 border-t border-[#1f2f3d] anim-fade">
+                        {!q && <Empty icon={Search} title="Type a title" />}
+                        {q && found.length === 0 && <Empty icon={Search} title="No match" />}
+                        {found.map(g => <GameFlagRow key={g.id} g={g} on={marked.has(g.id)} label={marked.has(g.id) ? 'Hidden' : 'Hide'} onClick={() => toggle(g.id)} />)}
                     </div>
                 </Card>
             </div>
@@ -2552,7 +2604,9 @@ const MODULES = [
     { id: 'hub-series',  label: 'Shared Series', icon: Layers,    group: 'Lists', component: HubSeriesModule,
       desc: 'Series across platforms, for the hub and the Series page', file: 'data/hub/series.json' },
     { id: 'idle-games',  label: 'Idle Games',    icon: Hourglass, group: 'Lists', component: IdleGamesModule,
-      desc: 'Games left running: Analytics hides their playtime', file: 'data/hub/idle-games.json' },
+      desc: 'Games left running: their playtime is left out, their unlocks count', file: 'data/hub/idle-games.json' },
+    { id: 'hidden-games', label: 'Hidden Games', icon: EyeOff,  group: 'Lists', component: HiddenGamesModule,
+      desc: 'Games you leave out of the numbers by hand: everything about them is hidden', file: 'data/hub/hidden-games.json' },
     { id: 'farm-games',  label: 'Farm Games',    icon: Sprout,    group: 'Lists', component: FarmGamesModule,
       desc: 'Achievement farms: detected on Steam, marked or overruled here', file: 'data/hub/farm-games.json' },
     { id: 'ra-series',            label: 'Series',         icon: Layers,    group: 'RetroAchievements', component: RASeriesModule,

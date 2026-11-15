@@ -652,6 +652,8 @@ async function loadAll() {
     // Idle games (marked in the admin, General → Idle Games): left running, so their playtime isn't play.
     // Ids are "ra:45053" in the file, "ra-45053" here like every other game key
     const idle = new Set(((await fetchJson('../data/hub/idle-games.json'))?.games ?? []).map(id => String(id).replace(':', '-')));
+    // Games hidden by hand (General → Hidden Games): left out of everything, like farms
+    const hidden = new Set(((await fetchJson('../data/hub/hidden-games.json'))?.games ?? []).map(id => String(id).replace(':', '-')));
 
     // Unlocks, all years listed in each history index
     const unlockFiles = await Promise.all(PLATFORMS.flatMap((p, i) =>
@@ -745,7 +747,7 @@ async function loadAll() {
         ...(farmMarks.farms ?? []).map(id => String(id).replace(':', '-')),
     ]);
 
-    return { unlocks, sessions, meta, completions, funnel, progress, farms, idle, raArt };
+    return { unlocks, sessions, meta, completions, funnel, progress, farms, idle, hidden, raArt };
 }
 
 // Session minutes split into local days: [{ key, minutes, s }]
@@ -803,6 +805,15 @@ const App = () => {
         setHideIdle(next);
         const url = new URL(location.href);
         if (next) url.searchParams.delete('idle'); else url.searchParams.set('idle', 'show');
+        history.replaceState(null, '', url);
+    };
+    // Hide the games hidden in the admin everywhere (default on); ?hidden=show turns it off
+    const [hideHidden, setHideHidden] = useState(() => new URLSearchParams(location.search).get('hidden') !== 'show');
+    const toggleHidden = () => {
+        const next = !hideHidden;
+        setHideHidden(next);
+        const url = new URL(location.href);
+        if (next) url.searchParams.delete('hidden'); else url.searchParams.set('hidden', 'show');
         history.replaceState(null, '', url);
     };
     // Platform filter: All or one platform, scopes every section like the farm filter; ?platform=
@@ -880,7 +891,7 @@ const App = () => {
         for (const u of base.unlocks) if (inRange(u.key, range.startKey, range.endKey)) unl[`${u.platform}-${u.g}`] = (unl[`${u.platform}-${u.g}`] || 0) + 1;
         const name = (k) => { const [p, ...id] = k.split('-'); return data.meta[p]?.[id.join('-')]?.name ?? k; };
         const order = (set) => [...set].sort((a, b) => (mins[b] || 0) - (mins[a] || 0) || (unl[b] || 0) - (unl[a] || 0)).map(name);
-        return { farms: order(data.farms), idle: order(data.idle) };
+        return { farms: order(data.farms), idle: order(data.idle), hidden: order(data.hidden) };
     }, [base, range, data]);
 
     const view = useMemo(() => {
@@ -889,11 +900,13 @@ const App = () => {
         const { startKey, endKey, prevStartKey, prevEndKey } = range;
         const nameOf = (p, id) => data.meta[p][String(id)]?.name ?? `#${id}`;
         // The platform and farm filters scope every section below them
-        const keep = (p, id) => (platform === 'all' || p === platform) && (!hideFarms || !data.farms.has(`${p}-${id}`)) && (!hideIdle || !data.idle.has(`${p}-${id}`));
-        const days = base.days.filter(x => keep(x.s.platform, x.s.gameId));
+        const keep = (p, id) => (platform === 'all' || p === platform) && (!hideFarms || !data.farms.has(`${p}-${id}`)) && (!hideHidden || !data.hidden.has(`${p}-${id}`));
+        // Idle games only lose their playtime (left running isn't play); their unlocks and completions count
+        const keepPlay = (p, id) => keep(p, id) && (!hideIdle || !data.idle.has(`${p}-${id}`));
+        const days = base.days.filter(x => keepPlay(x.s.platform, x.s.gameId));
         const unlocks = base.unlocks.filter(u => keep(u.platform, u.g));
         const completions = base.completions.filter(c => keep(c.platform, c.gameId));
-        const sessions = data.sessions.filter(s => keep(s.platform, s.gameId));
+        const sessions = data.sessions.filter(s => keepPlay(s.platform, s.gameId));
 
         // ── Totals for a range
         const totals = (a, b) => {
@@ -1048,9 +1061,9 @@ const App = () => {
         for (const u of periodUnlocks) (perWeek[weekStartKey(u.key)] ??= new Set()).add(`${u.platform}-${u.g}`);
         const weekKeys = buildBuckets(startKey, endKey, 'week');
         const gamesPerWeek = weekKeys.length ? weekKeys.reduce((a, k) => a + (perWeek[k]?.size ?? 0), 0) / weekKeys.length : 0;
-        // New games: first played or unlocked (all time) in the period
+        // New games: first played or unlocked (all time) in the period. Ranked by lifetime play, so idle games stay out
         const newGames = Object.entries(base.life)
-            .filter(([k, x]) => { const [p, ...id] = k.split('-'); return keep(p, id.join('-')) && inRange(dayKey(new Date(x.first)), startKey, endKey); })
+            .filter(([k, x]) => { const [p, ...id] = k.split('-'); return keepPlay(p, id.join('-')) && inRange(dayKey(new Date(x.first)), startKey, endKey); })
             .map(([k, x]) => { const [platform, ...id] = k.split('-'); return { platform, id: id.join('-'), key: k, ...x }; });
         const newDone = newGames.filter(x => doneInPeriod.has(x.key)).length;
         const newRows = [...newGames].sort((a, b) => b.minutes - a.minutes || b.last - a.last).slice(0, 8)
@@ -1069,7 +1082,7 @@ const App = () => {
         const comebacks = [];
         for (const [k, acts] of Object.entries(base.acts)) {
             const [p, ...rest] = k.split('-'), id = rest.join('-');
-            if (!keep(p, id)) continue;
+            if (!keepPlay(p, id)) continue;
             const i = acts.findIndex((ms, n) => ms >= fromMs && ms < toMs && n > 0 && ms - acts[n - 1] >= COMEBACK_GAP_DAYS * 86400000);
             if (i < 0) continue;
             const backKey = dayKey(new Date(acts[i]));
@@ -1150,7 +1163,7 @@ const App = () => {
             consoleHours: consoleRows('minutes'), consoleUnlocks: consoleRows('unlocks'),
             nameOf,
         };
-    }, [base, range, data, hideFarms, hideIdle, period, platform]);
+    }, [base, range, data, hideFarms, hideIdle, hideHidden, period, platform]);
 
     const d = (k, play) => (view?.prev && (!play || view.prevPlayTracked) ? pct(view.cur[k], view.prev[k]) : null);
 
@@ -1523,7 +1536,8 @@ const App = () => {
                             <span className="fsep" />
                             <HideMenu options={[
                                 { id: 'farms', label: 'Achievement farms', on: hideFarms, toggle: toggleFarms, count: data?.farms.size, names: hideNames?.farms },
-                                { id: 'idle',  label: 'Idle games',        on: hideIdle,  toggle: toggleIdle,  count: data?.idle.size,  names: hideNames?.idle },
+                                { id: 'idle',  label: 'Idle games’ playtime', on: hideIdle,  toggle: toggleIdle,  count: data?.idle.size,  names: hideNames?.idle },
+                                { id: 'hidden', label: 'Hidden games',     on: hideHidden, toggle: toggleHidden, count: data?.hidden.size, names: hideNames?.hidden },
                             ]} />
                         </div>
                     </div>
@@ -1537,7 +1551,7 @@ const App = () => {
                     period, platform or farm change, so each fades in */}
                 <div ref={tabContentRef}>
                     {!view ? <Skeleton tab={tab} /> : (
-                        <div key={`${tab}-${period}-${platform}-${hideFarms}-${hideIdle}`} className={swipeDir === 'swipe' ? '' : 'anim-in'}>
+                        <div key={`${tab}-${period}-${platform}-${hideFarms}-${hideIdle}-${hideHidden}`} className={swipeDir === 'swipe' ? '' : 'anim-in'}>
                             {tab === 'overview' && overview()}
                             {tab === 'time' && timeTab()}
                             {tab === 'games' && gamesTab()}

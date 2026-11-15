@@ -5,9 +5,10 @@
 //                                   share images show the same numbers
 //   memory-card/index.html          the latest year; memory-card/years.json lists the years for render-recap.js
 //   node scripts/build-recap.js [siteRoot]     (default: the repo; deploy.yml passes _site)
-// Years and days are the owner's (config.json `timezone`, default Asia/Jakarta), not the viewer's: a recap is
+// Years and days are the owner's (config.json `timezone`, an IANA name, default UTC), not the viewer's: a recap is
 // a fixed record, unlike the app's pages. The share images are rendered afterwards by render-recap.js.
-// Rules shared with Analytics (keep in step with analytics/app.js): farms and idle games are left out.
+// Rules shared with Analytics (keep in step with analytics/app.js): farms and hidden games are left out,
+// idle games only lose their play time.
 
 const fs = require('fs');
 const path = require('path');
@@ -21,8 +22,21 @@ const FARM_PER_HOUR = 15, FARM_MIN_UNLOCKS = 10;
 const TOP = 5, RAREST = 5;
 
 const config = read('data/hub/config.json', {});
-const TZ = config.timezone || 'Asia/Jakarta';
-const SITE = 'https://yozuryu.github.io/my-savepoint';
+const TZ = (tz => { try { new Intl.DateTimeFormat('en', { timeZone: tz }); return tz; } catch { return 'UTC'; } })(config.timezone || 'UTC');
+// The live site, for the link preview tags: SITE_URL, else GitHub Pages' address for the repository
+// (GITHUB_REPOSITORY in Actions, else the origin remote)
+const SITE = (() => {
+    if (process.env.SITE_URL) return process.env.SITE_URL.replace(/\/+$/, '');
+    let repo = process.env.GITHUB_REPOSITORY;
+    if (!repo) try {
+        const m = require('child_process').execSync('git remote get-url origin', { cwd: path.join(__dirname, '..'), stdio: ['ignore', 'pipe', 'ignore'] })
+            .toString().trim().match(/[:/]([^/:]+)\/([^/]+?)(?:\.git)?$/);
+        if (m) repo = `${m[1]}/${m[2]}`;
+    } catch {}
+    if (!repo) return '';
+    const [owner, name] = repo.split('/');
+    return name.toLowerCase() === `${owner.toLowerCase()}.github.io` ? `https://${name}` : `https://${owner}.github.io/${name}`;
+})();
 
 // RA dates are "YYYY-MM-DD HH:MM:SS" in UTC with no zone marker
 const ms = s => !s ? 0 : typeof s === 'number' ? s : new Date(/[zZ]|[+-]\d\d:?\d\d$/.test(s) ? s : s.replace(' ', 'T') + 'Z').getTime();
@@ -83,7 +97,7 @@ for (const g of Object.values(xboxIndex)) {
     };
 }
 
-// ── Left out: achievement farms and idle games (same rule as Analytics) ──────
+// ── Left out: farms and hidden games, and idle games' play time (as in Analytics)
 const marks = read('data/hub/farm-games.json', {});
 const notFarm = new Set(marks.notFarms ?? []);
 const farms = new Set([
@@ -93,6 +107,8 @@ const farms = new Set([
     ...(marks.farms ?? []),
 ]);
 const idle = new Set(read('data/hub/idle-games.json', {}).games ?? []);
+// Hidden by hand in the admin (General → Hidden Games): left out of everything, like farms
+const hiddenGames = new Set(read('data/hub/hidden-games.json', {}).games ?? []);
 
 // ── Everything that happened, with its local time ───────────────────────────
 const unlocks = [];   // { key, t (ms), a, n, p, r, hc, ...local }
@@ -184,9 +200,10 @@ const sharedSeries = (x => Array.isArray(x) ? x : x.series ?? [])(read('data/hub
 // ── One year ────────────────────────────────────────────────────────────────
 const now = Date.now(), thisYear = local(now).year;
 function buildYear(year) {
-    const hidden = k => farms.has(k) || idle.has(k);
+    // Farms and hidden games are left out of everything; idle games only lose their play time
+    const hidden = k => farms.has(k) || hiddenGames.has(k);
     const us = unlocks.filter(u => u.year === year && !hidden(u.key));
-    const ss = sessions.filter(s => s.year === year && !hidden(s.key));
+    const ss = sessions.filter(s => s.year === year && !hidden(s.key) && !idle.has(s.key));
     if (!us.length && !ss.length) return null;
     const farmUnlocks = unlocks.filter(u => u.year === year && farms.has(u.key));
 
@@ -199,7 +216,7 @@ function buildYear(year) {
 
     // Play time exists from the first logged session (2026-03-25). A year with it ranks by time, others by unlocks
     const byTime = minutes > 0;
-    const done = completions.filter(c => c.year === year);
+    const done = completions.filter(c => c.year === year && !hidden(c.key));
     // A game both beaten and completed in the same year counts once, as completed (like the Completions page)
     const yearDone = done.filter(c => c.tier === 'completed' || !done.some(o => o.key === c.key && o.tier === 'completed'))
         .sort((a, b) => b.t - a.t);

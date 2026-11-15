@@ -130,9 +130,13 @@ export async function loadPlaying(fetchJson, base = './', now = Date.now()) {
     const raProgress = Object.fromEntries((raProfile?.gameAwardsAndProgress?.results ?? []).map(r => [String(r.gameId), r]));
     const farmMarks = (await fetchJson(`${base}data/hub/farm-games.json`)) ?? {};
     const markedFarm = new Set(farmMarks.farms ?? []), notFarm = new Set(farmMarks.notFarms ?? []);
+    // Games hidden in the admin (data/hub/hidden-games.json) are left out everywhere. Idle games
+    // (data/hub/idle-games.json) lose their playtime, and rotation is measured in play time, so they're out too
+    const hidden = new Set((await fetchJson(`${base}data/hub/hidden-games.json`))?.games ?? []);
+    const idle = new Set((await fetchJson(`${base}data/hub/idle-games.json`))?.games ?? []);
 
     const out = (await Promise.all(Object.values(games).map(async g => {
-        if (markedFarm.has(g.key)) return null;
+        if (markedFarm.has(g.key) || hidden.has(g.key) || idle.has(g.key)) return null;
         let beatenMs = 0, progress = null, cover = null, totalMinutes = null;
         if (g.platform === 'ra') {
             const d = raDone[g.gameId];
