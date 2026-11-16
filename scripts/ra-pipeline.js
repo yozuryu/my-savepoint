@@ -15,7 +15,6 @@ const {
     getUserWantToPlayList
 } = require('@retroachievements/api');
 
-const admin = require('firebase-admin');
 const { updatePlaytimeLog, toMs, iso } = require('./lib/playtime');
 const { writeUnlockHistory } = require('./lib/history');
 
@@ -61,11 +60,6 @@ if (!RA_USERNAME || !RA_API_KEY) {
 
 const authorization = buildAuthorization({ username: RA_USERNAME, webApiKey: RA_API_KEY });
 
-if (!admin.apps.length) {
-    admin.initializeApp({ credential: admin.credential.applicationDefault() });
-}
-const db = admin.firestore();
-
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 // Retry an API call with backoff. If it still fails the error propagates:
@@ -94,7 +88,6 @@ const REFRESH_GAMES    = process.argv.includes('--refresh-games');
 const WATCHLIST_ONLY   = process.argv.includes('--watchlist-only');
 
 log.ok(`RetroAchievements authenticated as: ${RA_USERNAME}`);
-log.ok('Firebase Admin SDK initialized');
 log.ok(`Game details mode        : ${REFRESH_GAMES ? 'Full refresh  (--refresh-games)' : 'Incremental   (new games only)'}`);
 log.ok(`Watchlist-only mode      : ${WATCHLIST_ONLY ? 'yes  (--watchlist-only)' : 'no'}`);
 log.ok(`Debug mode               : ${DEBUG ? 'enabled  (--debug)' : 'disabled'}`);
@@ -539,62 +532,6 @@ function readCachedGames() {
 }
 
 // =========================================================
-// Phase 4: Firebase Firestore Subcollection Synchronization
-// =========================================================
-
-async function synchronizeWithFirestore(enabled, data) {
-    log.section('Phase 4 — Firestore Synchronization');
-
-    if (!enabled) {
-        log.step('Firestore synchronization disabled. Skipping...');
-        console.log(' ✓');
-        return;
-    }
-
-    const userDocRef = db.collection('retro_profiles').doc(data.username);
-
-    const rootPayload = {
-        metadata: data.metadata,
-        username: data.username,
-        coreProfile: data.coreProfile,
-        userSummary: data.userSummary,
-        points: data.points,
-        pageAwards: data.pageAwards,
-        recentAchievements: data.recentAchievements,
-        recentlyPlayedGames: data.recentlyPlayedGames,
-        wantToPlayList: data.wantToPlayList,
-        gameAwardsAndProgress: data.gameAwardsAndProgress,
-    };
-
-    process.stdout.write(`  Upserting root document for ${data.username}...`);
-    await userDocRef.set(rootPayload, { merge: true });
-    console.log(' ✓');
-
-    const gameEntries = Object.entries(data.detailedGameProgress || {});
-    if (gameEntries.length > 0) {
-        console.log(`\n  Syncing ${gameEntries.length} game records into subcollection...`);
-        let batch = db.batch();
-        let count = 0;
-
-        for (const [gameId, gameDetails] of gameEntries) {
-            batch.set(userDocRef.collection('games').doc(gameId.toString()), gameDetails, { merge: true });
-            count++;
-            if (count >= 490) {
-                await batch.commit();
-                log.info(`Intermediate batch committed (${count} ops)`);
-                batch = db.batch();
-                count = 0;
-                await sleep(1000);
-            }
-        }
-        if (count > 0) {
-            await batch.commit();
-            log.ok(`Final batch committed (${count} ops)`);
-        }
-    }
-}
-
-// =========================================================
 // Watchlist-Only Fast Path
 // =========================================================
 
@@ -773,7 +710,6 @@ async function runPipeline() {
         else serializeLocally(payload);
         logPlaytime(payload);
         logHistory(payload);
-        await synchronizeWithFirestore(false, payload);
 
         const totalGames = Object.keys(payload.detailedGameProgress).length;
 

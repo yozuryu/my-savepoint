@@ -29,12 +29,13 @@
     "xbox-fetch:full": "node scripts/xbox-pipeline.js --refresh-games",
     "assets": "node scripts/download-assets.js",
     "admin": "node scripts/admin-server.js",
-    "data:pull": "node scripts/data-pull.js"
+    "data:pull": "node scripts/data-pull.js",
+    "build:series": "node scripts/build-series.js",
+    "build:fallback-art": "node scripts/build-fallback-art.js"
   },
   "dependencies": {
     "@retroachievements/api": "^2.10.0",
-    "dotenv": "^17.3.1",
-    "firebase-admin": "^13.7.0"
+    "dotenv": "^17.3.1"
   },
   "devDependencies": {
     "sharp": "^0.35.5"

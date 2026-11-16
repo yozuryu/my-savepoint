@@ -1101,7 +1101,7 @@ const App = () => {
     // Load profile on mount
     useEffect(() => {
         fetch('../../data/xbox/profile.json')
-            .then(r => { if (!r.ok) throw new Error('Xbox data not found'); return r.json(); })
+            .then(r => { if (!r.ok) throw new Error('It shows up after the next data run'); return r.json(); })
             .then(p => { setProfileData(p); setLoading(false); })
             .catch(e => { setError(e.message); setLoading(false); });
     }, []);
@@ -1224,7 +1224,7 @@ const App = () => {
     if (error) return (
         <div className="flex items-center justify-center min-h-screen bg-[#171a21] text-[#546270] anim-fade">
             <div className="text-center">
-                <div className="text-[14px] mb-2">Could not load Xbox data</div>
+                <div className="text-[14px] mb-2">No Xbox data yet</div>
                 <div className="text-[11px]">{error}</div>
             </div>
         </div>

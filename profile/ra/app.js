@@ -1237,7 +1237,7 @@ export default function App() {
   // ── Fetch profile.json + watchlist.json on mount ──
   useEffect(() => {
     fetch('../../data/ra/profile.json')
-      .then(r => { if (!r.ok) throw new Error('Failed to load profile.json'); return r.json(); })
+      .then(r => { if (!r.ok) throw new Error('No RetroAchievements data yet: it shows up after the next data run'); return r.json(); })
       .then(data => { setProfileData(data); setLoadingProfile(false); })
       .catch(err => { setError(err.message); setLoadingProfile(false); });
     fetch('../../data/ra/watchlist.json')
@@ -1402,7 +1402,7 @@ export default function App() {
   if (error || !PROFILE_DATA) return (
     <div className="min-h-screen bg-[#171a21] flex flex-col items-center justify-center text-[#c6d4df] p-4 anim-fade">
         <AlertCircle className="text-[#ff6b6b] mb-2" size={48} />
-        <h1 className="text-xl font-bold mb-2">Data Load Error</h1>
+        <h1 className="text-xl font-bold mb-2">No data yet</h1>
         <p className="text-[#8f98a0] mb-4">{error || "Could not transform profile data."}</p>
     </div>
   );

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Local admin server — run with: node scripts/admin-server.js  (or: npm run admin)
 // Serves the admin UI at http://localhost:3131
-// Never deployed — excluded from GitHub Pages via _config.yml
+// Never deployed — excluded from the site by deploy.yml
 
 const http   = require('http');
 const fs     = require('fs');

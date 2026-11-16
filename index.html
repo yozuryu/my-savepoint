@@ -584,7 +584,7 @@
     // Platform strip: three headline numbers and the three latest covers per platform
     const statCells = cells => cells.map(([val, label, color]) =>
       `<div><div class="stat-val" style="color:${color};">${val}</div><div class="stat-lbl">${label}</div></div>`).join('');
-    const statError = '<div style="grid-column:span 3;font-size:11px;color:#546270;">Could not load stats</div>';
+    const statError = '<div style="grid-column:span 3;font-size:11px;color:#546270;">No data yet</div>';
     const escAttr = str => String(str ?? '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
     // fallback: tried once when src fails (Steam banners Steam moved: the hero art)
     const coverImg = (src, title, cls = '', fallback = '') =>
