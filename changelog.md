@@ -23,6 +23,11 @@ Memory Card's story opens every slide with a line of moving type and plays diffe
   A year gets its card once six months of it are done; until then the latest card is last year's.
 - fix: **Memory Card** rarest finds in the story no longer squeeze into two columns on a desktop
 
+### Pipelines
+
+- improved: **Data runs** say plainly when no platform keys are set
+  The same check as the Savepoint template, so both stay in step. It never triggers here: this hub has its keys and its data.
+
 ## v26.11.15
 
 Memory Card: a showcase page for every year in games, played back as slides, with pictures in five styles and a link to share. The first two Legend of Heroes games form a new Iselhasa sub-series

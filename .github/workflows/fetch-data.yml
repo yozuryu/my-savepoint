@@ -54,6 +54,9 @@ env:
   # even with quota left. Scheduled runs (`all`) skip it; a manual run with platforms=xbox still
   # syncs. Set to 'true' to resume.
   XBOX_ENABLED: 'false'
+  HAS_RA: ${{ secrets.RA_USERNAME != '' && secrets.RA_API_KEY != '' }}
+  HAS_STEAM: ${{ secrets.STEAM_API_KEY != '' && secrets.STEAM_USER_ID != '' }}
+  HAS_XBOX: ${{ secrets.XBOX_API_KEY != '' }}
 
 jobs:
   fetch:
@@ -72,6 +75,16 @@ jobs:
         with:
           ref: data
           path: _data
+
+      # Same check as the template (yozuryu/savepoint). Here the platforms aren't skipped by missing keys, so it only
+      # stops a run that has no keys at all
+      - name: Check setup
+        run: |
+          # Nothing to sync at all: say so plainly instead of failing later on an empty data folder
+          if [ "$HAS_RA" != true ] && [ "$HAS_STEAM" != true ] && [ "$HAS_XBOX" != true ]; then
+            echo "::error::No platform is set up yet. Add the secrets for at least one platform (Settings → Secrets and variables → Actions), then run this again."
+            exit 1
+          fi
 
       # The pipelines read their previous output (caches, playtime baseline, history) from data/
       - name: Restore data
@@ -149,6 +162,8 @@ jobs:
             if [ -e "$p" ]; then mkdir -p "_data/$(dirname "$p")"; cp -R "$p" "_data/$p"; fi
           done
           cd _data
+          # No pipeline wrote anything yet (only skipped platforms picked): nothing to commit
+          if [ ! -d data ]; then echo "::notice::No data to commit yet"; exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add -A data
