@@ -132,6 +132,13 @@ jobs:
             *)                     npm run xbox-fetch ;;
           esac
 
+      # Memory Card's year colours: the hue of each year's top game art, read once and kept in
+      # data/hub/recap-colours.json, so deploys don't read the pictures again (no Chrome is started when nothing is new)
+      - name: Memory Card colours
+        if: ${{ !cancelled() && env.MODE != 'watchlist-only' }}
+        continue-on-error: true
+        run: node scripts/build-recap.js . --colours-only
+
       - name: Commit updated data
         id: commit
         if: ${{ !cancelled() }}
@@ -149,6 +156,7 @@ jobs:
           for p in ra steam xbox; do
             git diff --staged --quiet -- "data/$p/" || changed="$changed${changed:+, }$p"
           done
+          git diff --staged --quiet -- data/hub/ || changed="$changed${changed:+, }colours"
           case "$MODE" in
             midnight)       MSG="chore: midnight refresh data" ;;
             full-refresh)   MSG="chore: full refresh data" ;;

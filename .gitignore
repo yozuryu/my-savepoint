@@ -25,6 +25,7 @@ node_modules/
 /_data/
 /_site/
 data/hub/series-games.json
+data/hub/recap-colours.json
 # Memory Card: built from memory-card/page.html by scripts/build-recap.js and render-recap.js
 /memory-card/index.html
 /memory-card/years.json

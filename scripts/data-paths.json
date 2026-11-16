@@ -16,7 +16,8 @@
         "data/xbox/profile.json",
         "data/xbox/games",
         "data/xbox/achievements",
-        "data/xbox/history"
+        "data/xbox/history",
+        "data/hub/recap-colours.json"
     ],
     "private": [
         "data/steam/games/sentinel.json",

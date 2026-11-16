@@ -658,9 +658,8 @@
         const STYLE = ['cover', 'blocks', 'shelf', 'title'].includes(Q.get('style')) ? Q.get('style') : 'card';     // which of the five share pictures
         const RA_ICON = BASE + 'assets/icon-ra.png', ICON = { ra: RA_ICON, steam: BASE + 'assets/icon-steam.png', xbox: BASE + 'assets/icon-xbox.png' };
         const PLATFORM = { ra: 'RetroAchievements', steam: 'Steam', xbox: 'Xbox' }, PCOLOR = { ra: 'var(--ra)', steam: 'var(--steam)', xbox: 'var(--xbox)' };
-        // Card colours, like the translucent plastics memory cards came in; a year keeps its colour
-        const COLORS = ['167, 139, 250', '255, 122, 144', '255, 179, 71', '95, 180, 255', '63, 224, 197', '190, 227, 86'];
-        const colorOf = y => COLORS[y % COLORS.length];
+        // Card colour: the main hue of the year's top game art, worked out by build-recap.js (`colour`, "r, g, b")
+        const colorOf = y => YEARS.find(x => x.year === y)?.colour ?? '63, 224, 197';
         document.documentElement.style.setProperty('--a', colorOf(R.year));
 
         const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));

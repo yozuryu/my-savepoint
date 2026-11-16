@@ -5,6 +5,7 @@
 //                                   share images show the same numbers
 //   memory-card/index.html          the latest year; memory-card/years.json lists the years for render-recap.js
 //   node scripts/build-recap.js [siteRoot]     (default: the repo; deploy.yml passes _site)
+//   --colours prints each year's card colour; --colours-only only refreshes data/hub/recap-colours.json (fetch-data.yml)
 // Years and days are the owner's (config.json `timezone`, an IANA name, default UTC), not the viewer's: a recap is
 // a fixed record, unlike the app's pages. The share images are rendered afterwards by render-recap.js.
 // Rules shared with Analytics (keep in step with analytics/app.js): farms and hidden games are left out,
@@ -392,8 +393,106 @@ function pickTitles(recaps) {
     }
 }
 pickTitles(recaps);
+
+// ── Card colour: each year's colour is the main hue of its top game's art, at a fixed brightness and strength so it
+//    works as an accent on the dark page and as a full cover under dark type. Chrome reads the hue (the build has no
+//    image library; it is the Chrome that shoots the share pictures): the art is drawn small on a canvas and the
+//    strongest hue of its colourful pixels wins. A year with no art, grey art, or no Chrome gets a hue from the year and
+//    the owner's name. Neighbouring years are kept at least 30° apart. `colour` is "r, g, b".
+//    What Chrome read is kept in data/hub/recap-colours.json (hue per picture address, -1 = no hue in it), so a picture
+//    is read once: fetch-data.yml runs `--colours-only` and commits the file to the data branch; a build that finds a
+//    picture missing from it reads that one itself. A failed download is not kept, and tried again next time ──
+const hashText = t => [...t].reduce((h, c) => Math.imul(h ^ c.charCodeAt(0), 16777619), 2166136261) >>> 0;
+const hueReader = async groups => {                 // runs in the page: [[url, …], …] → per group what each picture gave, in order, up to the first hue: degrees (OKLCH), -1 no hue, null not loaded
+    const lin = v => (v /= 255) <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
+    const read = url => new Promise(done => {
+        const im = new Image(), stop = setTimeout(() => done(null), 8000);
+        im.onerror = () => { clearTimeout(stop); done(null); };
+        im.onload = () => {
+            clearTimeout(stop);
+            try {
+                const c = document.createElement('canvas'), x = c.getContext('2d');
+                c.width = c.height = 40;
+                x.drawImage(im, 0, 0, 40, 40);
+                const px = x.getImageData(0, 0, 40, 40).data, bins = new Array(36).fill(0);
+                let strength = 0;
+                for (let i = 0; i < px.length; i += 4) {
+                    const r = lin(px[i]), g = lin(px[i + 1]), b = lin(px[i + 2]);
+                    const l = Math.cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b), m = Math.cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b), s = Math.cbrt(0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b);
+                    const L = 0.2104542553 * l + 0.793617785 * m - 0.0040720468 * s, A = 1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s, B = 0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s;
+                    const C = Math.hypot(A, B), w = C * C * (L > 0.25 && L < 0.95 ? 1 : 0.2);
+                    bins[Math.floor(((Math.atan2(B, A) * 180 / Math.PI + 360) % 360) / 10)] += w;
+                    strength += C;
+                }
+                if (strength / (px.length / 4) < 0.03) return done(-1);                      // grey art has no hue to speak of
+                const soft = bins.map((v, i) => v + (bins[(i + 35) % 36] + bins[(i + 1) % 36]) / 2), peak = soft.indexOf(Math.max(...soft));
+                let sx = 0, sy = 0;
+                for (const d of [-1, 0, 1]) { const i = (peak + d + 36) % 36, t = (i * 10 + 5) * Math.PI / 180; sx += bins[i] * Math.cos(t); sy += bins[i] * Math.sin(t); }
+                done(Math.round((Math.atan2(sy, sx) * 180 / Math.PI + 360) % 360));
+            } catch { done(null); }
+        };
+        im.src = url;
+    });
+    const out = [];
+    for (const urls of groups) { const got = []; for (const u of urls) { got.push(await read(u)); if (got[got.length - 1] >= 0 && got[got.length - 1] !== null) break; } out.push(got); }
+    return out;
+};
+const HUE_CACHE = path.join(ROOT, 'data', 'hub', 'recap-colours.json');
+const artHues = groups => {
+    const known = read('data/hub/recap-colours.json', {}).hues ?? {};
+    // Per year: the pictures not read yet that come before the first one with a known hue
+    const ask = groups.map(urls => { const hit = urls.findIndex(u => known[u] >= 0); return (hit < 0 ? urls : urls.slice(0, hit)).filter(u => !(u in known)); });
+    if (ask.some(g => g.length)) {
+        const os = require('os'), { execFileSync } = require('child_process');
+        const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'recap-hue-'));
+        try {
+            const chrome = [process.env.CHROME, 'google-chrome', 'google-chrome-stable', 'chromium', 'chromium-browser', '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'].filter(Boolean)
+                .map(c => { if (c.includes('/')) return fs.existsSync(c) ? c : null; try { return execFileSync('which', [c], { stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim(); } catch { return null; } }).find(Boolean);
+            if (!chrome) throw new Error('Chrome not found');
+            const file = path.join(dir, 'hue.html');
+            fs.writeFileSync(file, `<!doctype html><pre id="out"></pre><script>(${hueReader})(${JSON.stringify(ask).replace(/</g, '\\u003c')}).then(h => { document.getElementById('out').textContent = 'HUES' + JSON.stringify(h) + 'END'; });</script>`);
+            // --disable-web-security: the canvas may read art from other hosts. Only this throwaway profile, only this page
+            const dom = execFileSync(chrome, ['--headless=new', '--disable-gpu', '--no-sandbox', '--no-first-run', '--disable-web-security', `--user-data-dir=${path.join(dir, 'profile')}`,
+                '--virtual-time-budget=30000', '--dump-dom', `file://${file}`], { stdio: ['ignore', 'pipe', 'ignore'], timeout: 60000, maxBuffer: 1 << 22 }).toString();
+            const got = JSON.parse(dom.match(/HUES(\[.*\])END/)?.[1] ?? 'null');
+            if (!Array.isArray(got) || got.length !== ask.length) throw new Error('no answer from the page');
+            let done = 0, failed = 0;
+            ask.forEach((urls, i) => urls.forEach((u, j) => { const v = got[i][j]; if (typeof v === 'number') { known[u] = v; done++; } else if (v === null) failed++; }));
+            console.log(`recap: card colours read from ${done} pictures${failed ? `, ${failed} not loaded` : ''}`);
+        } catch (e) {
+            console.log(`recap: card colours not read from the art (${e.message.split('\n')[0]})`);
+        } finally { try { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 }); } catch {} }
+    }
+    // Keep only the pictures still in use, in a steady order, and write only when something changed
+    const hues = Object.fromEntries([...new Set(groups.flat())].filter(u => u in known).sort().map(u => [u, known[u]]));
+    const text = JSON.stringify({ about: 'Memory Card: the main hue (OKLCH degrees, -1 = none) of each year’s top game art, read once by scripts/build-recap.js', hues }, null, 1) + '\n';
+    if (Object.keys(hues).length && (!fs.existsSync(HUE_CACHE) || fs.readFileSync(HUE_CACHE, 'utf8') !== text)) { fs.mkdirSync(path.dirname(HUE_CACHE), { recursive: true }); fs.writeFileSync(HUE_CACHE, text); }
+    return groups.map(urls => { const u = urls.find(x => hues[x] >= 0); return u === undefined ? null : hues[u]; });
+};
+// OKLCH → "r, g, b": brighter around yellow-green, where a colour needs it to look as strong; strength lowered until it fits sRGB
+const cardColour = hue => {
+    const L = 0.76 + 0.09 * Math.cos((hue - 110) * Math.PI / 180), t = hue * Math.PI / 180, enc = v => v <= 0.0031308 ? 12.92 * v : 1.055 * v ** (1 / 2.4) - 0.055;
+    for (let C = 0.19; C >= 0; C -= 0.005) {
+        const a = C * Math.cos(t), b = C * Math.sin(t), l = (L + 0.3963377774 * a + 0.2158037573 * b) ** 3, m = (L - 0.1055613458 * a - 0.0638541728 * b) ** 3, s = (L - 0.0894841775 * a - 1.291485548 * b) ** 3;
+        const rgb = [4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s, -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s, -0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s];
+        if (rgb.every(v => v >= -0.0005 && v <= 1.0005)) return rgb.map(v => Math.round(255 * enc(Math.min(1, Math.max(0, v))))).join(', ');
+    }
+    return '200, 200, 200';
+};
+{
+    const hues = artHues(recaps.map(r => { const g = r.top[0]; return g ? [...new Set([g.heroThumb ?? g.hero, g.cover, g.shot, g.icon].filter(Boolean))] : []; }));
+    let prev = null;
+    recaps.forEach((r, i) => {
+        let hue = hues[i] ?? hashText(`${r.year}·${r.user.name}`) % 360;
+        if (prev !== null) { const d = ((hue - prev + 540) % 360) - 180; if (Math.abs(d) < 30) hue = (prev + (d < 0 ? -30 : 30) + 360) % 360; }
+        r.hue = hue; r.hueFrom = hues[i] === null || hues[i] === undefined ? 'year' : 'art';
+        r.colour = cardColour(hue);
+        prev = hue;
+    });
+}
+if (process.argv.includes('--colours-only')) { console.log(`recap: card colours for ${recaps.length} years`); process.exit(0); }
 const index = recaps.map(r => ({ year: r.year, partial: r.partial, title: r.title.name, unlocks: r.totals.unlocks, games: r.totals.games,
-    minutes: r.totals.minutes, top: r.top[0] && { name: r.top[0].name, icon: r.top[0].icon, cover: r.top[0].cover } }));
+    minutes: r.totals.minutes, colour: r.colour, top: r.top[0] && { name: r.top[0].name, icon: r.top[0].icon, cover: r.top[0].cover } }));
 
 // One static page per year from memory-card/page.html, so a shared link carries that year's title, text and
 // image, and the page needs no fetch: its recap is embedded. memory-card/index.html is the latest year.
@@ -439,9 +538,10 @@ if (template) {
         fs.writeFileSync(path.join(pageDir, String(r.year), 'index.html'), html);
     }
     if (recaps.length) fs.writeFileSync(path.join(pageDir, 'index.html'), page(recaps[recaps.length - 1], '../'));
-    fs.writeFileSync(path.join(pageDir, 'years.json'), JSON.stringify({ years: recaps.map(r => r.year), latest: recaps.length ? (r => ({ year: r.year, title: r.title.name, partial: !!r.partial }))(recaps[recaps.length - 1]) : null }));
+    fs.writeFileSync(path.join(pageDir, 'years.json'), JSON.stringify({ years: recaps.map(r => r.year), latest: recaps.length ? (r => ({ year: r.year, title: r.title.name, partial: !!r.partial, colour: r.colour }))(recaps[recaps.length - 1]) : null }));
 }
 console.log(`recap: ${recaps.length} years (${recaps.map(r => r.year).join(', ')})${template ? `, pages ${(bytes / 1024).toFixed(0)} KB` : ', no memory-card/page.html: nothing written'}`);
+if (process.argv.includes('--colours')) for (const r of recaps) console.log(`${r.year}  ${String(r.hue).padStart(3)}°  rgb(${r.colour})  from the ${r.hueFrom}${r.top[0] ? `  · ${r.top[0].name}` : ''}`);
 if (process.argv.includes('--titles')) for (const r of recaps) console.log(`${r.year}  ${r.titleFits.map(f => `${f.name === r.title.name ? '>' : ' '}${f.name} ${f.score.toFixed(2)} (${f.why})`).join('  |  ')}`);
 if (process.argv.includes('--print')) for (const r of recaps) {
     console.log(`\n${r.year}  ${r.title.name} (${r.title.why})  unlocks ${r.totals.unlocks} games ${r.totals.games} new ${r.totals.newGames} done ${r.totals.completed}+${r.totals.beaten} min ${r.totals.minutes ?? '-'} days ${r.totals.activeDays} streak ${r.streak.days} rare ${r.totals.rare} farms ${JSON.stringify(r.farms ?? null)}`);

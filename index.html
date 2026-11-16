@@ -1290,14 +1290,13 @@
       }
     }
 
-    // Memory Card link under the totals: the latest year in that year's card colour (same list as
-    // memory-card/page.html). Stays hidden when the pages aren't built
-    const MEMCARD_COLORS = ['167, 139, 250', '255, 122, 144', '255, 179, 71', '95, 180, 255', '63, 224, 197', '190, 227, 86'];
+    // Memory Card link under the totals: the latest year in that year's card colour (from years.json, set by
+    // build-recap.js). Stays hidden when the pages aren't built
     async function loadMemcardLink() {
       const latest = (await fetchJsonOnce('./memory-card/years.json'))?.latest;
       if (!latest) return;
       const link = document.getElementById('memcard-link');
-      link.style.setProperty('--mc', MEMCARD_COLORS[latest.year % MEMCARD_COLORS.length]);
+      link.style.setProperty('--mc', latest.colour ?? '63, 224, 197');
       link.title = `Memory Card: ${latest.year} in games, ${latest.title}`;
       document.getElementById('memcard-year').textContent = latest.year;
       link.style.display = '';
