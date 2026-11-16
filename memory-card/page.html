@@ -258,9 +258,9 @@
         .thumbs { display: flex; align-items: center; height: 92px; gap: 8px; overflow-x: auto; margin: 0 -16px 12px; padding: 0 16px; scrollbar-width: none; }
         .thumbs::-webkit-scrollbar { display: none; }
         .th { flex: none; height: 88px; padding: 0; border-radius: 6px; overflow: hidden; border: 2px solid transparent; background: #0a0c13; opacity: 0.55; transition: opacity 160ms, border-color 160ms; }
-        .thumbs.k-link .th { height: 60px; }
+        .thumbs.k-link .th, .thumbs.k-wide .th { height: 60px; }
         .th img { height: 100%; width: auto; max-width: none; aspect-ratio: 9 / 16; object-fit: cover; display: block; }
-        .thumbs.k-link .th img { aspect-ratio: 1200 / 630; }
+        .thumbs.k-link .th img, .thumbs.k-wide .th img { aspect-ratio: 1200 / 630; }
         .th.on { border-color: rgb(var(--a)); opacity: 1; }
         .x { width: 34px; height: 34px; border-radius: 50%; background: rgba(255, 255, 255, 0.07); display: grid; place-items: center; }
         .x svg { width: 16px; height: 16px; }
@@ -319,7 +319,8 @@
         }
 
         /* ── Story: the year played back as slides (the Play button). Tap right / left, hold to pause. Every slide is a full
-              card, also rendered as a picture (?card=slide&s=<key>, 450 × 800 at 2.4×) so it can be shared from the story ── */
+              card, also rendered as a picture (?card=slide&s=<key>, 450 × 800 at 2.4×) so it can be shared from the story.
+              On a desktop it opens wide (see Desktop mode below) ── */
         .story { position: fixed; inset: 0; z-index: 60; background: #04050a; display: grid; place-items: center; animation: fade 200ms ease-out backwards; }
         .story, .story * { -webkit-tap-highlight-color: transparent; }
         .story [hidden] { display: none; }
@@ -379,7 +380,7 @@
         .stage .duo { margin: 0; gap: 8px; grid-template-columns: 1fr 1fr; } .stage .mini { padding: 12px 14px; } .stage .mini .num { font-size: 26px; margin-top: 8px; }
         .stage .card { padding: 12px 14px; border-radius: 6px; } .stage .card .big { font-size: 20px; margin-top: 8px; } .stage .card .big small { font-size: 12px; }
         .stage .bars { height: 52px; margin-top: 10px; gap: 2px; }
-        .stage .rare { gap: 6px; } .stage .rr { padding: 8px 12px 8px 8px; } .stage .rr .ic, .stage .end .ic { width: 46px; height: 46px; }
+        .stage .rare { gap: 6px; grid-template-columns: 1fr; } .stage .rare .rr:first-child { grid-column: auto; } .stage .rr { padding: 8px 12px 8px 8px; } .stage .rr .ic, .stage .end .ic { width: 46px; height: 46px; }
         .stage .ends { gap: 6px; grid-template-columns: 1fr; } .stage .end { padding: 10px 12px; } .stage .end h3 { margin: 5px 0 1px; font-size: 15px; }
         .stage.s-end { text-align: center; } .stage.s-end .lead b { color: var(--text, #fff); font-weight: 700; }
         .sfan { position: relative; height: 250px; margin-bottom: 10px; pointer-events: none; }
@@ -396,6 +397,37 @@
         .story.still { position: static; width: 450px; height: 800px; animation: none; }
         .story.still *, .story.still *::before { animation: none !important; }
         .story.still .stop { top: 20px; } .story.still .stage { padding-top: 54px; }
+        /* Desktop mode: the same slides laid out wide, 800 × 420 (the wide card's shape) and scaled to the window. Slides
+           marked `two` put their .hf1 / .hf2 halves side by side; on a phone those wrappers vanish and the pieces stack.
+           Rendered as pictures too (?card=slide&wide&s=<key>, at 1.5× = 1200 × 630) */
+        .stage .hf1, .stage .hf2, .stage .late { display: contents; }
+        .stage .late > * { order: 9; } .stage .wonly { display: none; }
+        .story.wide .frame { flex: none; width: 800px; height: 420px; aspect-ratio: auto; transform: scale(var(--k, 1)); border-radius: 8px; border: 1px solid var(--line); }
+        .story.wide .sbars { top: 8px; } .story.wide .stop { top: 16px; left: 22px; right: 14px; }
+        .story.wide .sfoot { left: 24px; right: 24px; bottom: 12px; }
+        .story.wide .stage { padding: 50px 24px 36px; gap: 10px; }
+        .story.wide .stage.two { flex-direction: row; align-items: stretch; gap: 22px; }
+        .story.wide .stage.two > .hf1, .story.wide .stage.two > .hf2 { display: flex; flex-direction: column; justify-content: center; gap: 10px; flex: 1 1 0; min-width: 0; }
+        .story.wide .stage .wonly { display: flex; }
+        .story.wide .stage .year { font-size: 112px; }
+        .story.wide .stage .title { padding-block: 10px; } .story.wide .stage .title h2 { font-size: 22px; }
+        .story.wide .stage .snum { padding: 10px 12px; } .story.wide .stage .snum .num { font-size: 28px; }
+        .story.wide .stage .strip { --c: calc((365px - 53 * var(--g)) / 54); }
+        .story.wide .stage .feat { max-height: none; min-height: 0; } .story.wide .stage .feat h3 { font-size: 22px; }
+        .story.wide .stage .grow { min-height: 58px; padding-block: 8px; }
+        .story.wide .stage .done { grid-template-columns: repeat(var(--cw, 4), 1fr); } .story.wide .stage .dn { height: var(--thw, 130px); }
+        .story.wide .stage .done .dn:last-child:nth-child(odd) { grid-column: auto; }
+        .story.wide .stage.two .done { grid-template-columns: 1fr 1fr; } .story.wide .stage.two .dn { height: 100px; } .story.wide .stage.two .done .dn:last-child:nth-child(odd) { grid-column: 1 / -1; }
+        .story.wide .stage .mini { padding: 9px 12px; } .story.wide .stage .mini .num { font-size: 22px; margin-top: 5px; }
+        .story.wide .stage .card { padding: 10px 12px; } .story.wide .stage .bars { height: 44px; margin-top: 8px; }
+        .story.wide .stage .rr { padding-block: 5px; } .story.wide .stage .rr .ic, .story.wide .stage .end .ic { width: 40px; height: 40px; }
+        .story.wide .stage.s-end { text-align: left; align-items: center; gap: 34px; }
+        .story.wide .stage.s-end .slot { justify-content: flex-start !important; } .story.wide .stage.s-end .btns { justify-content: flex-start; }
+        .story.wide .sfan { height: 210px; margin: 0; }
+        .story.wide .sfan img { top: 44px; height: 122px; aspect-ratio: 1200 / 630; margin-left: -116px; transform: translateX(calc(var(--x) * 0.55)) rotate(var(--r)); transform-origin: 50% 160%; }
+        .story.still.wide { width: 800px; height: 420px; } .story.still.wide .frame { transform: none; border: 0; border-radius: 0; }
+        .story.still.wide .stop { top: 16px; } .story.still.wide .stage { padding-top: 50px; }
+        .story .x.mode svg { width: 15px; height: 15px; }
 
         /* ── Share images: ?card=link (1200 × 630) and ?card=story (1080 × 1920), each in three styles (&style=cover | blocks,
               none = card), rendered by scripts/render-recap.js ── */
@@ -581,6 +613,8 @@
             down: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13M6 11l6 6 6-6M4 21h16"/></svg>',
             x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
             play: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 4.5v15l12-7.5z"/></svg>',
+            tall: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><rect x="7" y="3" width="10" height="18" rx="2"/></svg>',
+            wide: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="2"/></svg>',
             again: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5"/></svg>' };
 
         const byTime = R.rankBy === 'time';
@@ -830,34 +864,36 @@
         ].filter(Boolean);
 
         // ── Story slides: each one a full card, shown in the story and rendered as a picture. Slides with nothing to show are left out ──
-        const slidePic = key => `${BASE}memory-card/share/${R.year}-slide-${key}.jpg`;
+        const slideFile = (key, wide) => `${R.year}-slide-${key}${wide ? '-wide' : ''}.jpg`;
+        const slidePic = (key, wide) => `${BASE}memory-card/share/${slideFile(key, wide)}`;
+        const DESK = matchMedia('(min-width: 900px) and (min-aspect-ratio: 5/4)');      // where the story and its pictures go wide
         const count = v => { const d = String(v).replace(/\D/g, ''); return /^[\d,.\s]+$/.test(String(v)) && +d >= 10 ? ` data-count="${d}"` : ''; };
         const uIcon = u => img([sized(u.game, u.icon, 128), sized(u.game, u.game.icon, 128)], 'ic') || '<span class="ic"></span>';
         const sRare = u => `<div class="rr sa">${uIcon(u)}<div style="min-width:0"><h3>${esc(u.name)}</h3><p><img src="${ICON[u.game.platform]}" alt=""><span>${esc(u.game.name)} · ${day(u.day)}</span></p></div>
             <div class="pct"><div class="num">${u.pct}%</div><span>of players</span></div></div>`;
         const sEnd = (u, label) => !u ? '' : `<div class="end sa">${uIcon(u)}<div style="min-width:0"><div class="px">${label} · ${day(u.day)}</div><h3>${esc(u.name)}</h3><p>${esc(u.game.name)}</p></div></div>`;
-        const sTiles = (list, max) => { const rows = Math.ceil(Math.min(list.length, max) / 2);
-            return `<div class="done" style="--th:${Math.min(180, Math.floor(540 / rows))}px">${list.slice(0, max).map(g => tileHtml(g, 'div', 'sa pop')).join('')}</div>${list.length > max ? `<p class="lead sa">and ${list.length - max} more</p>` : ''}`; };
+        const sTiles = (list, max) => { const shown = Math.min(list.length, max), rows = Math.ceil(shown / 2), wrows = shown > 4 ? 2 : 1;      // wide: up to four across
+            return `<div class="done" style="--th:${Math.min(180, Math.floor(540 / rows))}px;--thw:${wrows > 1 ? 128 : 240}px;--cw:${Math.ceil(shown / wrows)}">${list.slice(0, max).map(g => tileHtml(g, 'div', 'sa pop')).join('')}</div>${list.length > max ? `<p class="lead sa">and ${list.length - max} more</p>` : ''}`; };
         const fewDone = R.completions.length > 0 && R.completions.length < 3;      // too few for a slide of their own: they join the rarest finds
         const tierLine = `${T.completed ? `★ ${T.completed} ` : ''}${T.beaten ? `⚑ ${T.beaten}` : ''}`;
         const SLIDES = [
-            { key: 'year', name: 'The year', html: `<div class="slot px sa"><i></i>Slot ${slotNo} <b>of ${YEARS.length} · ${R.partial ? `so far, to ${day(R.asOf)}` : 'year complete'}</b></div>
+            { key: 'year', name: 'The year', two: true, html: `<div class="hf1"><div class="slot px sa"><i></i>Slot ${slotNo} <b>of ${YEARS.length} · ${R.partial ? `so far, to ${day(R.asOf)}` : 'year complete'}</b></div>
                 <div class="year sa yr"${yearArt}>${R.year}</div><h2 class="sa">${esc(R.user.name)}’s year in games</h2>
-                <div class="title sa"><div class="px">Title earned</div><h2>${esc(R.title.name)}</h2><p>${esc(R.title.why)}</p></div>
-                <div class="snums">${headline.map(h => `<div class="snum sa pop"><div class="num"><span${count(h.v)}>${h.v}</span>${h.unit ? '<small>hours</small>' : ''}</div><span>${h.lab}</span></div>`).join('')}</div>
+                <div class="title sa"><div class="px">Title earned</div><h2>${esc(R.title.name)}</h2><p>${esc(R.title.why)}</p></div></div>
+                <div class="hf2"><div class="snums">${headline.map(h => `<div class="snum sa pop"><div class="num"><span${count(h.v)}>${h.v}</span>${h.unit ? '<small>hours</small>' : ''}</div><span>${h.lab}</span></div>`).join('')}</div>
                 ${plats.length > 1 ? `<div class="splat sa"><div class="split">${plats.map(p => `<i style="flex:${Math.max(T.byPlatform[p], 0.01)};background:${PCOLOR[p]}"></i>`).join('')}</div>
                     <p>${plats.map(p => `<span><img src="${ICON[p]}" alt=""><b>${n(T.byPlatform[p])}</b> unlocks</span>`).join('')}</p></div>` : ''}
-                <div class="sa wipe">${strip()}</div><p class="lead sa">${n(T.activeDays)} of ${daysSoFar} days played</p>` },
-            top1 && { key: 'top', name: listName, html: `<div class="shead sa"><h2>${listName}</h2><span class="px">Top ${R.top.length}</span></div>
+                <div class="sa wipe">${strip()}</div><p class="lead sa">${n(T.activeDays)} of ${daysSoFar} days played</p></div>` },
+            top1 && { key: 'top', name: listName, two: R.top.length > 1, html: `<div class="hf1"><div class="shead sa"><h2>${listName}</h2><span class="px">Top ${R.top.length}</span></div>
                 <div class="feat sa">${img(bigArt(top1), 'art' + (pix(top1) ? ' pixart' : ''))}<div class="rank"><small>Save file</small>01</div>
                     <div class="in"><div class="tags">${platTag(top1)}${tierTag(top1.tier)}</div><h3>${esc(top1.name)}</h3>
                     <div class="facts">${[...gameFacts(top1), top1.sessions ? { v: n(top1.sessions), l: plural(top1.sessions, 'session') } : null, top1.total ? { v: `${top1.unlockedAll ?? top1.unlocks}/${top1.total}`, l: 'achievements' } : null]
-                        .filter(Boolean).map(f => `<div class="fact"><div class="num">${f.v}</div><span>${f.l}</span></div>`).join('')}</div></div></div>
-                <div class="rows">${R.top.slice(1).map((g, i) => rowHtml(g, i + 2, 'div', 'sa')).join('')}</div>` },
+                        .filter(Boolean).map(f => `<div class="fact"><div class="num">${f.v}</div><span>${f.l}</span></div>`).join('')}</div></div></div></div>
+                ${R.top.length > 1 ? `<div class="hf2"><div class="rows">${R.top.slice(1).map((g, i) => rowHtml(g, i + 2, 'div', 'sa')).join('')}</div></div>` : ''}` },
             R.completions.length >= 3 && { key: 'done', name: 'Seen through', html: `<div class="shead sa"><h2>Seen through</h2><span class="px">${tierLine}</span></div>${sTiles(R.completions, 8)}` },
-            T.unlocks && { key: 'blocks', name: 'Blocks', html: `<div class="shead sa"><h2>${n(T.activeDays)} blocks used</h2><span class="px">of ${daysSoFar} days</span></div>
-                <div class="sa wipe">${strip()}</div><div class="duo">${minis('sa pop')}</div>
-                <div class="duo"><div class="card sa"><h3>Time of day</h3><div class="big">${esc(R.dayPart.label)}<small>${R.dayPart.pct}% of unlocks</small></div>
+            T.unlocks && { key: 'blocks', name: 'Blocks', two: true, html: `<div class="hf1"><div class="shead sa"><h2>${n(T.activeDays)} blocks used</h2><span class="px">of ${daysSoFar} days</span></div>
+                <div class="sa wipe">${strip()}</div><div class="duo">${minis('sa pop')}</div></div>
+                <div class="hf2"><div class="duo"><div class="card sa"><h3>Time of day</h3><div class="big">${esc(R.dayPart.label)}<small>${R.dayPart.pct}% of unlocks</small></div>
                         <div class="bars">${R.hours.map((v, h) => `<div><i class="${hot.includes(h) ? 'hot' : ''}" style="height:${100 * v / maxHour}%"></i></div>`).join('')}</div>
                         <div class="axis sparse"><span>00</span><span>06</span><span>12</span><span>18</span><span>23</span></div></div>
                     <div class="card sa"><h3>Day of the week</h3><div class="big">${WEEKDAYS[topWd]}s<small>${Math.round(100 * R.weekdays[topWd] / T.unlocks)}% of unlocks</small></div>
@@ -865,18 +901,24 @@
                         <div class="axis">${WEEKDAYS.map(d => `<span>${d[0]}</span>`).join('')}</div></div></div>
                 <div class="card sa"><h3>Month by month</h3>
                     <div class="bars">${MONTHS.map((_, m) => `<div>${['xbox', 'steam', 'ra'].filter(p => R.months[m][p]).map(p => `<i class="${p}" style="height:${100 * R.months[m][p] / maxMonth}%"></i>`).join('') || '<i style="height:0;background:rgba(255,255,255,0.12)"></i>'}</div>`).join('')}</div>
-                    <div class="axis">${MONTHS.map(m => `<span>${m[0]}</span>`).join('')}</div></div>` },
-            (R.rarest.length || R.first) && { key: 'rare', name: 'Rarest finds', html: `${fewDone ? `<div class="shead sa"><h2>Seen through</h2><span class="px">${tierLine}</span></div>${sTiles(R.completions, 2)}` : ''}
-                ${R.rarest.length ? `<div class="shead sa"><h2>Rarest finds</h2><span class="px">One per game</span></div><div class="rare">${R.rarest.slice(0, fewDone ? 3 : 5).map(sRare).join('')}</div>` : ''}
-                ${R.first ? `${R.rarest.length ? '' : '<div class="shead sa"><h2>Bookends</h2></div>'}<div class="ends">${sEnd(R.first, 'First unlock')}${sEnd(R.last, R.partial ? 'Latest unlock' : 'Last unlock')}</div>` : ''}` },
+                    <div class="axis">${MONTHS.map(m => `<span>${m[0]}</span>`).join('')}</div></div></div>` },
+            (R.rarest.length || R.first) && (() => {
+                // Up to three blocks (finished games when too few for their own slide, rarest finds, first / last unlock) in two halves;
+                // the bookends always come last when stacked (.late), and get a heading of their own only when wide (.wonly)
+                const seen = fewDone ? `<div class="shead sa"><h2>Seen through</h2><span class="px">${tierLine}</span></div>${sTiles(R.completions, 2)}` : '';
+                const rare = R.rarest.length ? `<div class="shead sa"><h2>Rarest finds</h2><span class="px">One per game</span></div><div class="rare">${R.rarest.slice(0, fewDone ? 3 : 5).map(sRare).join('')}</div>` : '';
+                const ends = R.first ? `<div class="late"><div class="shead sa${rare ? ' wonly' : ''}"><h2>Bookends</h2></div><div class="ends">${sEnd(R.first, 'First unlock')}${sEnd(R.last, R.partial ? 'Latest unlock' : 'Last unlock')}</div></div>` : '';
+                const halves = seen ? [seen + ends, rare] : rare ? [rare, ends] : [ends, ''];
+                return { key: 'rare', name: 'Rarest finds', two: !!halves[1], html: `<div class="hf1">${halves[0]}</div>${halves[1] ? `<div class="hf2">${halves[1]}</div>` : ''}` };
+            })(),
         ].filter(Boolean);
         const storyFrame = (inner, chrome = '') => `${top1 ? img(bigArt(top1), 'sbg') : ''}${chrome}${inner}
             <div class="sfoot"><b>${esc(R.user.name)}’s ${R.year}</b><span>${esc(D.site.replace(/^https?:\/\//, ''))}/memory-card/${R.year}</span></div>`;
         if (CARD === 'slide') {
-            const sl = SLIDES.find(x => x.key === Q.get('s')) ?? SLIDES[0];
+            const sl = SLIDES.find(x => x.key === Q.get('s')) ?? SLIDES[0], wide = Q.has('wide');
             document.body.classList.add('shot');
             document.body.dataset.slides = SLIDES.map(x => x.key).join(',');       // the renderer reads the list from here
-            document.getElementById('app').innerHTML = `<div class="story still"><div class="frame">${storyFrame(`<div class="stage s-${sl.key}">${sl.html}</div>`, `<div class="stop">${brand}</div>`)}</div></div>`;
+            document.getElementById('app').innerHTML = `<div class="story still${wide ? ' wide' : ''}"><div class="frame">${storyFrame(`<div class="stage s-${sl.key}${sl.two ? ' two' : ''}">${sl.html}</div>`, `<div class="stop">${brand}</div>`)}</div></div>`;
             document.querySelectorAll('img.pixart').forEach(i => { i.style.imageRendering = 'pixelated'; });
             shotReady();
             return;
@@ -936,10 +978,11 @@
                 return 'shared';
             } catch (err) { return err?.name === 'AbortError' ? 'cancelled' : 'failed'; }
         };
-        const openShare = (from = 'story') => {
-            // Three sections, one picture picked from thumbnails in each: the tall and the wide picture in their five styles, and the story's slides
+        const openShare = (from = 'story', wide = DESK.matches) => {
+            // Three sections, one picture picked from thumbnails in each: the tall and the wide picture in their five styles, and the story's
+            // slides (wide ones on a desktop, or when the story was playing wide)
             let kind = from, pick = '';
-            const picks = () => kind === 'slides' ? SLIDES.map(x => ({ id: `slide-${x.key}`, name: x.name, url: slidePic(x.key), file: `${R.year}-slide-${x.key}.jpg` }))
+            const picks = () => kind === 'slides' ? SLIDES.map(x => ({ id: `slide-${x.key}`, name: x.name, url: slidePic(x.key, wide), file: slideFile(x.key, wide) }))
                 : STYLES.map(([id, name]) => ({ id, name, url: imageUrl(kind, id), file: picName(kind, id) }));
             const el = document.createElement('div');
             el.className = 'scrim';
@@ -958,7 +1001,7 @@
                 el.querySelectorAll('[data-kind]').forEach(b => b.classList.toggle('on', b.dataset.kind === kind));
                 if (drawn !== kind) {
                     drawn = kind;
-                    thumbs.className = `thumbs k-${kind}`;
+                    thumbs.className = `thumbs k-${kind}${kind === 'slides' && wide ? ' k-wide' : ''}`;
                     thumbs.innerHTML = list.map(x => `<button class="th" data-pick="${x.id}" aria-label="${esc(x.name)}" title="${esc(x.name)}"><img src="${x.url}" alt="" loading="lazy" onerror="this.parentNode.remove()"></button>`).join('');
                 }
                 thumbs.querySelectorAll('.th').forEach(b => b.classList.toggle('on', b.dataset.pick === pick));
@@ -991,18 +1034,27 @@
         // ── Story: the slides played back. Each bar on top fills while its slide shows and its end moves on; tap right / left
         //    to step, hold to pause. The share button sends the picture of the slide on screen; the last slide opens the Share sheet ──
         const openStory = () => {
-            const slides = [...SLIDES.map(x => ({ ...x, ms: 8000 })), { key: null, cls: 'end', ms: 8000, html: `<div class="sfan sa">${(n => SLIDES.slice(0, 3).map((x, i) => `<img src="${slidePic(x.key)}" alt="" style="--r:${(i - (n - 1) / 2) * 9}deg;--x:${(i - (n - 1) / 2) * 62}px;--i:${i}" onerror="this.remove()">`).join(''))(Math.min(3, SLIDES.length))}</div>
-                <div class="slot px sa" style="justify-content:center"><i></i>Slot ${slotNo} <b>of ${YEARS.length} · saved</b></div>
+            // Wide on a desktop, where a button in the top bar switches between the two shapes (remembered on this device)
+            let wide = DESK.matches && (() => { try { return localStorage.getItem('mc:storyShape') !== 'tall'; } catch { return true; } })();
+            const endHtml = () => `<div class="hf1"><div class="sfan sa">${(n => SLIDES.slice(0, 3).map((x, i) => `<img src="${slidePic(x.key, wide)}" alt="" style="--r:${(i - (n - 1) / 2) * 9}deg;--x:${(i - (n - 1) / 2) * 62}px;--i:${i}" onerror="this.remove()">`).join(''))(Math.min(3, SLIDES.length))}</div></div>
+                <div class="hf2"><div class="slot px sa" style="justify-content:center"><i></i>Slot ${slotNo} <b>of ${YEARS.length} · saved</b></div>
                 <h2 class="sa">${R.year} saved</h2>
                 <p class="lead sa">${esc(R.title.name)} · ${headline.slice(0, 3).map(h => `<b>${h.v}</b> ${h.unit ? 'hours' : h.lab.toLowerCase()}`).join(' · ')}</p>
-                <div class="btns sa"><button class="btn go" data-share>${svg.share}Share ${R.year}</button></div>` }];
+                <div class="btns sa"><button class="btn go" data-share>${svg.share}Share ${R.year}</button></div></div>`;
+            const slides = [...SLIDES.map(x => ({ ...x, ms: 8000 })), { key: null, two: true, ms: 8000, get html() { return endHtml(); } }];
             let at = 0, held = false, holdTimer = 0, toastTimer = 0;
             const el = document.createElement('div');
             el.className = 'story';
             el.innerHTML = `<div class="frame" role="dialog" aria-modal="true" aria-label="${R.year} played back">${storyFrame('', `
                 <div class="sbars">${slides.map(() => '<i><b></b></i>').join('')}</div>
-                <div class="stop">${brand}<button class="x" data-shot aria-label="Share this card">${svg.share}</button><button class="x" data-close aria-label="Close">${svg.x}</button></div>`)}</div>`;
-            const frame = el.firstElementChild, foot = el.querySelector('.sfoot'), bars = [...el.querySelectorAll('.sbars i')], shot = el.querySelector('[data-shot]');
+                <div class="stop">${brand}<button class="x mode" data-mode ${DESK.matches ? '' : 'hidden'}></button><button class="x" data-shot aria-label="Share this card">${svg.share}</button><button class="x" data-close aria-label="Close">${svg.x}</button></div>`)}</div>`;
+            const frame = el.firstElementChild, foot = el.querySelector('.sfoot'), bars = [...el.querySelectorAll('.sbars i')], shot = el.querySelector('[data-shot]'), mode = el.querySelector('[data-mode]');
+            const fit = () => el.style.setProperty('--k', Math.min((innerWidth - 40) / 800, (innerHeight - 40) / 420, 1.7).toFixed(3));      // the wide frame is drawn at 800 × 420 and scaled
+            const shape = () => {
+                el.classList.toggle('wide', wide);
+                mode.innerHTML = wide ? svg.tall : svg.wide;
+                mode.setAttribute('aria-label', wide ? 'Tall cards' : 'Wide cards'); mode.title = wide ? 'Tall cards' : 'Wide cards';
+            };
             const go = k => {
                 if (k < 0 || k >= slides.length) return;
                 at = k;
@@ -1012,7 +1064,7 @@
                 el.style.setProperty('--dur', `${slides[at].ms}ms`);
                 frame.querySelectorAll('.stage').forEach(old => { old.classList.add('out'); setTimeout(() => old.remove(), 230); });
                 const stage = document.createElement('div');
-                stage.className = `stage s-${slides[at].key ?? 'end'}`;
+                stage.className = `stage s-${slides[at].key ?? 'end'}${slides[at].two ? ' two' : ''}`;
                 stage.innerHTML = slides[at].html;
                 stage.querySelectorAll('.sa').forEach((e, i) => e.style.setProperty('--i', i));
                 stage.querySelectorAll('img.pixart').forEach(i => { i.style.imageRendering = 'pixelated'; });
@@ -1027,11 +1079,11 @@
             };
             const sharePic = async key => {                               // the story waits while the share sheet is up
                 hold(true);
-                const got = await sendPic(slidePic(key), `memory-card-${R.year}-${key}.jpg`);
+                const got = await sendPic(slidePic(key, wide), `memory-card-${slideFile(key, wide)}`);
                 hold(false);
                 if (got === 'saved') toast('Picture saved'); else if (got === 'failed') toast('This picture isn’t built yet');
             };
-            const close = () => { el.remove(); document.documentElement.style.overflow = ''; document.removeEventListener('keydown', onKey); };
+            const close = () => { el.remove(); document.documentElement.style.overflow = ''; document.removeEventListener('keydown', onKey); removeEventListener('resize', fit); };
             const hold = on => { held = on; el.classList.toggle('paused', on); };
             const onKey = e => {
                 if (e.key === 'Escape') close();
@@ -1053,11 +1105,14 @@
                 const t = e.target.closest('button');
                 if (e.target === el || t?.dataset.close != null) return close();
                 if (t?.dataset.shot != null) return sharePic(slides[at].key);
-                if (t?.dataset.share != null) { close(); openShare('slides'); }
+                if (t?.dataset.mode != null) { wide = !wide; try { localStorage.setItem('mc:storyShape', wide ? 'wide' : 'tall'); } catch {} shape(); return go(at); }
+                if (t?.dataset.share != null) { close(); openShare('slides', wide); }
             });
             document.addEventListener('keydown', onKey);
             document.documentElement.style.overflow = 'hidden';
             document.body.append(el);
+            addEventListener('resize', fit);
+            fit(); shape();
             go(0);
         };
         document.addEventListener('click', e => {

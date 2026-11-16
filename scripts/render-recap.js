@@ -3,7 +3,7 @@
 //   memory-card/share/{YYYY}-link.jpg    1200 × 630, the link preview (og:image)
 //   memory-card/share/{YYYY}-story.jpg   1080 × 1920, the picture the page's Share sheet opens with
 //   …-{link,story}-{cover,blocks,shelf,title}.jpg   the other styles the Share sheet offers
-//   memory-card/share/{YYYY}-slide-{key}.jpg   the story's slides, 1080 × 1920
+//   memory-card/share/{YYYY}-slide-{key}.jpg   the story's slides, 1080 × 1920; …-slide-{key}-wide.jpg the same slides wide, 1200 × 630
 // Run after build-recap.js (it reads memory-card/years.json). No npm dependency: Chrome is driven over
 // --remote-debugging-pipe. Needs the network (fonts, game art).
 //   node scripts/render-recap.js [siteRoot] [year …]     (default: the repo, every year; CHROME=/path/to/chrome)
@@ -21,6 +21,7 @@ const STYLES = ['card', 'cover', 'blocks', 'shelf', 'title'];             // 'ca
 const CARDS = [{ kind: 'link', w: 1200, h: 630 }, { kind: 'story', w: 1080, h: 1920 }]
     .flatMap(c => STYLES.map(style => ({ ...c, style, query: `card=${c.kind}${style === 'card' ? '' : `&style=${style}`}`, name: `${c.kind}${style === 'card' ? '' : `-${style}`}` })));
 const SLIDE = { w: 450, h: 800, scale: 2.4 };            // a story slide at phone size, saved as 1080 × 1920
+const SLIDE_WIDE = { w: 800, h: 420, scale: 1.5 };       // the same slide in the story's desktop shape, saved as 1200 × 630
 const READY_TIMEOUT_MS = 25000;
 
 function findChrome() {
@@ -102,6 +103,7 @@ const server = http.createServer((req, res) => {
             await shoot(year, { ...SLIDE, query: 'card=slide', name: 'slide-year' });
             const keys = (await tab('Runtime.evaluate', { expression: `document.body?.dataset.slides ?? ''` })).result?.value ?? '';
             for (const key of keys.split(',').filter(k => k && k !== 'year')) await shoot(year, { ...SLIDE, query: `card=slide&s=${key}`, name: `slide-${key}` });
+            for (const key of keys.split(',').filter(Boolean)) await shoot(year, { ...SLIDE_WIDE, query: `card=slide&wide&s=${key}`, name: `slide-${key}-wide` });
         }
         const kb = fs.readdirSync(OUT).reduce((s, f) => s + fs.statSync(path.join(OUT, f)).size, 0) / 1024;
         console.log(`recap pictures: ${made} for ${years.length} years, share/ ${(kb / 1024).toFixed(1)} MB${failed ? `, ${failed} not settled` : ''}`);

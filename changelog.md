@@ -1,8 +1,20 @@
 # Changelog
 
+## v26.11.16
+
+Memory Card's story plays wide on a desktop, and every slide can be shared as a wide picture
+
+### Hub
+
+- new: **Memory Card** story opens wide on a desktop
+  Each slide is laid out in two halves to fill the screen. A button in the top bar switches back to the tall cards.
+- new: **Memory Card** story cards as wide pictures
+  Sharing a slide while the story plays wide sends a 1200 × 630 picture, and the Share sheet's Story section offers the wide ones on a desktop.
+- fix: **Memory Card** rarest finds in the story no longer squeeze into two columns on a desktop
+
 ## v26.11.15
 
-Memory Card: a showcase page for every year in games, played back as slides, with pictures in three styles and a link to share. The first two Legend of Heroes games form a new Iselhasa sub-series
+Memory Card: a showcase page for every year in games, played back as slides, with pictures in five styles and a link to share. The first two Legend of Heroes games form a new Iselhasa sub-series
 
 ### RetroAchievements
 
