@@ -18,6 +18,7 @@ Memory Card's story opens every slide with a line of moving type and plays diffe
   About 1,700 lines to draw from, and covers that change their typeface, layout, tilt, pattern and the way the number is marked, some with a giant ghost number or a scrolling band.
 - improved: **Memory Card** year colour comes from the year's top game
   Each year takes the main colour of its top game's art, so 2020 is the yellow of Puyo Puyo Tetris. Before, six colours took turns by year number.
+- fix: **Memory Card** name in the top bar no longer wraps on narrow phones
 - improved: **Memory Card** for the running year opens in July
   A year gets its card once six months of it are done; until then the latest card is last year's.
 - fix: **Memory Card** rarest finds in the story no longer squeeze into two columns on a desktop
