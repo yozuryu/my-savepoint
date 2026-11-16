@@ -27,6 +27,13 @@ Memory Card's story opens every slide with a line of moving type and plays diffe
 
 - improved: **Data runs** say plainly when no platform keys are set
   The same check as the Savepoint template, so both stay in step. It never triggers here: this hub has its keys and its data.
+- improved: **RetroAchievements** run no longer loads the unused Firebase sync
+  It was switched off long ago; the code and its dependency are gone.
+
+### Structure
+
+- improved: **Empty pages** say "No data yet" instead of a load error
+- improved: **README** rewritten for the site as it is now, with new screenshots
 
 ## v26.11.15
 
