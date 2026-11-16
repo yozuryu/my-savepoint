@@ -12,8 +12,10 @@ Memory Card's story opens every slide with a line of moving type and plays diffe
   Sharing a slide while the story plays wide sends a 1200 × 630 picture, and the Share sheet's Story section offers the wide ones on a desktop.
 - new: **Memory Card** story slides open on a cover with a line of moving type
   A full-colour card with one short line about the year, then it opens through a shape onto the slide.
-- new: **Memory Card** story plays differently every year
-  The lines, colours, shapes and the way pieces fly in are drawn from the year, so no two years match.
+- new: **Memory Card** story plays differently every year, and for every player
+  The lines, colours, shapes and the way pieces fly in are drawn from the year and your name, so no two years match and no two players share a story.
+- new: **Memory Card** story covers in many more lines and styles
+  About 1,700 lines to draw from, and covers that change their typeface, layout, tilt, pattern and the way the number is marked, some with a giant ghost number or a scrolling band.
 - improved: **Memory Card** for the running year opens in July
   A year gets its card once six months of it are done; until then the latest card is last year's.
 - fix: **Memory Card** rarest finds in the story no longer squeeze into two columns on a desktop

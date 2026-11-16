@@ -392,14 +392,32 @@
         @keyframes sfan { from { opacity: 0; transform: translateX(0) rotate(0) scale(0.9); } } .stage .btns { display: flex; gap: 8px; justify-content: center; }
         .stage .btn { height: 42px; padding: 0 18px; font-size: 14px; }
         /* Cover: every slide opens on a full-colour card with one line of big moving type; it arrives through one shape
-           (--c0 → --c1) and leaves through another (--o1 → --o0) to show the slide. Three colourings (.p0 the year's colour,
-           .p1 dark, .p2 the colour deepened), eight ways for the words to land (.k-*), flat shapes off the edges */
+           (--c0 → --c1) and leaves through another (--o1 → --o0) to show the slide. Five colourings (.p0 the year's colour,
+           .p1 dark, .p2 the colour deepened, .p3 paper, .p4 a gradient; --cs is the solid one for text on a highlight), a
+           backdrop pattern (.t-*), sixteen ways for the words to land (.k-*), five layouts (.a-*), three typefaces (.f-*),
+           three letter cases (.c-*), five highlights (.h-*), a ghost word or a scrolling band, flat shapes off the edges */
         .scover { position: absolute; inset: 0; z-index: 2; overflow: hidden; display: grid; place-items: center; container-type: size; pointer-events: none;
             padding: calc(70px + env(safe-area-inset-top, 0px)) 22px calc(50px + env(safe-area-inset-bottom, 0px)); background: var(--cb); color: var(--ci);
             animation: scin 460ms cubic-bezier(.7, 0, .2, 1) backwards, scout 520ms cubic-bezier(.7, 0, .2, 1) var(--hold, 2100ms) forwards; }
-        .scover.p0 { --cb: rgb(var(--a)); --ci: #0b0d14; --ch: #fff; }
-        .scover.p1 { --cb: #0b0d14; --ci: #fff; --ch: rgb(var(--a)); }
-        .scover.p2 { --cb: color-mix(in srgb, rgb(var(--a)) 40%, #05060a); --ci: #fff; --ch: color-mix(in srgb, rgb(var(--a)) 45%, #fff); }
+        .scover.p0 { --cb: rgb(var(--a)); --cs: rgb(var(--a)); --ci: #0b0d14; --ch: #fff; }
+        .scover.p1 { --cb: #0b0d14; --cs: #0b0d14; --ci: #fff; --ch: rgb(var(--a)); }
+        .scover.p2 { --cs: color-mix(in srgb, rgb(var(--a)) 40%, #05060a); --cb: var(--cs); --ci: #fff; --ch: color-mix(in srgb, rgb(var(--a)) 45%, #fff); }
+        .scover.p3 { --cs: color-mix(in srgb, rgb(var(--a)) 10%, #f6f4ef); --cb: var(--cs); --ci: #0b0d14; --ch: color-mix(in srgb, rgb(var(--a)) 62%, #0b0d14); }
+        .scover.p4 { --cs: #07080d; --cb: linear-gradient(var(--ga, 160deg), color-mix(in srgb, rgb(var(--a)) 78%, #05060a), #07080d 85%); --ci: #fff; --ch: color-mix(in srgb, rgb(var(--a)) 40%, #fff); }
+        .scover::before { content: ''; position: absolute; inset: 0; --tp: color-mix(in srgb, var(--ci) 9%, transparent); }
+        .scover.t-dots::before { background: radial-gradient(circle, var(--tp) 1.5px, transparent 2px) 0 0 / 16px 16px; }
+        .scover.t-grid::before { background: linear-gradient(var(--tp) 1px, transparent 1px) 0 0 / 26px 26px, linear-gradient(90deg, var(--tp) 1px, transparent 1px) 0 0 / 26px 26px; }
+        .scover.t-stripes::before { background: repeating-linear-gradient(-45deg, var(--tp) 0 2px, transparent 2px 14px); }
+        .scover.t-scan::before { background: repeating-linear-gradient(0deg, var(--tp) 0 1px, transparent 1px 5px); }
+        .scover.t-rings::before { background: repeating-radial-gradient(circle at 50% 115%, var(--tp) 0 2px, transparent 2px 24px); }
+        .scover.p3::after { content: ''; position: absolute; inset: 0 0 auto; height: 96px; background: linear-gradient(rgba(9, 11, 18, 0.5), transparent); }      /* the top bar is white: keep it readable on paper */
+        .sghost { position: absolute; left: 50%; top: var(--gy, 50%); font: 800 54cqmin/1 var(--display); text-transform: uppercase; white-space: nowrap; color: transparent; -webkit-text-stroke: 1.5px var(--ci);
+            opacity: 0.13; rotate: var(--gr, 0deg); translate: -50% -50%; animation: sghost 5s linear backwards; }
+        @keyframes sghost { from { translate: -38% -50%; opacity: 0; } 12% { opacity: 0.13; } to { translate: -62% -50%; } }
+        .sband { position: absolute; left: -20%; right: -20%; top: var(--by, 90%); padding: 6px 0 5px; overflow: hidden; white-space: nowrap; rotate: var(--br, -4deg); background: var(--ch); color: var(--cs);
+            font: 400 11px/1 var(--pixel); letter-spacing: 0.06em; text-transform: uppercase; animation: fade 300ms ease-out 200ms backwards; }
+        .sband span { display: inline-block; animation: sband 14s linear infinite; }
+        @keyframes sband { to { transform: translateX(-50%); } }
         @keyframes scin { from { clip-path: var(--c0); } to { clip-path: var(--c1); } }
         @keyframes scout { from { clip-path: var(--o1); } to { clip-path: var(--o0); } }
         .sline { position: relative; z-index: 1; width: 100%; text-align: center; }
@@ -409,6 +427,16 @@
         .sline .w i { display: inline-block; font-style: normal; color: var(--wc, inherit); animation: 560ms cubic-bezier(.2, .8, .2, 1) calc(260ms + var(--w) * var(--ks, 90ms)) backwards; }
         .sline .w.hl { --wc: var(--ch); }
         .sline u { text-decoration: none; color: var(--ci); -webkit-text-stroke-color: var(--ci); }
+        .sline h2 { rotate: var(--tilt, 0deg); }
+        .sline.a-l { text-align: left; } .sline.a-r { text-align: right; }
+        .sline.a-stack .w, .sline.a-stair .w { display: block; } .sline.a-stair { text-align: left; } .sline.a-stair .w { margin-left: calc(var(--w) * 7%); }
+        .sline.c-low h2 { text-transform: lowercase; } .sline.c-as h2 { text-transform: none; }
+        .sline.f-px h2 { font-family: var(--pixel); font-weight: 700; letter-spacing: -0.05em; line-height: 1.12; }
+        .sline.f-body h2 { font-family: var(--body); font-weight: 900; font-style: italic; letter-spacing: -0.03em; }
+        .sline.h-box .w.hl { --wc: var(--cs); } .sline.h-box .w.hl i { background: var(--ch); padding: 0 0.14em; border-radius: 0.06em; } .sline.h-box .w.hl u { color: inherit; -webkit-text-stroke-color: currentColor; }
+        .sline.h-bar .w.hl { --wc: var(--ci); } .sline.h-bar .w.hl i { box-shadow: inset 0 -0.17em 0 var(--ch); }
+        .sline.h-out .w.hl i { color: transparent !important; -webkit-text-stroke: 0.035em var(--ch); }
+        .sline.h-big .w.hl.sm i { font-size: 1.32em; line-height: 0.96; }
         .k-rise .w { overflow: hidden; padding-block: 0.06em; } .k-rise .w i { animation-name: kwrise; }
         .k-slam .w i { animation-name: kwslam; animation-duration: 380ms; animation-timing-function: cubic-bezier(.5, 0, .2, 1); }
         .k-flip .w i { animation-name: kwflip; transform-origin: 50% 100%; }
@@ -417,6 +445,14 @@
         .k-spin .w i { animation-name: kwspin; animation-timing-function: cubic-bezier(.3, 1.5, .5, 1); }
         .k-fill .w i { animation-name: kwfill; animation-duration: 900ms; animation-timing-function: linear; -webkit-text-stroke: 1.5px var(--wc, var(--ci)); }
         .k-skew .w i { animation-name: kwskew; }
+        .k-blur .w i { animation-name: kwblur; animation-duration: 700ms; }
+        .k-pop .w i { animation-name: kwpop; animation-duration: 460ms; animation-timing-function: cubic-bezier(.3, 1.7, .5, 1); }
+        .k-roll .w i { animation-name: kwroll; transform-origin: 0 100%; animation-timing-function: cubic-bezier(.3, 1.4, .5, 1); }
+        .k-wave .w i { animation-name: kwwave; animation-timing-function: cubic-bezier(.3, 1.6, .5, 1); }
+        .k-stretch .w i { animation-name: kwstretch; transform-origin: 0 50%; }
+        .k-type .w i { animation-name: kwtype; animation-duration: 420ms; animation-timing-function: steps(5, end); }
+        .k-glitch .w i { animation-name: kwglitch; animation-duration: 440ms; animation-timing-function: steps(1, end); }
+        .k-peel .w i { animation-name: kwpeel; transform-origin: 0 50%; }
         @keyframes kwrise { from { transform: translateY(108%); } }
         @keyframes kwslam { from { transform: scale(2.6); opacity: 0; } }
         @keyframes kwflip { from { transform: perspective(400px) rotateX(-92deg); opacity: 0; } }
@@ -425,6 +461,14 @@
         @keyframes kwspin { from { transform: scale(0.4) rotate(calc(var(--sg) * -16deg)); opacity: 0; } 50% { opacity: 1; } }
         @keyframes kwfill { 0% { color: transparent; opacity: 0; transform: scale(0.9); } 25% { opacity: 1; transform: none; } 65% { color: transparent; } }
         @keyframes kwskew { from { transform: translateX(-34px) skewX(-18deg); opacity: 0; } }
+        @keyframes kwblur { from { filter: blur(16px); transform: scale(1.18); opacity: 0; } }
+        @keyframes kwpop { from { transform: scale(0); } }
+        @keyframes kwroll { from { transform: rotate(calc(var(--sg) * 70deg)) translateY(30px); opacity: 0; } 50% { opacity: 1; } }
+        @keyframes kwwave { from { transform: translateY(calc(var(--sg) * 56px)); opacity: 0; } 50% { opacity: 1; } }
+        @keyframes kwstretch { from { transform: scaleX(2.4); opacity: 0; } }
+        @keyframes kwtype { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 -10% 0 0); } }
+        @keyframes kwglitch { 0% { opacity: 0; } 15% { opacity: 1; transform: translate(-9px, 3px) skewX(22deg); } 35% { transform: translate(7px, -3px) skewX(-16deg); clip-path: inset(0 0 45% 0); } 55% { transform: translate(-4px, 1px); clip-path: inset(40% 0 0 0); } 75% { transform: translate(3px, 0); clip-path: none; } }
+        @keyframes kwpeel { from { transform: perspective(500px) rotateY(-88deg); opacity: 0; } }
         /* Shapes: big flat pieces hanging off the edges, on the cover and (.sdeco, faint) drifting behind the slide */
         .sdeco { position: absolute; inset: 0; z-index: -1; overflow: hidden; container-type: size; pointer-events: none; }
         .shp { position: absolute; left: var(--x); top: var(--y); width: var(--s); height: var(--s); margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
@@ -986,45 +1030,126 @@
             ['inset(0 50% 0 50%)', 'inset(0 0 0 0)'], ['inset(50% 0 50% 0)', 'inset(0 0 0 0)'],
             ['polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%)', 'polygon(50% -100%, 200% 50%, 50% 200%, -100% 50%)'],
             ['polygon(0% 0%, 0% 0%, -60% 100%, -60% 100%)', 'polygon(0% 0%, 160% 0%, 100% 100%, -60% 100%)'], ['polygon(100% 0%, 100% 0%, 160% 100%, 160% 100%)', 'polygon(100% 0%, -60% 0%, 0% 100%, 160% 100%)']];
-        const KINDS = ['rise', 'slam', 'flip', 'side', 'drop', 'spin', 'fill', 'skew'];
+        const KINDS = ['rise', 'slam', 'flip', 'side', 'drop', 'spin', 'fill', 'skew', 'blur', 'pop', 'roll', 'wave', 'stretch', 'type', 'glitch', 'peel'];
         const SHAPES = ['circle', 'ring', 'quarter', 'half', 'pill', 'square', 'tri', 'plus', 'star', 'blocks'];
-        const INKS = [['rgba(9, 11, 18, 0.16)', 'rgba(255, 255, 255, 0.3)'], ['rgb(var(--a))', 'rgba(255, 255, 255, 0.1)'], ['rgba(var(--a), 0.6)', 'rgba(0, 0, 0, 0.28)']];       // shape colours per cover colouring
+        const INKS = [['rgba(9, 11, 18, 0.16)', 'rgba(255, 255, 255, 0.3)'], ['rgb(var(--a))', 'rgba(255, 255, 255, 0.1)'], ['rgba(var(--a), 0.6)', 'rgba(0, 0, 0, 0.28)'],
+            ['rgba(var(--a), 0.85)', 'rgba(9, 11, 18, 0.08)'], ['rgba(255, 255, 255, 0.12)', 'rgba(var(--a), 0.5)']];       // shape colours per cover colouring
         const shapesHtml = (r, spots, inks, [s0, s1], drift) => shuffled(spots, r).slice(0, drift ? 2 : 3).map(([x, y], j) => {
             const size = Math.round(s0 + r() * (s1 - s0));
             return `<span class="shp" style="--x:${x + Math.round(r() * 12 - 6)}%;--y:${y + Math.round(r() * 12 - 6)}%;--s:${size}cqmin;--r:${Math.round(r() * 360)}deg;--j:${j};--sc:${inks[j % inks.length]};--mx:${Math.round((r() - 0.5) * drift)}px;--my:${Math.round((r() - 0.5) * drift)}px;--mr:${Math.round((r() - 0.5) * (drift ? 70 : 24))}deg;--sd:${(7 + r() * 5).toFixed(1)}s"><i class="${SHAPES[Math.floor(r() * SHAPES.length)]}"></i></span>`;
         }).join('');
-        // The lines: [fits this year?, text]. One per cover, taken in turn by year so neighbouring years never open a slide alike.
-        // Written to no one in particular, so they read right to the owner and to a visitor. <b> marks the word in the highlight colour
-        const B = v => `<b>${v}</b>`, short = g => g && g.name.length <= 24, wk = R.weekdays.filter(Boolean).length > 1;
+        // The lines, one per cover. Each slide has a pool of whole lines ([fits this year?, text]) and a second kind put
+        // together from a fact (a number of the year) and a tag (a short closing phrase), so the pools multiply. Every owner
+        // has their own order of every pool (shuffled by name) and walks it by year: two owners never share an order, and
+        // one owner's neighbouring years never open a slide alike. Written to no one in particular, so they read right to
+        // the owner and to a visitor. <b> marks the word in the highlight colour
+        const B = v => `<b>${v}</b>`, short = g => g && g.name.length <= 24, wk = R.weekdays.filter(Boolean).length > 1, Y = B(R.year), nm = B(esc(top1?.name ?? ''));
+        const dn = R.completions.length, rr = R.rarest.length, r0 = R.rarest[0], dayPct = Math.round(100 * T.activeDays / Math.max(daysSoFar, 1)), wd = WEEKDAYS[topWd], part = esc(R.dayPart?.label ?? '');
+        const ANY = ['Well played.', 'Not bad at all.', 'Worth it.', 'Good times.', 'Respect.', 'Quite a run.', 'No regrets.', 'Time well spent.', 'Remember this.', 'And it shows.', 'Proper effort.', 'Solid.',
+            'Nicely done.', 'That counts.', 'Keep that energy.', 'On the record.'];
         const LINES = {
-            year: [[1, `${B(R.year)}. Press start.`], [1, `One year. One card. ${B(R.year)}.`], [T.unlocks >= 100, `${B(n(T.unlocks))} unlocks. Every one earned.`], [T.activeDays >= 60, `${B(T.activeDays)} days of showing up.`],
-                [1, `Save file found: ${B(R.year)}.`], [1, `A year well played.`], [T.games >= 20, `${B(T.games)} games. No regrets.`], [T.minutes >= 6000, `${B(hrs(T.minutes))} hours. Worth every minute.`],
-                [1, `Slot ${B(slotNo)}. Here is what got saved.`], [T.unlocks < 40, `A small year. It still counts.`], [R.partial, `Still going. ${B(R.year)} so far.`], [!R.partial, `Rewind to ${B(R.year)}.`],
-                [!R.partial, `Remember ${B(R.year)}? The card does.`], [T.newGames >= 10, `${B(T.newGames)} new games. Curiosity wins.`], [1, `Now loading: ${B(R.year)}.`], [T.unlocks >= 40, `Progress is progress. ${B(n(T.unlocks))} times.`]],
-            top: [[1, `One game ran the year.`], [short(top1), `${B(esc(top1?.name))}. Obviously.`], [top1?.minutes >= 600, `${B(hrs(top1?.minutes))} hours in one world.`], [1, `Favourites earn their spot.`],
-                [1, `The save that kept getting loaded.`], [short(top1), `Top of the stack: ${B(esc(top1?.name))}.`], [top1?.sessions >= 10, `${B(top1?.sessions)} sessions. Always one more.`], [1, `Some games just stick.`],
-                [top1?.unlocks >= 20, `${B(top1?.unlocks)} unlocks from a single game.`], [byTime, `This one got the hours.`], [short(top1), `Player’s choice: ${B(esc(top1?.name))}.`], [1, `Hard to put down. Clearly.`],
-                [1, `Time well spent looks like this.`], [R.top.length > 2, `${B(R.top.length)} games made the cut. One led.`]],
-            done: [[1, `${B(R.completions.length)} games seen through.`], [1, `Started. Finished. Repeat.`], [1, `Credits rolled ${B(R.completions.length)} times.`], [1, `Plenty get started. These got finished.`],
-                [T.completed >= 1, `${B(T.completed)} at 100%. Nothing left behind.`], [1, `The backlog: ${B(R.completions.length)} lighter.`], [1, `The end, ${B(R.completions.length)} times over.`], [1, `Finishing is a skill.`],
-                [1, `Seen through to the last screen.`], [1, `Every cleared list began with one unlock.`], [1, `${B(R.completions.length)} done. Next.`], [1, `Final bosses: handled.`], [T.beaten >= 1, `${B(T.beaten)} beaten. The credits were earned.`]],
-            blocks: [[T.activeDays >= 30, `${B(T.activeDays)} days. That is a habit.`], [R.streak?.days >= 5, `${B(R.streak?.days)} days in a row. No skips.`], [1, `Show up. Play. Repeat.`], [R.dayPart, `${B(esc(R.dayPart?.label))} is prime time.`],
+            year: { whole: [[1, `${Y}. Press start.`], [1, `One year. One card. ${Y}.`], [T.unlocks >= 100, `${B(n(T.unlocks))} unlocks. Every one earned.`], [T.activeDays >= 60, `${B(T.activeDays)} days of showing up.`],
+                [1, `Save file found: ${Y}.`], [1, `A year well played.`], [T.games >= 20, `${B(T.games)} games. No regrets.`], [T.minutes >= 6000, `${B(hrs(T.minutes))} hours. Worth every minute.`],
+                [1, `Slot ${B(slotNo)}. Here is what got saved.`], [T.unlocks < 40, `A small year. It still counts.`], [R.partial, `Still going. ${Y} so far.`], [!R.partial, `Rewind to ${Y}.`],
+                [!R.partial, `Remember ${Y}? The card does.`], [T.newGames >= 10, `${B(T.newGames)} new games. Curiosity wins.`], [1, `Now loading: ${Y}.`], [T.unlocks >= 40, `Progress is progress. ${B(n(T.unlocks))} times.`],
+                [1, `${Y}: the highlights.`], [1, `Insert card. Load ${Y}.`], [1, `${Y}, played back.`], [!R.partial, `Twelve months. One save.`], [1, `This is ${Y} in games.`], [1, `Ready? ${Y} starts here.`],
+                [1, `A year of play, saved.`], [1, `${Y}. All of it counted.`], [1, `New year unlocked: ${Y}.`], [1, `Chapter ${Y}.`], [1, `The ${Y} file is open.`], [1, `Loading save ${B(slotNo)} of ${YEARS.length}.`],
+                [T.activeDays >= 30, `${Y} had some good days.`], [1, `Checkpoint reached: ${Y}.`], [1, `Here comes ${Y}.`], [R.partial, `The year so far, in play.`], [R.partial, `Not finished. Already good.`],
+                [1, `${Y}: no cutscenes skipped.`], [1, `Played, counted, saved.`], [1, `It all started with one unlock.`], [1, `${Y}. Roll the tape.`], [1, `Continue from ${Y}.`], [!R.partial, `${Y}: the full run.`],
+                [1, `Every session left a mark.`], [1, `What a year looks like, saved.`], [T.unlocks < 40, `Quiet year. Good year.`], [1, `Player one: ready.`], [1, `${Y}. Nothing skipped.`], [1, `Boot up ${Y}.`],
+                [T.games >= 10, `A year, ${B(T.games)} games deep.`], [!R.partial, `Looking back at ${Y}.`], [1, `The story of ${Y}.`]],
+              fact: [[T.unlocks >= 40, `${B(n(T.unlocks))} unlocks.`], [T.activeDays >= 20, `${B(T.activeDays)} days played.`], [T.games >= 5, `${B(T.games)} games.`], [T.minutes >= 600, `${B(hrs(T.minutes))} hours.`],
+                [T.newGames >= 3, `${B(T.newGames)} new games.`], [T.sessions >= 20, `${B(n(T.sessions))} sessions.`], [plats.length > 1, `${B(plats.length)} platforms.`],
+                [T.unlocks >= 40, `${B(n(T.unlocks))} achievements.`], [T.activeDays >= 20, `${B(T.activeDays)} play days.`], [T.minutes >= 600, `${B(hrs(T.minutes))} hours of play.`], [T.games >= 5, `${B(T.games)} games touched.`]],
+              tag: ['Every one earned.', 'That adds up.', 'Here is the proof.', 'It all counts.', 'Press start.', 'Roll the tape.', 'No shortcuts.', 'A year well played.', 'The card remembers.', 'Now watch.',
+                'That is commitment.', 'Progress is progress.', 'Saved for good.', 'One year.', 'All of it real.', 'Here is how.', 'Not by accident.', 'Count them.', 'A good start.', 'That is a year.'] },
+            top: { whole: [[1, `One game ran the year.`], [short(top1), `${nm}. Obviously.`], [top1?.minutes >= 600, `${B(hrs(top1?.minutes))} hours in one world.`], [1, `Favourites earn their spot.`],
+                [1, `The save that kept getting loaded.`], [short(top1), `Top of the stack: ${nm}.`], [top1?.sessions >= 10, `${B(top1?.sessions)} sessions. Always one more.`], [1, `Some games just stick.`],
+                [top1?.unlocks >= 20, `${B(top1?.unlocks)} unlocks from a single game.`], [byTime, `This one got the hours.`], [short(top1), `Player’s choice: ${nm}.`], [1, `Hard to put down. Clearly.`],
+                [1, `Time well spent looks like this.`], [R.top.length > 2, `${B(R.top.length)} games made the cut. One led.`], [1, `The main character of ${Y}.`], [short(top1), `${nm}. Again and again.`],
+                [short(top1), `No contest. ${nm}.`], [short(top1), `${nm} had the year.`], [byTime, `Played most. Loved most.`], [1, `The one worth coming back to.`], [1, `Always one more session.`], [1, `First pick. Every time.`],
+                [top1?.minutes >= 600, `Just one more hour. Repeatedly.`], [1, `The comfort game.`], [1, `Some worlds are hard to leave.`], [R.top.length > 1, `Number one, by a distance.`], [R.top.length > 2, `The shortlist of ${Y}.`],
+                [1, `Good taste, on record.`], [1, `Loaded more than any other.`], [1, `Home screen regular.`], [short(top1), `${Y} belonged to ${nm}.`], [short(top1), `Guess what won. ${nm}.`], [1, `The favourite, by the numbers.`],
+                [1, `One save file to rule the year.`], [short(top1), `Start menu. ${nm}. Repeat.`], [1, `The game of the year, personally.`], [1, `And the winner is clear.`], [1, `Back again. And again.`], [1, `The headliner.`],
+                [R.top.length > 2, `Five-star rotation.`], [short(top1), `${nm}: the long stay.`], [1, `It kept calling.`], [1, `Top spot, well earned.`], [byTime, `Where the hours went.`], [!byTime, `Where the unlocks came from.`]],
+              fact: [[top1?.minutes >= 120, `${B(hrs(top1?.minutes))} hours in one game.`], [top1?.sessions >= 5, `${B(top1?.sessions)} sessions with one game.`], [top1?.unlocks >= 5, `${B(top1?.unlocks)} unlocks in one game.`], [short(top1), `${nm}.`],
+                [R.top.length > 2, `Top ${B(R.top.length)}, locked in.`], [short(top1), `Number one: ${nm}.`], [short(top1), `Most loaded: ${nm}.`], [top1?.minutes >= 120, `${B(hrs(top1?.minutes))} hours, one title.`]],
+              tag: ['Obviously.', 'No contest.', 'Hard to put down.', 'Worth every minute.', 'That is devotion.', 'Always one more.', 'The clear favourite.', 'Some games just stick.', 'Top of the stack.', 'A proper obsession.',
+                'And still not bored.', 'Player’s choice.', 'Called it.', 'No surprise there.', 'The headliner.', 'Good taste.', 'Home screen regular.', 'It kept calling.'] },
+            done: { whole: [[1, `${B(dn)} games seen through.`], [1, `Started. Finished. Repeat.`], [1, `Credits rolled ${B(dn)} times.`], [1, `Plenty get started. These got finished.`],
+                [T.completed >= 1, `${B(T.completed)} at 100%. Nothing left behind.`], [1, `The backlog: ${B(dn)} lighter.`], [1, `The end, ${B(dn)} times over.`], [1, `Finishing is a skill.`],
+                [1, `Seen through to the last screen.`], [1, `Every cleared list began with one unlock.`], [1, `${B(dn)} done. Next.`], [1, `Final bosses: handled.`], [T.beaten >= 1, `${B(T.beaten)} beaten. The credits were earned.`],
+                [1, `Start to finish, ${B(dn)} times.`], [1, `${B(dn)} endings reached.`], [1, `Nothing abandoned here.`], [1, `Credits watched. All of them.`], [1, `From title screen to the end.`], [1, `Unfinished business: finished.`],
+                [1, `${B(dn)} stories, complete.`], [1, `The last level, ${B(dn)} times.`], [1, `Done means done.`], [1, `Follow-through, on display.`], [1, `Hall of finished games.`], [1, `Cleared.`], [1, `Game over. The good kind.`],
+                [1, `Stuck with it. ${B(dn)} times.`], [T.completed >= 1, `${B(T.completed)} perfect clears.`], [1, `The pile got shorter.`], [1, `${B(dn)} times, the long way to the end.`], [1, `Saw it through.`],
+                [1, `No loose ends in ${Y}.`], [1, `The finish line, ${B(dn)} times.`], [1, `What finishing looks like.`], [T.completed >= 2, `${B(T.completed)} lists, fully cleared.`], [1, `The end credits club.`],
+                [1, `Beat it. Kept going.`], [1, `${B(dn)} closed chapters.`], [1, `Endings are earned.`], [1, `One more off the pile. Then another.`], [1, `Completed. Certified.`], [1, `Roll credits. Roll them again.`]],
+              fact: [[1, `${B(dn)} games finished.`], [T.completed >= 1, `${B(T.completed)} at 100%.`], [T.beaten >= 1, `${B(T.beaten)} beaten.`], [1, `${B(dn)} sets of credits.`], [1, `${B(dn)} final bosses down.`],
+                [1, `Backlog minus ${B(dn)}.`], [1, `${B(dn)} endings.`], [1, `${B(dn)} seen through.`], [T.completed >= 1, `${B(T.completed)} perfect.`]],
+              tag: ['Finishing is a skill.', 'Nothing left behind.', 'Next.', 'Started. Finished.', 'Credits earned.', 'To the last screen.', 'That takes patience.', 'No loose ends.', 'Done and dusted.', 'The end. Again.',
+                'Handled.', 'Persistence pays.', 'Clean sweep.', 'Saw it through.', 'Done means done.', 'All the way.', 'Chapter closed.', 'The good kind of over.'] },
+            blocks: { whole: [[T.activeDays >= 30, `${B(T.activeDays)} days. That is a habit.`], [R.streak?.days >= 5, `${B(R.streak?.days)} days in a row. No skips.`], [1, `Show up. Play. Repeat.`], [R.dayPart, `${B(part)} is prime time.`],
                 [R.bestDay?.unlocks >= 10, `Best day: ${B(R.bestDay?.unlocks)} unlocks. What a run.`], [1, `Every lit block is a day well spent.`], [T.activeDays >= 100, `Consistency beats intensity. ${B(T.activeDays)} days.`], [1, `A little, often. It adds up.`],
-                [wk, `${B(WEEKDAYS[topWd] + 's')} carried the year.`], [1, `The calendar does not lie.`], [1, `Blocks filled, one day at a time.`], [T.sessions >= 50, `${B(n(T.sessions))} sessions. Each one a choice.`],
-                [T.activeDays < 40, `Few days. Big days.`], [1, `One block at a time.`]],
-            rare: [[R.rarest[0], `Only ${B(R.rarest[0]?.pct + '%')} of players got this far.`], [R.rarest.length, `The hard ones count double.`], [R.rarest.length, `Rare finds. Proper bragging rights.`], [R.rarest.length, `Most players never see these.`],
-                [T.rare >= 2, `${B(T.rare)} rare unlocks. Patience pays.`], [R.rarest.length, `Difficulty is just a longer road.`], [R.rarest.length, `Off the beaten path.`], [R.rarest.length, `Earned, not handed out.`],
-                [R.first, `First unlock to last: the whole arc.`], [R.first, `Where it began. Where it stands.`], [R.rarest.length, `The ones worth the retries.`], [R.rarest.length, `Top shelf.`], [!R.rarest.length, `Every year has a first step.`]],
-            end: [[1, `That is the card.`], [1, `Saved. Do not turn off the power.`], [1, `Good game.`], [!R.partial, `One more year in the bank.`], [1, `Not bad. Not bad at all.`], [1, `Game saved.`], [!R.partial, `Roll credits.`],
-                [1, `Same time next year?`], [R.partial, `Still writing this one.`], [1, `Slot ${B(slotNo)} filled.`], [T.unlocks >= 40, `A year to be proud of.`], [1, `Well played.`], [R.partial, `${B(R.year)} is not over yet.`]],
-            after: [[1, `The next slot is empty. Go fill it.`], [1, `Progress saved. Keep going.`], [1, `On to the next one.`], [1, `The backlog is waiting.`], [R.partial, `The year is not over. Neither is the list.`], [1, `See you at the next save point.`], [1, `Continue?`]],
+                [wk, `${B(wd + 's')} carried the year.`], [1, `The calendar does not lie.`], [1, `Blocks filled, one day at a time.`], [T.sessions >= 50, `${B(n(T.sessions))} sessions. Each one a choice.`],
+                [T.activeDays < 40, `Few days. Big days.`], [1, `One block at a time.`], [1, `One more day, one more block.`], [1, `Days add up. These did.`], [1, `A year, block by block.`], [T.activeDays >= 60, `Routine is a superpower.`],
+                [1, `Small sessions. Big year.`], [R.streak?.days >= 5, `The streak speaks.`], [R.streak?.days >= 7, `${B(R.streak?.days)} straight days. Locked in.`], [1, `Light them up.`], [1, `Play days, on the record.`],
+                [dayPct >= 10, `${B(dayPct + '%')} of the year, played.`], [T.activeDays >= 30, `Rhythm found.`], [R.dayPart, `${B(part)} belongs to games.`], [wk, `Best served on ${B(wd + 's')}.`], [1, `Every block has a story.`],
+                [1, `Momentum looks like this.`], [1, `Keep the lights on.`], [R.bestDay?.unlocks >= 10, `One day, ${B(R.bestDay?.unlocks)} unlocks.`], [T.activeDays >= 60, `Day after day after day.`], [1, `The year, one square at a time.`],
+                [wk, `${B(wd)}: the reliable one.`], [R.dayPart, `Clock says ${B(part)}.`], [1, `Good days leave a light on.`], [T.activeDays >= 100, `${B(T.activeDays)} days. Not a fluke.`], [1, `This is what a routine looks like.`],
+                [1, `Time, well stacked.`], [1, `The grid tells it straight.`], [R.streak?.days >= 3, `Longest run: ${B(R.streak?.days)} days.`], [1, `Dark squares rest. Lit ones play.`], [1, `Built one day at a time.`],
+                [T.sessions >= 50, `Pick up. Play. ${B(n(T.sessions))} times.`], [1, `Steady wins.`], [1, `Calendar, completed differently.`]],
+              fact: [[T.activeDays >= 10, `${B(T.activeDays)} days played.`], [R.streak?.days >= 3, `${B(R.streak?.days)} days in a row.`], [T.sessions >= 20, `${B(n(T.sessions))} sessions.`], [R.bestDay?.unlocks >= 5, `${B(R.bestDay?.unlocks)} unlocks in one day.`],
+                [R.dayPart, `Prime time: ${B(part)}.`], [wk, `Peak day: ${B(wd)}.`], [dayPct >= 10, `${B(dayPct + '%')} of days played.`], [T.activeDays >= 10, `${B(T.activeDays)} blocks lit.`], [R.streak?.days >= 3, `A ${B(R.streak?.days)}-day streak.`],
+                [wk, `Mostly ${B(wd + 's')}.`]],
+              tag: ['That is a habit.', 'No skips.', 'It adds up.', 'One block at a time.', 'The calendar does not lie.', 'Show up. Repeat.', 'Consistency wins.', 'A little, often.', 'Rhythm found.', 'Keep it going.',
+                'Locked in.', 'Day by day.', 'Momentum.', 'Right on schedule.', 'Steady wins.', 'Lights on.', 'Like clockwork.', 'Built slowly.'] },
+            rare: { whole: [[r0, `Only ${B(r0?.pct + '%')} of players got this far.`], [rr, `The hard ones count double.`], [rr, `Rare finds. Proper bragging rights.`], [rr, `Most players never see these.`],
+                [T.rare >= 2, `${B(T.rare)} rare unlocks. Patience pays.`], [rr, `Difficulty is just a longer road.`], [rr, `Off the beaten path.`], [rr, `Earned, not handed out.`],
+                [R.first, `First unlock to last: the whole arc.`], [R.first, `Where it began. Where it stands.`], [rr, `The ones worth the retries.`], [rr, `Top shelf.`], [!rr, `Every year has a first step.`],
+                [rr, `Not everyone gets these.`], [rr, `The deep cuts.`], [rr, `Trophy shelf, top row.`], [rr, `Hard mode has rewards.`], [rr, `For the stubborn only.`], [rr, `One more try paid off.`], [r0, `${B(r0?.pct + '%')}. That is rare air.`],
+                [r0, `The ${B(r0?.pct + '%')} club.`], [rr, `Skill issue? Not here.`], [rr, `The long way round.`], [rr, `Retry. Retry. Unlock.`], [rr, `Proof of patience.`], [rr, `Above and beyond.`], [R.first, `From the first unlock on.`],
+                [R.first, `Every run has a first.`], [rr, `Gold among the grind.`], [!rr, `Where the year began.`], [!rr, `First and last, side by side.`], [rr, `The stuff of legend. Small legend.`], [rr, `Few bother. Fewer manage.`],
+                [rr, `The extra mile, measured.`], [rr, `These took something.`], [rr, `Finds of the year.`], [r0, `Rarer than ${B(100 - Math.ceil(r0?.pct ?? 0) + '%')} of runs.`], [rr, `Hidden, found, kept.`], [rr, `No easy ones here.`],
+                [rr, `Hard-won. Well kept.`], [rr, `The collector’s corner.`], [T.rare >= 5, `${B(T.rare)} rare ones. Not luck.`], [rr, `One in a few. Sometimes fewer.`], [rr, `This is the good stuff.`], [R.first, `Opening move, closing move.`]],
+              fact: [[r0, `Only ${B(r0?.pct + '%')} have this.`], [T.rare >= 2, `${B(T.rare)} rare unlocks.`], [rr >= 2, `Top ${B(rr)} rarest.`], [r0, `A ${B(r0?.pct + '%')} unlock.`], [r0, `Rarest: ${B(r0?.pct + '%')}.`], [T.rare >= 2, `${B(T.rare)} hard ones.`]],
+              tag: ['Patience pays.', 'Earned, not given.', 'Bragging rights.', 'Worth the retries.', 'Top shelf.', 'Rare air.', 'The hard way.', 'Not for everyone.', 'Skill, on record.', 'Stubbornness wins.', 'Off the beaten path.',
+                'That took nerve.', 'No easy ones.', 'Hard-won.', 'The deep cuts.', 'Above and beyond.'] },
+            end: { whole: [[1, `That is the card.`], [1, `Saved. Do not turn off the power.`], [1, `Good game.`], [!R.partial, `One more year in the bank.`], [1, `Not bad. Not bad at all.`], [1, `Game saved.`], [!R.partial, `Roll credits.`],
+                [1, `Same time next year?`], [R.partial, `Still writing this one.`], [1, `Slot ${B(slotNo)} filled.`], [T.unlocks >= 40, `A year to be proud of.`], [1, `Well played.`], [R.partial, `${Y} is not over yet.`],
+                [!R.partial, `And that was ${Y}.`], [1, `Card full. Heart full.`], [1, `File saved.`], [1, `GG.`], [1, `Thanks for playing.`], [1, `That is a wrap.`], [1, `Saving. Done.`], [1, `Achievement unlocked: ${Y}.`],
+                [1, `The end. For now.`], [1, `Checkpoint.`], [1, `Quit to title? Never.`], [!R.partial, `Level complete.`], [1, `To be continued.`], [1, `One for the shelf.`], [1, `Stored safely.`], [1, `End of tape.`],
+                [R.partial, `Hold that thought.`], [1, `${Y}: saved.`], [1, `Progress kept.`], [!R.partial, `${Y}, in the books.`], [1, `Nothing lost. All saved.`], [1, `That was a good one.`], [1, `Autosave complete.`],
+                [1, `Memory card: one more good year.`], [!R.partial, `Year cleared.`], [1, `Keep the card safe.`], [1, `Fin.`], [1, `And scene.`], [R.partial, `More to come.`]],
+              fact: [[T.unlocks >= 40, `${B(n(T.unlocks))} unlocks saved.`], [T.games >= 5, `${B(T.games)} games on the card.`], [T.activeDays >= 20, `${B(T.activeDays)} days banked.`], [1, `Slot ${B(slotNo)} filled.`], [1, `${Y} saved.`],
+                [T.minutes >= 600, `${B(hrs(T.minutes))} hours kept.`]],
+              tag: ['Good game.', 'Game saved.', 'Do not turn off the power.', 'One for the shelf.', 'That is the card.', 'Thanks for playing.', 'That is a wrap.', 'The end. For now.', 'Stored safely.', 'GG.'] },
+            after: { whole: [[1, `The next slot is empty. Go fill it.`], [1, `Progress saved. Keep going.`], [1, `On to the next one.`], [1, `The backlog is waiting.`], [R.partial, `The year is not over. Neither is the list.`],
+                [1, `See you at the next save point.`], [1, `Continue?`], [1, `New game plus awaits.`], [1, `Next save, coming up.`], [1, `The story continues.`], [1, `Plenty of slots left.`], [1, `Go make next year’s card.`],
+                [1, `More to unlock.`], [1, `Pick up where this left off.`], [1, `Press any button to continue.`], [1, `There is always a next level.`], [1, `Keep playing.`], [1, `The best save is the next one.`],
+                [1, `Same card, new year.`], [1, `Rest. Then round two.`], [1, `Onwards.`], [1, `One more game?`], [1, `The controller is still warm.`], [1, `Next chapter: unwritten.`], [R.partial, `Back to it.`], [1, `Another year, another slot.`]] },
         };
-        const lineFor = (key, salt = 0) => { const fits = (LINES[key] ?? LINES.end).filter(x => x[0]); return fits[(R.year + WHO + salt) % fits.length][1]; };
+        const lineMemo = {}, lineUsed = new Set();
+        const lineFor = key => lineMemo[key] ??= (() => {
+            const L = LINES[key] ?? LINES.end, r = rng(hash(`${R.user.name}·${key}`)), mix = rng(SEED ^ hash(key));
+            // This owner's own order of a pool, walked from a spot set by the year; skips what doesn't fit and what this story already said
+            const walk = (list, stride) => { const order = shuffled(list.map((_, i) => i), r);
+                for (let j = 0; j < order.length; j++) { const x = list[order[(R.year * stride + j) % order.length]]; if (x[0] && !lineUsed.has(x[1])) { lineUsed.add(x[1]); return x[1]; } } return null; };
+            const whole = () => walk(L.whole, 7), fact = L.fact && mix() < 0.5 ? walk(L.fact, 3) : null;
+            return fact ? `${fact} ${walk([...L.tag, ...(key === 'year' || key === 'blocks' ? ANY : ANY.slice(0, 8))].map(t => [1, t]), 5)}` : whole() ?? walk(LINES.end.whole, 7) ?? 'Saved.';
+        })();
+        // The plan: what the story is like as a whole (typeface, letter case, how the covers are labelled) and what changes with every slide
+        const KICKS = [(k, c, name) => name, (k, c) => `${String(k + 1).padStart(2, '0')} / ${String(c).padStart(2, '0')}`, k => `Chapter ${k + 1}`, k => `Stage ${k + 1}`, (k, c, name) => `Save ${slotNo} · ${name}`,
+            k => `Level ${k + 1}`, (k, c) => `Part ${k + 1} of ${c}`, k => `Track ${String(k + 1).padStart(2, '0')}`, (k, c, name) => `${R.year} · ${name}`, k => `Disc ${k + 1}`];
+        const LAYS = ['c', 'c', 'l', 'r', 'stair', 'stack'], HLS = ['ink', 'box', 'bar', 'out', 'big'], PATS = ['', '', 'dots', 'grid', 'stripes', 'scan', 'rings'], TILTS = [0, 0, -4, 3, -2], EXTRAS = ['', '', 'ghost', 'band'];
+        const FONTS = ['', '', 'px', 'body'], CASES = ['', '', 'low', 'as'];
         const storyPlan = () => {
-            const r = rng(SEED), moves = shuffled(MOVES, r), pops = shuffled(POPS, r), masks = shuffled(MASKS, r), kinds = shuffled(KINDS, r), looks = shuffled([0, 1, 2], r);
-            const ease = EASES[Math.floor(r() * EASES.length)], yr = YRS[Math.floor(r() * YRS.length)], step = [50, 70, 90, 110][Math.floor(r() * 4)], turn = Math.floor(r() * 3), out = 3 + Math.floor(r() * (MASKS.length - 4));
+            const r = rng(SEED), moves = shuffled(MOVES, r), pops = shuffled(POPS, r), masks = shuffled(MASKS, r), kinds = shuffled(KINDS, r), looks = shuffled([0, 1, 2, 3, 4], r);
+            const lays = shuffled(LAYS, r), hls = shuffled(HLS, r), pats = shuffled(PATS, r), tilts = shuffled(TILTS, r), extras = shuffled(EXTRAS, r);
+            const pick = list => list[Math.floor(r() * list.length)], font = pick(FONTS), kase = pick(CASES), kick = pick(KICKS);
+            const ease = pick(EASES), yr = pick(YRS), step = pick([50, 70, 90, 110]), turn = Math.floor(r() * 3), out = 3 + Math.floor(r() * (MASKS.length - 4));
             return k => ({ move: moves[k % moves.length], pop: pops[k % pops.length], yr, ease, step, wipe: WIPES[(k + turn) % WIPES.length], order: (k + turn) % 3,       // 0 in order, 1 backwards, 2 shuffled
-                enter: masks[k % masks.length], leave: masks[(k + out) % masks.length], kind: kinds[k % kinds.length], look: looks[k % looks.length], r: rng(SEED + (k + 1) * 7919) });
+                enter: masks[k % masks.length], leave: masks[(k + out) % masks.length], kind: kinds[k % kinds.length], look: looks[k % looks.length], lay: lays[k % lays.length], hl: hls[k % hls.length],
+                pat: pats[k % pats.length], tilt: tilts[k % tilts.length], extra: extras[k % extras.length], font, kase, kick, r: rng(SEED + (k + 1) * 7919) });
         };
         const storyFrame = (inner, chrome = '') => `${top1 ? img(bigArt(top1), 'sbg') : ''}${chrome}${inner}
             <div class="sfoot"><b>${esc(R.user.name)}’s ${R.year}</b><span>${esc(D.site.replace(/^https?:\/\//, ''))}/memory-card/${R.year}</span></div>`;
@@ -1154,18 +1279,26 @@
                 <div class="hf2"><div class="slot px sa" style="justify-content:center"><i></i>Slot ${slotNo} <b>of ${YEARS.length} · saved</b></div>
                 <h2 class="sa">${R.year} saved</h2>
                 <p class="lead sa">${esc(R.title.name)} · ${headline.slice(0, 3).map(h => `<b>${h.v}</b> ${h.unit ? 'hours' : h.lab.toLowerCase()}`).join(' · ')}</p>
-                <p class="lead sa">${lineFor('after', 3)}</p>
+                <p class="lead sa">${lineFor('after').replace(/<\/?b>/g, '')}</p>
                 <div class="btns sa"><button class="btn go" data-share>${svg.share}Share ${R.year}</button></div></div>`;
             const slides = [...SLIDES.map(x => ({ ...x, ms: 8000 })), { key: null, name: 'Saved', two: true, ms: 8000, get html() { return endHtml(); } }];
             const plan = storyPlan();
-            // A cover's line as words that land one by one; punctuation after a highlighted word stays with it, in the plain colour
-            const lineHtml = (text, kicker, kind) => {
+            // A cover's line as words that land one by one; punctuation after a highlighted word stays with it, in the plain colour.
+            // The type size comes from the length (or, one word a line, from the longest word) and the typeface's width
+            const lineHtml = (text, kicker, p) => {
                 const words = [];
                 text.split(/(<b>.*?<\/b>)/).forEach(part => part.replace(/<\/?b>/g, '').split(/\s+/).filter(Boolean).forEach(t => {
                     if (/^[.,:;?!]/.test(t) && words.length) words[words.length - 1].tail = t; else words.push({ t, hl: part.startsWith('<b>') }); }));
-                const len = words.reduce((a, w) => a + w.t.length + 1, 0), fs = len <= 18 ? 14 : len <= 26 ? 12.5 : len <= 38 ? 11 : len <= 50 ? 9.6 : 8.4;
-                return { count: words.length, html: `<div class="sline k-${kind}" style="--fs:${fs}cqmin;--ks:${words.length > 7 ? 60 : 90}ms"><span class="px">${kicker}</span><h2>${words.map((w, i) =>
-                    `<span class="w${w.hl ? ' hl' : ''}" style="--w:${i};--sg:${sg(i)}"><i>${w.t}${w.tail ? `<u>${w.tail}</u>` : ''}</i></span>`).join(' ')}</h2></div>` };
+                const len = words.reduce((a, w) => a + w.t.length + 1, 0), longest = Math.max(...words.map(w => w.t.length + (w.tail?.length ?? 0)));
+                const lay = (p.lay === 'stack' || p.lay === 'stair') && (wide || words.length > 5) ? 'c' : p.lay, lines = lay === 'stack' || lay === 'stair';
+                const wideFont = p.font === 'px' ? 0.82 : 1, big = p.hl === 'big' && !lines;
+                const fs = (lines ? Math.min(19, (96 - (lay === 'stair' ? 7 * (words.length - 1) : 0)) / (longest * 0.68))
+                    : Math.min(len <= 18 ? 14 : len <= 26 ? 12.5 : len <= 38 ? 11 : len <= 50 ? 9.6 : 8.4, Math.max(7.2, 92 / (longest * 0.68)))) * wideFont * (big ? 0.92 : 1);
+                const ghost = words.find(w => w.hl)?.t ?? String(R.year);
+                const extra = p.extra === 'ghost' && ghost.length <= 9 ? `<div class="sghost" style="--gy:${20 + Math.round(p.r() * 60)}%;--gr:${Math.round(p.r() * 16 - 8)}deg">${ghost}</div>`
+                    : p.extra === 'band' ? `<div class="sband" style="--by:${p.r() < 0.5 && !wide ? 17 : 90}%;--br:${Math.round(p.r() * 10 - 5)}deg"><span>${`${kicker} · ${R.year} · `.repeat(16)}</span></div>` : '';
+                return { count: words.length, html: `${extra}<div class="sline k-${p.kind} a-${lay} h-${p.hl}${p.font ? ` f-${p.font}` : ''}${p.kase ? ` c-${p.kase}` : ''}" style="--fs:${fs.toFixed(1)}cqmin;--ks:${words.length > 7 ? 60 : 90}ms;--tilt:${p.tilt}deg"><span class="px">${kicker}</span><h2>${words.map((w, i) =>
+                    `<span class="w${w.hl ? ` hl${w.t.length <= 8 ? ' sm' : ''}` : ''}" style="--w:${i};--sg:${sg(i)}"><i>${w.t}${w.tail ? `<u>${w.tail}</u>` : ''}</i></span>`).join(' ')}</h2></div>` };
             };
             let at = 0, held = false, holdTimer = 0, toastTimer = 0;
             const el = document.createElement('div');
@@ -1186,7 +1319,7 @@
                 if (k < 0 || k >= slides.length) return;
                 at = k;
                 const sl = slides[at], p = plan(at), cover = !calm && !quick;
-                const line = lineHtml(lineFor(sl.key ?? 'end'), at ? esc(sl.name) : `Slot ${slotNo} of ${YEARS.length}`, p.kind), hold = Math.min(2600, 1500 + line.count * 110);
+                const line = lineHtml(lineFor(sl.key ?? 'end'), at || p.kick !== KICKS[0] ? esc(p.kick(at, slides.length, sl.name)) : `Slot ${slotNo} of ${YEARS.length}`, p), hold = Math.min(2600, 1500 + line.count * 110);
                 bars.forEach(b => { b.className = ''; });
                 void frame.offsetWidth;                                  // so a bar shown again starts over
                 bars.forEach((b, j) => { b.className = j < at ? 'past' : j === at ? 'on' : ''; });
@@ -1212,8 +1345,8 @@
                 };
                 if (!cover) return swap();
                 const c = document.createElement('div');
-                c.className = `scover p${p.look}`;
-                c.style.cssText = `--c0:${p.enter[0]};--c1:${p.enter[1]};--o0:${p.leave[0]};--o1:${p.leave[1]};--hold:${hold}ms`;
+                c.className = `scover p${p.look}${p.pat ? ` t-${p.pat}` : ''}`;
+                c.style.cssText = `--c0:${p.enter[0]};--c1:${p.enter[1]};--o0:${p.leave[0]};--o1:${p.leave[1]};--hold:${hold}ms;--ga:${100 + Math.round(p.r() * 160)}deg`;
                 c.innerHTML = shapesHtml(rng(SEED + (at + 1) * 104729), [[0, 0], [100, 0], [0, 100], [100, 100], [50, 0], [50, 100]], INKS[p.look], [46, 78], 0) + line.html;
                 c.swap = swap;
                 frame.append(c);
