@@ -2,7 +2,7 @@
 
 ## v26.11.16
 
-Memory Card's story plays wide on a desktop, and every slide can be shared as a wide picture
+Memory Card's story opens every slide with a line of moving type and plays differently each year, and goes wide on a desktop
 
 ### Hub
 
@@ -10,6 +10,12 @@ Memory Card's story plays wide on a desktop, and every slide can be shared as a 
   Each slide is laid out in two halves to fill the screen. A button in the top bar switches back to the tall cards.
 - new: **Memory Card** story cards as wide pictures
   Sharing a slide while the story plays wide sends a 1200 × 630 picture, and the Share sheet's Story section offers the wide ones on a desktop.
+- new: **Memory Card** story slides open on a cover with a line of moving type
+  A full-colour card with one short line about the year, then it opens through a shape onto the slide.
+- new: **Memory Card** story plays differently every year
+  The lines, colours, shapes and the way pieces fly in are drawn from the year, so no two years match.
+- improved: **Memory Card** for the running year opens in July
+  A year gets its card once six months of it are done; until then the latest card is last year's.
 - fix: **Memory Card** rarest finds in the story no longer squeeze into two columns on a desktop
 
 ## v26.11.15

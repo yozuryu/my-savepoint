@@ -346,19 +346,21 @@
             padding: calc(64px + env(safe-area-inset-top, 0px)) 20px calc(40px + env(safe-area-inset-bottom, 0px)); }
         .stage.out { animation: sout 220ms ease-in forwards; pointer-events: none; }
         @keyframes sout { to { opacity: 0; transform: translateY(-10px); } }
-        /* Pieces come in one after another: most rise, tiles and numbers pop, the year settles, strips wipe in, bars grow */
-        .sa { animation: rise 560ms cubic-bezier(.2, .7, .2, 1) backwards; animation-delay: calc(var(--i, 0) * 70ms + 140ms); }
-        .sa.pop { animation-name: spop; }
-        .sa.wipe { animation: swipe 1100ms cubic-bezier(.3, .6, .2, 1) backwards; animation-delay: calc(var(--i, 0) * 70ms + 200ms); }
-        .sa.yr { animation: syear 800ms cubic-bezier(.2, .7, .2, 1) backwards; transform-origin: left center; }
-        @keyframes spop { from { transform: scale(0.9); opacity: 0; } }
-        @keyframes swipe { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
-        @keyframes syear { from { transform: scale(1.14); opacity: 0; } }
+        /* Pieces come in one after another through one keyframe: where each starts from (--dx --dy --rx --ry --dr --ds), how
+           fast they follow (--st), the easing (--ee) and the order (--i) are set per slide by the story's plan, see storyPlan().
+           The values here are what a piece does without a plan. --t0 holds everything back while the cover is up */
+        .sa { animation: sin 620ms var(--ee, cubic-bezier(.2, .7, .2, 1)) backwards; animation-delay: calc(var(--i, 0) * var(--st, 70ms) + 140ms + var(--t0, 0ms)); }
+        .sa.pop { --dy: 0px; --ds: 0.9; }
+        .sa.wipe { animation: swipe 1100ms cubic-bezier(.3, .6, .2, 1) backwards; animation-delay: calc(var(--i, 0) * var(--st, 70ms) + 200ms + var(--t0, 0ms)); }
+        .sa.yr { --dy: 0px; --ds: 1.14; animation-duration: 800ms; transform-origin: left center; }
+        @keyframes sin { from { opacity: 0; transform: perspective(700px) translate(var(--dx, 0px), var(--dy, 14px)) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) rotate(var(--dr, 0deg)) scale(var(--ds, 1)); }
+            60% { opacity: 1; } to { transform: perspective(700px) translate(0px, 0px) rotateX(0deg) rotateY(0deg) rotate(0deg) scale(1); } }
+        @keyframes swipe { from { clip-path: var(--w0, inset(0 100% 0 0)); } to { clip-path: inset(0 0 0 0); } }
         @keyframes sgrowx { from { transform: scaleX(0); } }
         @keyframes szoom { from { transform: scale(1.1); } }
-        .stage .meter, .stage .split i { transform-origin: left; animation: sgrowx 800ms cubic-bezier(.2, .7, .2, 1) backwards; animation-delay: calc(var(--i, 0) * 70ms + 420ms); }
-        .stage .bars i { transform-origin: bottom; animation: grow 700ms cubic-bezier(.2, .7, .2, 1) backwards; animation-delay: calc(var(--i, 0) * 70ms + 380ms); }
-        .stage .feat .art { animation: szoom 8s ease-out backwards; }
+        .stage .meter, .stage .split i { transform-origin: left; animation: sgrowx 800ms cubic-bezier(.2, .7, .2, 1) backwards; animation-delay: calc(var(--i, 0) * 70ms + 420ms + var(--t0, 0ms)); }
+        .stage .bars i { transform-origin: bottom; animation: grow 700ms cubic-bezier(.2, .7, .2, 1) backwards; animation-delay: calc(var(--i, 0) * 70ms + 380ms + var(--t0, 0ms)); }
+        .stage .feat .art { animation: szoom 8s ease-out var(--t0, 0ms) backwards; }
         .stage .year { font-size: min(36cqw, 180px); margin: 0 0 0 -4px; }
         .stage h2 { margin: 0; font: 800 24px/1.05 var(--display); text-transform: uppercase; text-wrap: balance; }
         .shead { display: flex; align-items: baseline; gap: 10px; } .shead h2 { font-size: 28px; } .shead .px { margin-left: auto; color: rgb(var(--a)); white-space: nowrap; }
@@ -385,10 +387,57 @@
         .stage.s-end { text-align: center; } .stage.s-end .lead b { color: var(--text, #fff); font-weight: 700; }
         .sfan { position: relative; height: 250px; margin-bottom: 10px; pointer-events: none; }
         .sfan img { position: absolute; left: 50%; top: 0; height: 100%; width: auto; max-width: none; aspect-ratio: 9 / 16; margin-left: -70px; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 14px 34px rgba(0, 0, 0, 0.55);
-            transform: translateX(var(--x)) rotate(var(--r)); transform-origin: 50% 120%; animation: sfan 520ms cubic-bezier(.2, .8, .2, 1) calc(120ms + var(--i) * 80ms) backwards; }
+            transform: translateX(var(--x)) rotate(var(--r)); transform-origin: 50% 120%; animation: sfan 520ms cubic-bezier(.2, .8, .2, 1) calc(120ms + var(--i) * 80ms + var(--t0, 0ms)) backwards; }
         .sfan img:nth-child(2) { z-index: 1; }
         @keyframes sfan { from { opacity: 0; transform: translateX(0) rotate(0) scale(0.9); } } .stage .btns { display: flex; gap: 8px; justify-content: center; }
         .stage .btn { height: 42px; padding: 0 18px; font-size: 14px; }
+        /* Cover: every slide opens on a full-colour card with one line of big moving type; it arrives through one shape
+           (--c0 → --c1) and leaves through another (--o1 → --o0) to show the slide. Three colourings (.p0 the year's colour,
+           .p1 dark, .p2 the colour deepened), eight ways for the words to land (.k-*), flat shapes off the edges */
+        .scover { position: absolute; inset: 0; z-index: 2; overflow: hidden; display: grid; place-items: center; container-type: size; pointer-events: none;
+            padding: calc(70px + env(safe-area-inset-top, 0px)) 22px calc(50px + env(safe-area-inset-bottom, 0px)); background: var(--cb); color: var(--ci);
+            animation: scin 460ms cubic-bezier(.7, 0, .2, 1) backwards, scout 520ms cubic-bezier(.7, 0, .2, 1) var(--hold, 2100ms) forwards; }
+        .scover.p0 { --cb: rgb(var(--a)); --ci: #0b0d14; --ch: #fff; }
+        .scover.p1 { --cb: #0b0d14; --ci: #fff; --ch: rgb(var(--a)); }
+        .scover.p2 { --cb: color-mix(in srgb, rgb(var(--a)) 40%, #05060a); --ci: #fff; --ch: color-mix(in srgb, rgb(var(--a)) 45%, #fff); }
+        @keyframes scin { from { clip-path: var(--c0); } to { clip-path: var(--c1); } }
+        @keyframes scout { from { clip-path: var(--o1); } to { clip-path: var(--o0); } }
+        .sline { position: relative; z-index: 1; width: 100%; text-align: center; }
+        .sline .px { display: block; margin-bottom: 16px; font-size: 11px; opacity: 0.8; animation: fade 320ms ease-out 220ms backwards; }
+        .sline h2 { margin: 0; font: 800 var(--fs, 11cqmin)/1.04 var(--display); letter-spacing: -0.01em; text-transform: uppercase; text-wrap: balance; overflow-wrap: anywhere; }
+        .sline .w { display: inline-block; vertical-align: top; }
+        .sline .w i { display: inline-block; font-style: normal; color: var(--wc, inherit); animation: 560ms cubic-bezier(.2, .8, .2, 1) calc(260ms + var(--w) * var(--ks, 90ms)) backwards; }
+        .sline .w.hl { --wc: var(--ch); }
+        .sline u { text-decoration: none; color: var(--ci); -webkit-text-stroke-color: var(--ci); }
+        .k-rise .w { overflow: hidden; padding-block: 0.06em; } .k-rise .w i { animation-name: kwrise; }
+        .k-slam .w i { animation-name: kwslam; animation-duration: 380ms; animation-timing-function: cubic-bezier(.5, 0, .2, 1); }
+        .k-flip .w i { animation-name: kwflip; transform-origin: 50% 100%; }
+        .k-side .w i { animation-name: kwside; }
+        .k-drop .w i { animation-name: kwdrop; animation-timing-function: cubic-bezier(.3, 1.5, .5, 1); }
+        .k-spin .w i { animation-name: kwspin; animation-timing-function: cubic-bezier(.3, 1.5, .5, 1); }
+        .k-fill .w i { animation-name: kwfill; animation-duration: 900ms; animation-timing-function: linear; -webkit-text-stroke: 1.5px var(--wc, var(--ci)); }
+        .k-skew .w i { animation-name: kwskew; }
+        @keyframes kwrise { from { transform: translateY(108%); } }
+        @keyframes kwslam { from { transform: scale(2.6); opacity: 0; } }
+        @keyframes kwflip { from { transform: perspective(400px) rotateX(-92deg); opacity: 0; } }
+        @keyframes kwside { from { transform: translateX(calc(var(--sg) * 48px)); opacity: 0; } }
+        @keyframes kwdrop { from { transform: translateY(-70px) rotate(calc(var(--sg) * 9deg)); opacity: 0; } 50% { opacity: 1; } }
+        @keyframes kwspin { from { transform: scale(0.4) rotate(calc(var(--sg) * -16deg)); opacity: 0; } 50% { opacity: 1; } }
+        @keyframes kwfill { 0% { color: transparent; opacity: 0; transform: scale(0.9); } 25% { opacity: 1; transform: none; } 65% { color: transparent; } }
+        @keyframes kwskew { from { transform: translateX(-34px) skewX(-18deg); opacity: 0; } }
+        /* Shapes: big flat pieces hanging off the edges, on the cover and (.sdeco, faint) drifting behind the slide */
+        .sdeco { position: absolute; inset: 0; z-index: -1; overflow: hidden; container-type: size; pointer-events: none; }
+        .shp { position: absolute; left: var(--x); top: var(--y); width: var(--s); height: var(--s); margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
+            transform: rotate(var(--r)); animation: shdrift var(--sd, 9s) ease-in-out infinite alternate; }
+        .shp i { display: block; width: 100%; height: 100%; background: var(--sc); animation: shin 720ms cubic-bezier(.3, 1.4, .5, 1) calc(var(--j) * 90ms + 60ms + var(--t0, 0ms)) backwards; }
+        .shp .ring { background: none; border: calc(var(--s) * 0.17) solid var(--sc); border-radius: 50%; box-sizing: border-box; } .shp .circle { border-radius: 50%; }
+        .shp .quarter { border-radius: 100% 0 0 0; } .shp .half { height: 50%; border-radius: 999px 999px 0 0; } .shp .pill { height: 36%; margin-top: 32%; border-radius: 999px; }
+        .shp .square { border-radius: 6%; } .shp .tri { clip-path: polygon(50% 4%, 100% 96%, 0 96%); }
+        .shp .plus { clip-path: polygon(34% 0, 66% 0, 66% 34%, 100% 34%, 100% 66%, 66% 66%, 66% 100%, 34% 100%, 34% 66%, 0 66%, 0 34%, 34% 34%); }
+        .shp .star { clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
+        .shp .blocks { background: conic-gradient(from 90deg at 18% 18%, transparent 90deg, var(--sc) 0) 0 0 / 25% 25%; }
+        @keyframes shin { from { transform: scale(0) rotate(-50deg); } }
+        @keyframes shdrift { to { transform: translate(var(--mx), var(--my)) rotate(calc(var(--r) + var(--mr))); } }
         @media (min-width: 720px) {
             .story .frame { width: auto; height: min(100dvh - 40px, 900px); aspect-ratio: 9 / 16; border-radius: 10px; border: 1px solid var(--line); }
         }
@@ -423,6 +472,7 @@
         .story.wide .stage .rr { padding-block: 5px; } .story.wide .stage .rr .ic, .story.wide .stage .end .ic { width: 40px; height: 40px; }
         .story.wide .stage.s-end { text-align: left; align-items: center; gap: 34px; }
         .story.wide .stage.s-end .slot { justify-content: flex-start !important; } .story.wide .stage.s-end .btns { justify-content: flex-start; }
+        .story.wide .scover { padding: 56px 44px 40px; } .story.wide .sline .px { margin-bottom: 12px; } .story.wide .sline h2 { font-size: calc(var(--fs) * 1.3); }
         .story.wide .sfan { height: 210px; margin: 0; }
         .story.wide .sfan img { top: 44px; height: 122px; aspect-ratio: 1200 / 630; margin-left: -116px; transform: translateX(calc(var(--x) * 0.55)) rotate(var(--r)); transform-origin: 50% 160%; }
         .story.still.wide { width: 800px; height: 420px; } .story.still.wide .frame { transform: none; border: 0; border-radius: 0; }
@@ -912,6 +962,70 @@
                 return { key: 'rare', name: 'Rarest finds', two: !!halves[1], html: `<div class="hf1">${halves[0]}</div>${halves[1] ? `<div class="hf2">${halves[1]}</div>` : ''}` };
             })(),
         ].filter(Boolean);
+        // ── Story choreography: what makes one year's story play unlike another's. Everything is drawn from a seed (the year
+        //    and the owner's name), so a year always plays the same way and no two years share a plan: the line on each
+        //    cover, its colouring, the shapes on it, how its words land, the shapes it arrives and leaves through, and
+        //    where the slide's pieces come from, in which order and how fast ──
+        const hash = t => [...t].reduce((h, c) => Math.imul(h ^ c.charCodeAt(0), 16777619), 2166136261) >>> 0;
+        const rng = seed => () => { seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+        const shuffled = (list, r) => { const a = [...list]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+        const WHO = hash(R.user.name), SEED = hash(`${R.year}·${R.user.name}`);
+        const sg = i => i % 2 ? 1 : -1;
+        // Where a piece starts from: (index, random) → the custom properties of the `sin` keyframe
+        const MOVES = [() => ({ dy: '30px' }), () => ({ dy: '-30px' }), () => ({ dx: '-46px', dy: '0px' }), () => ({ dx: '46px', dy: '0px' }), i => ({ dx: `${sg(i) * 46}px`, dy: '0px' }),
+            i => ({ dy: '24px', dr: `${sg(i) * 5}deg` }), () => ({ dy: '0px', ds: 0.8 }), () => ({ dy: '-8px', rx: '-78deg' }), i => ({ dy: '0px', ry: `${sg(i) * 72}deg` }), () => ({ dy: '36px', dr: '-6deg', ds: 0.9 }),
+            (i, r) => ({ dx: `${Math.round(r() * 110 - 55)}px`, dy: `${Math.round(r() * 80 - 40)}px`, dr: `${Math.round(r() * 22 - 11)}deg` }), () => ({ dx: '120px', dy: '0px' })];
+        const POPS = [() => ({ dy: '0px', ds: 0.55 }), i => ({ dy: '0px', ry: `${sg(i) * 90}deg` }), () => ({ dy: '-48px', ds: 1 }), i => ({ dy: '0px', dr: `${sg(i) * 14}deg`, ds: 0.5 }), () => ({ dy: '42px', ds: 0.9 }), () => ({ dy: '0px', rx: '90deg', ds: 1 }),
+            (i, r) => ({ dx: `${Math.round(r() * 90 - 45)}px`, dy: `${Math.round(r() * 90 - 45)}px`, ds: 0.7 })];
+        const YRS = [{ dy: '0px', ds: 1.14 }, { dx: '-80px', dy: '0px', ds: 1 }, { dy: '0px', ds: 0.5 }, { dy: '70px', ds: 1 }, { dy: '0px', dr: '-8deg', ds: 1.25 }, { dy: '0px', rx: '80deg', ds: 1 }];
+        const WIPES = ['inset(0 100% 0 0)', 'inset(0 0 0 100%)', 'inset(0 50% 0 50%)'];
+        const EASES = ['cubic-bezier(.2, .7, .2, 1)', 'cubic-bezier(.3, 1.45, .45, 1)', 'cubic-bezier(.16, 1, .3, 1)'];
+        // Shapes the cover arrives or leaves through: clip-path, closed → open
+        const MASKS = [...['0% 0%', '100% 0%', '0% 100%', '100% 100%'].map(c => [`circle(0% at ${c})`, `circle(150% at ${c})`]), ['circle(0% at 50% 50%)', 'circle(75% at 50% 50%)'],
+            ['inset(0 100% 0 0)', 'inset(0 0 0 0)'], ['inset(0 0 0 100%)', 'inset(0 0 0 0)'], ['inset(100% 0 0 0)', 'inset(0 0 0 0)'], ['inset(0 0 100% 0)', 'inset(0 0 0 0)'],
+            ['inset(0 50% 0 50%)', 'inset(0 0 0 0)'], ['inset(50% 0 50% 0)', 'inset(0 0 0 0)'],
+            ['polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%)', 'polygon(50% -100%, 200% 50%, 50% 200%, -100% 50%)'],
+            ['polygon(0% 0%, 0% 0%, -60% 100%, -60% 100%)', 'polygon(0% 0%, 160% 0%, 100% 100%, -60% 100%)'], ['polygon(100% 0%, 100% 0%, 160% 100%, 160% 100%)', 'polygon(100% 0%, -60% 0%, 0% 100%, 160% 100%)']];
+        const KINDS = ['rise', 'slam', 'flip', 'side', 'drop', 'spin', 'fill', 'skew'];
+        const SHAPES = ['circle', 'ring', 'quarter', 'half', 'pill', 'square', 'tri', 'plus', 'star', 'blocks'];
+        const INKS = [['rgba(9, 11, 18, 0.16)', 'rgba(255, 255, 255, 0.3)'], ['rgb(var(--a))', 'rgba(255, 255, 255, 0.1)'], ['rgba(var(--a), 0.6)', 'rgba(0, 0, 0, 0.28)']];       // shape colours per cover colouring
+        const shapesHtml = (r, spots, inks, [s0, s1], drift) => shuffled(spots, r).slice(0, drift ? 2 : 3).map(([x, y], j) => {
+            const size = Math.round(s0 + r() * (s1 - s0));
+            return `<span class="shp" style="--x:${x + Math.round(r() * 12 - 6)}%;--y:${y + Math.round(r() * 12 - 6)}%;--s:${size}cqmin;--r:${Math.round(r() * 360)}deg;--j:${j};--sc:${inks[j % inks.length]};--mx:${Math.round((r() - 0.5) * drift)}px;--my:${Math.round((r() - 0.5) * drift)}px;--mr:${Math.round((r() - 0.5) * (drift ? 70 : 24))}deg;--sd:${(7 + r() * 5).toFixed(1)}s"><i class="${SHAPES[Math.floor(r() * SHAPES.length)]}"></i></span>`;
+        }).join('');
+        // The lines: [fits this year?, text]. One per cover, taken in turn by year so neighbouring years never open a slide alike.
+        // Written to no one in particular, so they read right to the owner and to a visitor. <b> marks the word in the highlight colour
+        const B = v => `<b>${v}</b>`, short = g => g && g.name.length <= 24, wk = R.weekdays.filter(Boolean).length > 1;
+        const LINES = {
+            year: [[1, `${B(R.year)}. Press start.`], [1, `One year. One card. ${B(R.year)}.`], [T.unlocks >= 100, `${B(n(T.unlocks))} unlocks. Every one earned.`], [T.activeDays >= 60, `${B(T.activeDays)} days of showing up.`],
+                [1, `Save file found: ${B(R.year)}.`], [1, `A year well played.`], [T.games >= 20, `${B(T.games)} games. No regrets.`], [T.minutes >= 6000, `${B(hrs(T.minutes))} hours. Worth every minute.`],
+                [1, `Slot ${B(slotNo)}. Here is what got saved.`], [T.unlocks < 40, `A small year. It still counts.`], [R.partial, `Still going. ${B(R.year)} so far.`], [!R.partial, `Rewind to ${B(R.year)}.`],
+                [!R.partial, `Remember ${B(R.year)}? The card does.`], [T.newGames >= 10, `${B(T.newGames)} new games. Curiosity wins.`], [1, `Now loading: ${B(R.year)}.`], [T.unlocks >= 40, `Progress is progress. ${B(n(T.unlocks))} times.`]],
+            top: [[1, `One game ran the year.`], [short(top1), `${B(esc(top1?.name))}. Obviously.`], [top1?.minutes >= 600, `${B(hrs(top1?.minutes))} hours in one world.`], [1, `Favourites earn their spot.`],
+                [1, `The save that kept getting loaded.`], [short(top1), `Top of the stack: ${B(esc(top1?.name))}.`], [top1?.sessions >= 10, `${B(top1?.sessions)} sessions. Always one more.`], [1, `Some games just stick.`],
+                [top1?.unlocks >= 20, `${B(top1?.unlocks)} unlocks from a single game.`], [byTime, `This one got the hours.`], [short(top1), `Player’s choice: ${B(esc(top1?.name))}.`], [1, `Hard to put down. Clearly.`],
+                [1, `Time well spent looks like this.`], [R.top.length > 2, `${B(R.top.length)} games made the cut. One led.`]],
+            done: [[1, `${B(R.completions.length)} games seen through.`], [1, `Started. Finished. Repeat.`], [1, `Credits rolled ${B(R.completions.length)} times.`], [1, `Plenty get started. These got finished.`],
+                [T.completed >= 1, `${B(T.completed)} at 100%. Nothing left behind.`], [1, `The backlog: ${B(R.completions.length)} lighter.`], [1, `The end, ${B(R.completions.length)} times over.`], [1, `Finishing is a skill.`],
+                [1, `Seen through to the last screen.`], [1, `Every cleared list began with one unlock.`], [1, `${B(R.completions.length)} done. Next.`], [1, `Final bosses: handled.`], [T.beaten >= 1, `${B(T.beaten)} beaten. The credits were earned.`]],
+            blocks: [[T.activeDays >= 30, `${B(T.activeDays)} days. That is a habit.`], [R.streak?.days >= 5, `${B(R.streak?.days)} days in a row. No skips.`], [1, `Show up. Play. Repeat.`], [R.dayPart, `${B(esc(R.dayPart?.label))} is prime time.`],
+                [R.bestDay?.unlocks >= 10, `Best day: ${B(R.bestDay?.unlocks)} unlocks. What a run.`], [1, `Every lit block is a day well spent.`], [T.activeDays >= 100, `Consistency beats intensity. ${B(T.activeDays)} days.`], [1, `A little, often. It adds up.`],
+                [wk, `${B(WEEKDAYS[topWd] + 's')} carried the year.`], [1, `The calendar does not lie.`], [1, `Blocks filled, one day at a time.`], [T.sessions >= 50, `${B(n(T.sessions))} sessions. Each one a choice.`],
+                [T.activeDays < 40, `Few days. Big days.`], [1, `One block at a time.`]],
+            rare: [[R.rarest[0], `Only ${B(R.rarest[0]?.pct + '%')} of players got this far.`], [R.rarest.length, `The hard ones count double.`], [R.rarest.length, `Rare finds. Proper bragging rights.`], [R.rarest.length, `Most players never see these.`],
+                [T.rare >= 2, `${B(T.rare)} rare unlocks. Patience pays.`], [R.rarest.length, `Difficulty is just a longer road.`], [R.rarest.length, `Off the beaten path.`], [R.rarest.length, `Earned, not handed out.`],
+                [R.first, `First unlock to last: the whole arc.`], [R.first, `Where it began. Where it stands.`], [R.rarest.length, `The ones worth the retries.`], [R.rarest.length, `Top shelf.`], [!R.rarest.length, `Every year has a first step.`]],
+            end: [[1, `That is the card.`], [1, `Saved. Do not turn off the power.`], [1, `Good game.`], [!R.partial, `One more year in the bank.`], [1, `Not bad. Not bad at all.`], [1, `Game saved.`], [!R.partial, `Roll credits.`],
+                [1, `Same time next year?`], [R.partial, `Still writing this one.`], [1, `Slot ${B(slotNo)} filled.`], [T.unlocks >= 40, `A year to be proud of.`], [1, `Well played.`], [R.partial, `${B(R.year)} is not over yet.`]],
+            after: [[1, `The next slot is empty. Go fill it.`], [1, `Progress saved. Keep going.`], [1, `On to the next one.`], [1, `The backlog is waiting.`], [R.partial, `The year is not over. Neither is the list.`], [1, `See you at the next save point.`], [1, `Continue?`]],
+        };
+        const lineFor = (key, salt = 0) => { const fits = (LINES[key] ?? LINES.end).filter(x => x[0]); return fits[(R.year + WHO + salt) % fits.length][1]; };
+        const storyPlan = () => {
+            const r = rng(SEED), moves = shuffled(MOVES, r), pops = shuffled(POPS, r), masks = shuffled(MASKS, r), kinds = shuffled(KINDS, r), looks = shuffled([0, 1, 2], r);
+            const ease = EASES[Math.floor(r() * EASES.length)], yr = YRS[Math.floor(r() * YRS.length)], step = [50, 70, 90, 110][Math.floor(r() * 4)], turn = Math.floor(r() * 3), out = 3 + Math.floor(r() * (MASKS.length - 4));
+            return k => ({ move: moves[k % moves.length], pop: pops[k % pops.length], yr, ease, step, wipe: WIPES[(k + turn) % WIPES.length], order: (k + turn) % 3,       // 0 in order, 1 backwards, 2 shuffled
+                enter: masks[k % masks.length], leave: masks[(k + out) % masks.length], kind: kinds[k % kinds.length], look: looks[k % looks.length], r: rng(SEED + (k + 1) * 7919) });
+        };
         const storyFrame = (inner, chrome = '') => `${top1 ? img(bigArt(top1), 'sbg') : ''}${chrome}${inner}
             <div class="sfoot"><b>${esc(R.user.name)}’s ${R.year}</b><span>${esc(D.site.replace(/^https?:\/\//, ''))}/memory-card/${R.year}</span></div>`;
         if (CARD === 'slide') {
@@ -1040,8 +1154,19 @@
                 <div class="hf2"><div class="slot px sa" style="justify-content:center"><i></i>Slot ${slotNo} <b>of ${YEARS.length} · saved</b></div>
                 <h2 class="sa">${R.year} saved</h2>
                 <p class="lead sa">${esc(R.title.name)} · ${headline.slice(0, 3).map(h => `<b>${h.v}</b> ${h.unit ? 'hours' : h.lab.toLowerCase()}`).join(' · ')}</p>
+                <p class="lead sa">${lineFor('after', 3)}</p>
                 <div class="btns sa"><button class="btn go" data-share>${svg.share}Share ${R.year}</button></div></div>`;
-            const slides = [...SLIDES.map(x => ({ ...x, ms: 8000 })), { key: null, two: true, ms: 8000, get html() { return endHtml(); } }];
+            const slides = [...SLIDES.map(x => ({ ...x, ms: 8000 })), { key: null, name: 'Saved', two: true, ms: 8000, get html() { return endHtml(); } }];
+            const plan = storyPlan();
+            // A cover's line as words that land one by one; punctuation after a highlighted word stays with it, in the plain colour
+            const lineHtml = (text, kicker, kind) => {
+                const words = [];
+                text.split(/(<b>.*?<\/b>)/).forEach(part => part.replace(/<\/?b>/g, '').split(/\s+/).filter(Boolean).forEach(t => {
+                    if (/^[.,:;?!]/.test(t) && words.length) words[words.length - 1].tail = t; else words.push({ t, hl: part.startsWith('<b>') }); }));
+                const len = words.reduce((a, w) => a + w.t.length + 1, 0), fs = len <= 18 ? 14 : len <= 26 ? 12.5 : len <= 38 ? 11 : len <= 50 ? 9.6 : 8.4;
+                return { count: words.length, html: `<div class="sline k-${kind}" style="--fs:${fs}cqmin;--ks:${words.length > 7 ? 60 : 90}ms"><span class="px">${kicker}</span><h2>${words.map((w, i) =>
+                    `<span class="w${w.hl ? ' hl' : ''}" style="--w:${i};--sg:${sg(i)}"><i>${w.t}${w.tail ? `<u>${w.tail}</u>` : ''}</i></span>`).join(' ')}</h2></div>` };
+            };
             let at = 0, held = false, holdTimer = 0, toastTimer = 0;
             const el = document.createElement('div');
             el.className = 'story';
@@ -1055,22 +1180,43 @@
                 mode.innerHTML = wide ? svg.tall : svg.wide;
                 mode.setAttribute('aria-label', wide ? 'Tall cards' : 'Wide cards'); mode.title = wide ? 'Tall cards' : 'Wide cards';
             };
-            const go = k => {
+            // A slide opens on its cover (the line), which swaps the slide in once it fills the frame and then leaves; `quick`
+            // (and reduced motion) swaps at once, without a cover
+            const go = (k, quick) => {
                 if (k < 0 || k >= slides.length) return;
                 at = k;
+                const sl = slides[at], p = plan(at), cover = !calm && !quick;
+                const line = lineHtml(lineFor(sl.key ?? 'end'), at ? esc(sl.name) : `Slot ${slotNo} of ${YEARS.length}`, p.kind), hold = Math.min(2600, 1500 + line.count * 110);
                 bars.forEach(b => { b.className = ''; });
                 void frame.offsetWidth;                                  // so a bar shown again starts over
                 bars.forEach((b, j) => { b.className = j < at ? 'past' : j === at ? 'on' : ''; });
-                el.style.setProperty('--dur', `${slides[at].ms}ms`);
-                frame.querySelectorAll('.stage').forEach(old => { old.classList.add('out'); setTimeout(() => old.remove(), 230); });
-                const stage = document.createElement('div');
-                stage.className = `stage s-${slides[at].key ?? 'end'}${slides[at].two ? ' two' : ''}`;
-                stage.innerHTML = slides[at].html;
-                stage.querySelectorAll('.sa').forEach((e, i) => e.style.setProperty('--i', i));
-                stage.querySelectorAll('img.pixart').forEach(i => { i.style.imageRendering = 'pixelated'; });
-                frame.insertBefore(stage, foot);
-                countUp(stage);
-                shot.hidden = !slides[at].key;
+                el.style.setProperty('--dur', `${sl.ms + (cover ? hold : 0)}ms`);
+                shot.hidden = !sl.key;
+                frame.querySelectorAll('.scover').forEach(c => c.remove());
+                const swap = () => {
+                    frame.querySelectorAll('.stage, .sdeco').forEach(old => { if (cover || !old.matches('.stage')) return old.remove(); old.classList.add('out'); setTimeout(() => old.remove(), 230); });
+                    const stage = document.createElement('div'), t0 = cover ? hold - 450 : 0;
+                    stage.className = `stage s-${sl.key ?? 'end'}${sl.two ? ' two' : ''}`;
+                    stage.style.cssText = `--t0:${t0}ms;--st:${p.step}ms;--ee:${p.ease}`;
+                    stage.innerHTML = sl.html;
+                    const pieces = [...stage.querySelectorAll('.sa')], turn = p.order === 2 ? shuffled(pieces.map((_, i) => i), p.r) : null;
+                    pieces.forEach((e, i) => {
+                        e.style.setProperty('--i', turn ? turn[i] : p.order ? pieces.length - 1 - i : i);
+                        const from = e.classList.contains('wipe') ? { w0: p.wipe } : e.classList.contains('yr') ? p.yr : (e.classList.contains('pop') ? p.pop : p.move)(i, p.r);
+                        for (const v in from) e.style.setProperty(`--${v}`, from[v]);
+                    });
+                    stage.querySelectorAll('img.pixart').forEach(i => { i.style.imageRendering = 'pixelated'; });
+                    frame.insertBefore(stage, foot);
+                    if (!calm) stage.insertAdjacentHTML('beforebegin', `<div class="sdeco" style="--t0:${t0}ms">${shapesHtml(p.r, [[0, 0], [100, 0], [0, 100], [100, 100], [0, 50], [100, 50], [50, 100]], ['rgba(var(--a), 0.14)', 'rgba(255, 255, 255, 0.05)'], [50, 90], 70)}</div>`);
+                    if (!cover) countUp(stage);
+                };
+                if (!cover) return swap();
+                const c = document.createElement('div');
+                c.className = `scover p${p.look}`;
+                c.style.cssText = `--c0:${p.enter[0]};--c1:${p.enter[1]};--o0:${p.leave[0]};--o1:${p.leave[1]};--hold:${hold}ms`;
+                c.innerHTML = shapesHtml(rng(SEED + (at + 1) * 104729), [[0, 0], [100, 0], [0, 100], [100, 100], [50, 0], [50, 100]], INKS[p.look], [46, 78], 0) + line.html;
+                c.swap = swap;
+                frame.append(c);
             };
             const toast = text => {
                 clearTimeout(toastTimer); frame.querySelector('.stoast')?.remove();
@@ -1090,7 +1236,8 @@
                 else if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(at + 1); }
                 else if (e.key === 'ArrowLeft') go(at - 1);
             };
-            el.addEventListener('animationend', e => { if (e.animationName === 'sbar') go(at + 1); });
+            el.addEventListener('animationend', e => { const a = e.animationName; if (a === 'sbar') go(at + 1); else if (a === 'scin') e.target.swap?.(); else if (a === 'scout') e.target.remove(); });
+            el.addEventListener('animationstart', e => { if (e.animationName === 'scout') countUp(frame.querySelector('.stage')); });        // numbers count as the cover leaves
             el.addEventListener('contextmenu', e => e.preventDefault());
             frame.addEventListener('pointerdown', e => { if (!e.target.closest('button')) holdTimer = setTimeout(() => hold(true), 220); });
             frame.addEventListener('pointercancel', () => { clearTimeout(holdTimer); hold(false); });
@@ -1105,7 +1252,7 @@
                 const t = e.target.closest('button');
                 if (e.target === el || t?.dataset.close != null) return close();
                 if (t?.dataset.shot != null) return sharePic(slides[at].key);
-                if (t?.dataset.mode != null) { wide = !wide; try { localStorage.setItem('mc:storyShape', wide ? 'wide' : 'tall'); } catch {} shape(); return go(at); }
+                if (t?.dataset.mode != null) { wide = !wide; try { localStorage.setItem('mc:storyShape', wide ? 'wide' : 'tall'); } catch {} shape(); return go(at, true); }
                 if (t?.dataset.share != null) { close(); openShare('slides', wide); }
             });
             document.addEventListener('keydown', onKey);

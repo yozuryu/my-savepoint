@@ -198,7 +198,8 @@ const addDay = (day, n) => { const d = new Date(day + 'T00:00:00Z'); d.setUTCDat
 const sharedSeries = (x => Array.isArray(x) ? x : x.series ?? [])(read('data/hub/series.json', [])).map(sr => ({ name: sr.name, keys: new Set(sr.gameIds ?? []) }));
 
 // ── One year ────────────────────────────────────────────────────────────────
-const now = Date.now(), thisYear = local(now).year;
+const now = process.env.RECAP_NOW ? Date.parse(process.env.RECAP_NOW) : Date.now(), thisYear = local(now).year;      // RECAP_NOW=2027-03-01: build as if on that day
+const OPENS_MONTH = 7;      // the running year gets its card once six months of it are done
 function buildYear(year) {
     // Farms and hidden games are left out of everything; idle games only lose their play time
     const hidden = k => farms.has(k) || hiddenGames.has(k);
@@ -338,7 +339,7 @@ function buildYear(year) {
 
 // ── Write ───────────────────────────────────────────────────────────────────
 const allYears = [...new Set([...unlocks.map(u => u.year), ...sessions.map(s => s.year)])].sort();
-const recaps = allYears.map(buildYear).filter(Boolean);
+const recaps = allYears.filter(y => y < thisYear || (y === thisYear && local(now).month >= OPENS_MONTH)).map(buildYear).filter(Boolean);
 
 // ── A name for each year ────────────────────────────────────────────────────
 // Every title has a measure, a bar the year must clear (`min`, plus `ok`) and a value where it is unmistakable (`max`).
