@@ -1,5 +1,14 @@
 # Changelog
 
+## v26.11.17
+
+Memory Card's year list is readable by other pages
+
+### Structure
+
+- improved: **Memory Card** publishes every year's title, colour and numbers in `years.json`
+  The home page at yozuryu.github.io draws the years from it.
+
 ## v26.11.16
 
 Memory Card's story opens every slide with a line of moving type and plays differently each year, and goes wide on a desktop

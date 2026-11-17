@@ -538,7 +538,9 @@ if (template) {
         fs.writeFileSync(path.join(pageDir, String(r.year), 'index.html'), html);
     }
     if (recaps.length) fs.writeFileSync(path.join(pageDir, 'index.html'), page(recaps[recaps.length - 1], '../'));
-    fs.writeFileSync(path.join(pageDir, 'years.json'), JSON.stringify({ years: recaps.map(r => r.year), latest: recaps.length ? (r => ({ year: r.year, title: r.title.name, partial: !!r.partial, colour: r.colour }))(recaps[recaps.length - 1]) : null }));
+    fs.writeFileSync(path.join(pageDir, 'years.json'), JSON.stringify({ years: recaps.map(r => r.year), latest: recaps.length ? (r => ({ year: r.year, title: r.title.name, partial: !!r.partial, colour: r.colour }))(recaps[recaps.length - 1]) : null,
+        // every year, for pages outside this one that show the years (the owner's home page)
+        list: recaps.map(r => ({ year: r.year, title: r.title.name, partial: !!r.partial, colour: r.colour, unlocks: r.totals.unlocks, games: r.totals.games, minutes: r.totals.minutes, finished: r.totals.completed + r.totals.beaten })) }));
 }
 console.log(`recap: ${recaps.length} years (${recaps.map(r => r.year).join(', ')})${template ? `, pages ${(bytes / 1024).toFixed(0)} KB` : ', no memory-card/page.html: nothing written'}`);
 if (process.argv.includes('--colours')) for (const r of recaps) console.log(`${r.year}  ${String(r.hue).padStart(3)}°  rgb(${r.colour})  from the ${r.hueFrom}${r.top[0] ? `  · ${r.top[0].name}` : ''}`);
