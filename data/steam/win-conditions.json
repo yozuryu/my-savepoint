@@ -461,6 +461,12 @@
       "Achievement_34"
     ]
   },
+  "289650": {
+    "mode": "or",
+    "achievements": [
+      "ACU_Ach_13"
+    ]
+  },
   "290770": {
     "mode": "or",
     "achievements": [
@@ -1414,6 +1420,12 @@
       "AchReachedEnding"
     ]
   },
+  "1174180": {
+    "mode": "or",
+    "achievements": [
+      "Achievement10"
+    ]
+  },
   "1198090": {
     "mode": "or",
     "achievements": [
@@ -1596,11 +1608,31 @@
       "STORY_FINALE"
     ]
   },
+  "2215430": {
+    "mode": "or",
+    "achievements": [
+      "_autoGenTrophy_0012"
+    ]
+  },
+  "2221490": {
+    "mode": "and",
+    "achievements": [
+      "TCTD2_Ach_8",
+      "TCTD2_Ach_10",
+      "TCTD2_Ach_11"
+    ]
+  },
   "2238900": {
     "mode": "and",
     "achievements": [
       "Achievement_14",
       "Achievement_15"
+    ]
+  },
+  "2246340": {
+    "mode": "or",
+    "achievements": [
+      "MEDAL_004"
     ]
   },
   "2515020": {
@@ -1621,6 +1653,12 @@
     "achievements": [
       "ACHIEVEMENT_2",
       "ACHIEVEMENT_42"
+    ]
+  },
+  "3321460": {
+    "mode": "or",
+    "achievements": [
+      "ExpertStoryteller"
     ]
   },
   "3678970": {

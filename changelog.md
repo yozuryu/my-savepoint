@@ -2,12 +2,14 @@
 
 ## v26.11.20
 
-Two more Steam games can be marked beaten
+Eight more Steam games can be marked beaten
 
 ### Steam
 
 - improved: **Beaten** marks for Eiyuden Chronicle: Rising and Little Noah: Scion of Paradise
   Each counts as beaten once its final-boss achievement unlocks: This Treasure I've Found and New Journey's Beginning.
+- improved: **Beaten** marks for six more story games
+  Crimson Desert, Monster Hunter Wilds, Red Dead Redemption 2, Ghost of Tsushima, Assassin's Creed Unity and The Division 2 (all three strongholds).
 
 ## v26.11.17
 
