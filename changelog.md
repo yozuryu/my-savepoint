@@ -1,5 +1,14 @@
 # Changelog
 
+## v26.11.20
+
+Two more Steam games can be marked beaten
+
+### Steam
+
+- improved: **Beaten** marks for Eiyuden Chronicle: Rising and Little Noah: Scion of Paradise
+  Each counts as beaten once its final-boss achievement unlocks: This Treasure I've Found and New Journey's Beginning.
+
 ## v26.11.17
 
 Memory Card's year list is readable by other pages

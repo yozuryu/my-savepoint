@@ -1478,6 +1478,12 @@
       "GC_Award_N_06"
     ]
   },
+  "1658290": {
+    "mode": "or",
+    "achievements": [
+      "ACHIEVEMENT008"
+    ]
+  },
   "1668510": {
     "mode": "or",
     "achievements": [
@@ -1534,6 +1540,12 @@
       "ACH_010",
       "ACH_011",
       "ACH_012"
+    ]
+  },
+  "1883260": {
+    "mode": "or",
+    "achievements": [
+      "trp_013"
     ]
   },
   "1903340": {
