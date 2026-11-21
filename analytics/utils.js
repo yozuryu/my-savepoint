@@ -85,11 +85,6 @@ export const xboxImg = (url, width) => {
     return url;
 };
 
-export const gameUrl = (platform, id, name) =>
-    platform === 'ra' ? `https://retroachievements.org/game/${id}`
-    : platform === 'steam' ? `https://store.steampowered.com/app/${id}`
-    : `https://www.xbox.com/en-US/Search/Results?q=${encodeURIComponent(name ?? '')}`;
-
 // Clean axis maximum and ticks: 0 / half / max, rounded to a readable step
 export const niceMax = (v) => {
     if (v <= 0) return 1;

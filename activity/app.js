@@ -8,6 +8,7 @@ import { TZ, toMs, dayKey, todayKey, addDays, keyToDate, buildHeatmap, splitByDa
 import { loadPlaying, PLAYING_GROUPS } from '../assets/playing.js';
 import { SummarySkeleton, TimelineSkeleton } from '../assets/activity-ui.js';
 import { raIcon } from '../assets/ra-icon.js';
+import { gameProps } from '../assets/game-sheet.js';
 
 // A day counts toward the playtime streak with at least this much play
 const PLAYTIME_STREAK_MIN = 15;
@@ -450,7 +451,7 @@ const GameSession = ({ session, raArt }) => {
         : [ra?.hero?.thumb, ra?.grid?.thumb].filter(Boolean);
     return (
         <div className="tcard" style={{ borderLeftColor: PLATFORM_COLOR[session.platform] }}>
-            <a href={session.gameUrl} target="_blank" rel="noreferrer" className="tcard-head">
+            <a {...gameProps(session.platform, session.gameId, { title: session.gameName, icon: session.gameIcon })} className="tcard-head">
                 {/* The game's art faded in from the right: Steam's store banner, else the icon blurred */}
                 <StripArt sources={wideArt} icon={session.gameIcon} />
                 {session.gameIcon ? <img src={session.gameIcon} alt="" loading="lazy" className="tcard-icon" /> : <span className="trow-ph tcard-icon" />}
@@ -492,7 +493,7 @@ const PlayGameRow = ({ game: g, day }) => {
     const from = `${startedEarlier ? new Date(first.startMs).toLocaleDateString('en-GB', { weekday: 'short' }) + ' ' : ''}${fmtTime(new Date(first.startMs))}`;
     const approx = g.sessions.some(s => s.approx);
     return (
-        <a href={g.gameUrl} target="_blank" rel="noreferrer" className="prow">
+        <a {...gameProps(g.platform, g.gameId, { title: g.gameName, icon: g.gameIcon })} className="prow">
             {g.gameIcon ? <img src={g.gameIcon} alt="" loading="lazy" /> : <span className="trow-ph" />}
             <div className="prow-main">
                 <span className="tcard-title"><GameName platform={g.platform} name={g.gameName} /></span>
@@ -589,10 +590,6 @@ const buildPlaytimeHeatmap = (sessions) => {
 // ── Playing view ──────────────────────────────────────────────────────────────
 
 // RA and Steam only (assets/playing.js leaves Xbox out: no playtime)
-const GAME_URL = {
-    ra:    g => `https://retroachievements.org/game/${g.gameId}`,
-    steam: g => `https://store.steampowered.com/app/${g.gameId}`,
-};
 const PLATFORM_LABEL = { ra: 'RA', steam: 'Steam' };
 const PLATFORM_RGB = { ra: '229,177,67', steam: '102,192,244' };
 // Group heading colours: in progress blue, fading as the game goes untouched
@@ -635,7 +632,7 @@ const PlayingTile = ({ game: g }) => {
     const pct = g.progress?.total ? Math.round(g.progress.unlocked / g.progress.total * 100) : null;
     const rgb = PLATFORM_RGB[g.platform];
     return (
-        <a href={GAME_URL[g.platform](g)} target="_blank" rel="noreferrer"
+        <a {...gameProps(g.platform, g.gameId, { title: g.name, icon: g.icon })}
             className="group flex flex-col min-w-0 bg-[#1b2838] border border-[#2a475e] rounded-[2px] overflow-hidden hover:border-[#4c9be8] transition-colors">
             {/* Steam header art is 460×215: the box matches it so nothing is cropped */}
             <div className="relative aspect-[460/215] overflow-hidden grid place-items-center bg-[#101214]">
@@ -1006,7 +1003,6 @@ const App = () => {
                         gameId: a.gameId,
                         gameName: a.gameName,
                         gameIcon: a.gameIcon,
-                        gameUrl: a.gameUrl,
                         consoleName: a.consoleName,
                         achs: [a],
                     });

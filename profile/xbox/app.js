@@ -9,6 +9,9 @@ import { useGameView, shortAgo } from '../../assets/game-view.js';
 import { CompletionsPanel } from '../../assets/completions.js';
 import { TabBar, useSwipeTabs, scrollToTabs } from '../../assets/tabs.js';
 import { computeStreak, useSummaryOpen, ActivitySummary, yearOf, DayHead, RunCard, RunCount, UnlockRow, ActivitySkeleton } from '../../assets/activity-ui.js';
+import { openGame as openSharedGame, tapProps } from '../../assets/game-sheet.js';
+// Set by App: opens a game's sheet by id (used by components outside App, e.g. the Activity tab)
+let openGameOut = () => {};
 
 // Xbox 360 titles only return unlocked achievements (`partial: true`), but the
 // total is known, so the rest are filled in as locked placeholders.
@@ -516,7 +519,7 @@ const ActivityTab = ({ achievements, heatmapData, gameIcons, gameArt, loading, h
                                         const t0 = fmtTime(sorted[sorted.length - 1].unlockedAt), t1 = fmtTime(sorted[0].unlockedAt);
                                         return (
                                             <RunCard key={`${session.titleId}-${sorted[0].unlockedAt}`}
-                                                accent="#52b043" href={xboxSearchUrl(session.gameName)} icon={xboxImg(gameIcons?.[session.titleId], 64)}
+                                                accent="#52b043" link={tapProps('xbox', String(session.titleId), openGameOut)} icon={xboxImg(gameIcons?.[session.titleId], 64)}
                                                 art={[gameArt?.[session.titleId]]}
                                                 title={<span className="truncate">{session.gameName}</span>}
                                                 sub={<>
@@ -1192,14 +1195,17 @@ const App = () => {
 
     // Completions section (assets/completions.js): completed games, then beaten-only games from the win conditions.
     // Posters and gamerscore come from games/index.json
+    // Any game by id (Completions, the Activity tab, unlock rows): its sheet here, or the shared sheet for a game
+    // the games index doesn't know
     const openGameById = (id) => {
         const d = gamesData?.achievementProgress?.[id];
-        if (!d) return;
+        if (!d) { openSharedGame({ p: 'xbox', id: String(id) }); return; }
         handleViewDetails({
             game: { titleId: String(id), name: d.gameName, storeUrl: xboxSearchUrl(d.gameName), lastPlayedTs: d.lastPlayedTs ?? null, heroUrl: d.heroUrl, iconUrl: d.iconUrl },
             achievementData: d, beatenInfo: beatenGames.find(g => String(g.titleId) === String(id)) ?? null,
         });
     };
+    openGameOut = openGameById;
     const completionItems = useMemo(() => {
         const perfect = profileData?.perfectGames ?? [], ids = new Set(perfect.map(g => g.titleId));
         const idx = gamesData?.achievementProgress ?? {};
@@ -1380,7 +1386,7 @@ const App = () => {
                                                     className="w-4 h-4 rounded-[1px] border border-[#101214] object-cover"
                                                     onError={e => { e.target.style.display = 'none'; }}
                                                 />
-                                                <a href={xboxSearchUrl(mostRecentUnlock.gameName)} target="_blank" rel="noreferrer" className="text-[#66c0f4] hover:text-[#c6d4df] transition-colors">{mostRecentUnlock.gameName}</a>
+                                                <a {...tapProps('xbox', String(mostRecentUnlock.titleId), openGameOut)} className="text-[#66c0f4] hover:text-[#c6d4df] transition-colors">{mostRecentUnlock.gameName}</a>
                                                 <span className="text-[#546270]">•</span>
                                                 <span className="text-[#546270]">{formatTimeAgo(mostRecentUnlock.unlockedAt)}</span>
                                             </div>
@@ -1395,14 +1401,14 @@ const App = () => {
                                 {ovUnlocks?.some(a => !(mostRecentUnlock && a.titleId === mostRecentUnlock.titleId && a.apiName === mostRecentUnlock.apiName)) && (
                                     <div className="ulist anim-fade">
                                         {ovUnlocks.filter(a => !(mostRecentUnlock && a.titleId === mostRecentUnlock.titleId && a.apiName === mostRecentUnlock.apiName)).slice(0, 5).map(a => (
-                                            <div key={`${a.titleId}-${a.apiName}`} className="urow">
+                                            <a key={`${a.titleId}-${a.apiName}`} {...tapProps('xbox', String(a.titleId), openGameOut)} className="urow">
                                                 {a.iconUrl ? <img src={xboxImg(a.iconUrl, 64)} alt="" loading="lazy" /> : <span className="w-8 h-8 shrink-0 rounded-[2px] bg-[#2a475e]" />}
                                                 <div className="urow-main">
                                                     <span className="urow-title">{a.displayName}</span>
                                                     <span className="urow-sub"><span className="text-[#66c0f4]">{a.gameName}</span> · {formatTimeAgo(a.unlockedAt)}</span>
                                                 </div>
                                                 {a.gamerscore > 0 && <span className="urow-end">{a.gamerscore} G</span>}
-                                            </div>
+                                            </a>
                                         ))}
                                     </div>
                                 )}

@@ -3,11 +3,11 @@ import { createRoot } from 'react-dom/client';
 import { Star, Gem, ChevronDown, Flame, Feather, Check, Plus, Medal, Clock } from 'lucide-react';
 import { TZ, fmtDate, monthKey, yearOf, keyToDate } from '../assets/time.js';
 import { raIcon } from '../assets/ra-icon.js';
+import { gameProps } from '../assets/game-sheet.js';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 const RA_MEDIA  = 'https://media.retroachievements.org';
-const RA_SITE   = 'https://retroachievements.org';
 const achIconUrl = (appId, hash) => hash ? `https://shared.akamai.steamstatic.com/community_assets/images/apps/${appId}/${hash}` : null;
 
 const formatPlaytime = mins => {
@@ -80,7 +80,6 @@ const normalizeRA = (awards, showBeaten, totals = {}) =>
             rarest: a.rarest ? { r: a.rarest.pct, n: a.rarest.name, hc: a.awardDataExtra === 1, icon: a.rarest.badge ? `${RA_MEDIA}/Badge/${a.rarest.badge}.png` : null } : null,
             lastAchName: a.winCondition?.name ?? null,   // beaten: the win condition (RA pipeline)
             lastAchGlobalPct: a.winCondition?.pct ?? null,
-            gameUrl: `${RA_SITE}/game/${a.awardData}`,
         }));
 
 const normalizeSteam = perfectGames =>
@@ -96,7 +95,6 @@ const normalizeSteam = perfectGames =>
         lastAchName: g.lastAchName,
         lastAchGlobalPct: g.lastAchGlobalPct,
         playtime: g.playtimeForever,
-        gameUrl: `https://store.steampowered.com/app/${g.appId}`,
     }));
 
 const normalizeSteamBeaten = beatenGames =>
@@ -112,7 +110,6 @@ const normalizeSteamBeaten = beatenGames =>
         lastAchName: g.winConditionName,
         lastAchGlobalPct: g.winCondGlobalPct,
         playtime: g.playtimeForever,
-        gameUrl: `https://store.steampowered.com/app/${g.appId}`,
     }));
 
 const EDS_WIDTHS = [64, 128, 150, 200, 208, 300, 424];
@@ -124,7 +121,6 @@ const xboxImg = (url, width) => {
     return url;
 };
 
-const xboxSearchUrl = name => `https://www.xbox.com/en-US/Search/Results?q=${encodeURIComponent(name ?? '')}`;
 
 const normalizeXbox = completedGames =>
     completedGames.map(g => ({
@@ -138,7 +134,6 @@ const normalizeXbox = completedGames =>
         total: g.total,
         lastAchName: g.lastAchName,
         lastAchGlobalPct: g.lastAchGlobalPct,
-        gameUrl: xboxSearchUrl(g.gameName),
     }));
 
 const normalizeXboxBeaten = beatenGames =>
@@ -153,7 +148,6 @@ const normalizeXboxBeaten = beatenGames =>
         total: g.total,
         lastAchName: g.winConditionName,
         lastAchGlobalPct: g.winCondGlobalPct,
-        gameUrl: xboxSearchUrl(g.gameName),
     }));
 
 // Games beaten via win conditions (hand-picked "ending" achievements in the admin).
@@ -313,7 +307,7 @@ const HighlightArt = ({ item }) => {
 // A completed game (★ Mastered / Perfect / Completed): art banner, status, title, console,
 // achievements, time played and the rarest achievement
 const Highlight = ({ item, rare }) => (
-    <a href={item.gameUrl} target="_blank" rel="noreferrer"
+    <a {...gameProps(item.platform, item.gameId, { title: item.gameName, icon: item.iconUrl })}
         className="flex flex-col bg-[#1b2838] border border-[#2a475e] border-l-[3px] rounded-[3px] overflow-hidden hover:-translate-y-0.5 transition-transform"
         style={{ borderLeftColor: '#e5b143' }}>
         <div className="relative aspect-[460/215] overflow-hidden bg-[#101214]">
@@ -351,7 +345,7 @@ const Highlight = ({ item, rare }) => (
 // A beaten game: compact silver row with its art faded behind (row styles in assets/ui.css);
 // every row shows the achievement that beat the game (RA: its win condition)
 const BeatenRow = ({ item }) => (
-    <a href={item.gameUrl} target="_blank" rel="noreferrer" className="grow" style={{ background: '#1b2838', borderColor: '#2a475e', borderLeftColor: '#b8c4ce' }}>
+    <a {...gameProps(item.platform, item.gameId, { title: item.gameName, icon: item.iconUrl })} className="grow" style={{ background: '#1b2838', borderColor: '#2a475e', borderLeftColor: '#b8c4ce' }}>
         {/* RA with wide art: its hero (else banner) faded behind, as on the RA profile rows */}
         {item.wideArt
             ? <div className="grow-art"><img src={item.wideArt} alt="" loading="lazy" onError={e => { e.target.style.display = 'none'; }} /></div>

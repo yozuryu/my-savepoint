@@ -10,6 +10,9 @@ import { useGameView, shortAgo } from '../../assets/game-view.js';
 import { CompletionsPanel } from '../../assets/completions.js';
 import { TabBar, useSwipeTabs, scrollToTabs } from '../../assets/tabs.js';
 import { computeStreak, useSummaryOpen, ActivitySummary, yearOf, DayHead, RunCard, RunCount, UnlockRow, ActivitySkeleton } from '../../assets/activity-ui.js';
+import { openGame as openSharedGame, tapProps } from '../../assets/game-sheet.js';
+// Set by App: opens a game's sheet by id (used by components outside App, e.g. the Activity tab)
+let openGameOut = () => {};
 
 
 // ── Overview stat tiles (styles in assets/ui.css) ──────────────────────────────
@@ -499,7 +502,7 @@ const ActivityTab = ({ achievements, heatmapData, gameIcons, gameArt, loading, h
                                         const t0 = fmtTime(sorted[sorted.length - 1].unlockedAt), t1 = fmtTime(sorted[0].unlockedAt);
                                         return (
                                             <RunCard key={`${session.appId}-${sorted[0].unlockedAt}`}
-                                                accent="#66c0f4" href={`https://store.steampowered.com/app/${session.appId}`} icon={gameIcons?.[session.appId]}
+                                                accent="#66c0f4" link={tapProps('steam', String(session.appId), openGameOut)} icon={gameIcons?.[session.appId]}
                                                 art={[`https://cdn.akamai.steamstatic.com/steam/apps/${session.appId}/library_hero.jpg`, `https://cdn.akamai.steamstatic.com/steam/apps/${session.appId}/header.jpg`]}
                                                 title={<span className="truncate">{session.gameName}</span>}
                                                 sub={<>
@@ -1228,14 +1231,17 @@ const App = () => {
     const beatenMap     = useMemo(() => new Map(beatenGames.map(g => [g.appId, g])), [beatenGames]);
 
     // Completions section (assets/completions.js): perfect games, then beaten-only games from the win conditions
+    // Any game by id (Completions, the Activity tab, unlock rows): its sheet here, or the shared sheet for a game
+    // the games index doesn't know
     const openGameById = (id) => {
         const d = gamesData?.achievementProgress?.[id];
-        if (!d) return;
+        if (!d) { openSharedGame({ p: 'steam', id: String(id) }); return; }
         handleViewDetails({
             game: { appId: Number(id), name: d.gameName ?? `App ${id}`, storeUrl: `https://store.steampowered.com/app/${id}`, playtimeForever: d.playtimeForever ?? 0, playtime2Weeks: d.playtime2Weeks ?? 0, lastPlayedTs: d.lastPlayedTs ?? null },
             achievementData: d, beatenInfo: beatenGames.find(g => String(g.appId) === String(id)) ?? null,
         });
     };
+    openGameOut = openGameById;
     const completionItems = useMemo(() => {
         const perfect = profileData?.perfectGames ?? [], ids = new Set(perfect.map(g => g.appId));
         const art = (g) => ({ cover: headerUrl(g.appId), tile: headerUrl(g.appId), art: heroUrl(g.appId), artFallback: headerUrl(g.appId) });
@@ -1414,7 +1420,7 @@ const App = () => {
                                                     className="w-4 h-4 rounded-[1px] border border-[#101214] object-cover"
                                                     onError={e => { e.target.style.display = 'none'; }}
                                                 />
-                                                <a href={`https://store.steampowered.com/app/${mostRecentUnlock.appId}`} target="_blank" rel="noreferrer" className="text-[#66c0f4] hover:text-[#c6d4df] transition-colors">{mostRecentUnlock.gameName}</a>
+                                                <a {...tapProps('steam', String(mostRecentUnlock.appId), openGameOut)} className="text-[#66c0f4] hover:text-[#c6d4df] transition-colors">{mostRecentUnlock.gameName}</a>
                                                 <span className="text-[#546270]">•</span>
                                                 <span className="text-[#546270]">{formatTimeAgo(mostRecentUnlock.unlockedAt)}</span>
                                             </div>
@@ -1429,14 +1435,14 @@ const App = () => {
                                 {ovUnlocks?.some(a => !(mostRecentUnlock && a.appId === mostRecentUnlock.appId && a.apiName === mostRecentUnlock.apiName)) && (
                                     <div className="ulist anim-fade">
                                         {ovUnlocks.filter(a => !(mostRecentUnlock && a.appId === mostRecentUnlock.appId && a.apiName === mostRecentUnlock.apiName)).slice(0, 5).map(a => (
-                                            <div key={`${a.appId}-${a.apiName}`} className="urow">
+                                            <a key={`${a.appId}-${a.apiName}`} {...tapProps('steam', String(a.appId), openGameOut)} className="urow">
                                                 {a.iconUrl ? <img src={a.iconUrl} alt="" loading="lazy" /> : <span className="w-8 h-8 shrink-0 rounded-[2px] bg-[#2a475e]" />}
                                                 <div className="urow-main">
                                                     <span className="urow-title">{a.displayName}</span>
                                                     <span className="urow-sub"><span className="text-[#66c0f4]">{a.gameName}</span> · {formatTimeAgo(a.unlockedAt)}</span>
                                                 </div>
                                                 <span className="urow-end" style={{ color: rarityBorderColor(a.globalPct) }}>{a.globalPct}%</span>
-                                            </div>
+                                            </a>
                                         ))}
                                     </div>
                                 )}

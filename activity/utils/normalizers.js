@@ -10,7 +10,6 @@ export const normalizeRA = (a) => ({
     gameName: a.gameTitle,
     gameId: a.gameId,
     gameIcon: `${RA_MEDIA}${a.gameIcon}`,
-    gameUrl: `https://retroachievements.org/game/${a.gameId}`,
     consoleName: a.consoleName,
     points: a.points,
     unlockedAt: a.date.replace(' ', 'T') + 'Z',
@@ -26,7 +25,6 @@ export const normalizeSession = (platform, s, games) => {
         gameId: s.gameId,
         gameName: g.name ?? `#${s.gameId}`,
         gameIcon: g.icon ? (isRA ? `${RA_MEDIA}${g.icon}` : g.icon) : null,
-        gameUrl: isRA ? `https://retroachievements.org/game/${s.gameId}` : `https://store.steampowered.com/app/${s.gameId}`,
         startMs: Date.parse(s.start),
         endMs: Date.parse(s.end),
         minutes: s.minutes,
@@ -44,7 +42,6 @@ export const normalizeSteam = (a) => ({
     gameId: a.appId,
     // Until the games index arrives (then its icon). Newer games have no capsule_184x69.jpg; header.jpg is there for nearly all
     gameIcon: `https://cdn.akamai.steamstatic.com/steam/apps/${a.appId}/header.jpg`,
-    gameUrl: `https://store.steampowered.com/app/${a.appId}`,
     rarity: a.globalPct,
     unlockedAt: a.unlockedAt,
 });
@@ -58,6 +55,5 @@ export const normalizeXbox = (a) => ({
     gameName: a.gameName,
     gameId: a.titleId,
     gameIcon: null,   // filled from data/xbox/games/index.json
-    gameUrl: `https://www.xbox.com/en-US/Search/Results?q=${encodeURIComponent(a.gameName ?? '')}`,
     unlockedAt: a.unlockedAt,
 });

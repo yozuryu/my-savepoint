@@ -11,6 +11,9 @@ import { CompletionsPanel } from '../../assets/completions.js';
 import { SubFold, SubStrip, SubChips, subsMatch } from '../../assets/subseries.js';
 import { TabBar, useSwipeTabs, scrollToTabs } from '../../assets/tabs.js';
 import { computeStreak, useSummaryOpen, ActivitySummary, yearOf, DayHead, RunCard, RunCount, UnlockRow, ActivitySkeleton } from '../../assets/activity-ui.js';
+import { openGame as openSharedGame, tapProps } from '../../assets/game-sheet.js';
+// Set by App: opens a game's sheet by id (used by components outside App, e.g. the Activity tab)
+let openGameById = () => {};
 import { TZ, toMs, dayKey, addDays, keyToDate, fmtDate, fmtClock, buildHeatmap } from '../../assets/time.js';
 
 // --- JSX Helpers ---
@@ -720,7 +723,7 @@ const ActivityTab = ({ achievements, refTime, heatmapData, artData, loadedChunks
                     const t0 = fmtTime(session.startTime), t1 = fmtTime(session.endTime);
                     return (
                       <RunCard key={`${session.gameId}-${session.startTime}`}
-                        accent="#e5b143" href={`${SITE_URL}/game/${session.gameId}`} icon={session.gameIcon}
+                        accent="#e5b143" link={tapProps('ra', session.gameId, openGameById)} icon={session.gameIcon}
                         art={[wide?.hero?.thumb, wide?.grid?.thumb]}
                         title={<><span className="truncate">{p.baseTitle}</span>{p.isSubset && <span className="subset-tag">Subset</span>}{!p.isSubset && renderTildeTags(p.tags)}</>}
                         subset={p.isSubset ? p.subsetName : null}
@@ -736,7 +739,6 @@ const ActivityTab = ({ achievements, refTime, heatmapData, artData, loadedChunks
                             : ach.type === 'missable' ? <AlertTriangle size={11} className="text-[#ff9800] shrink-0"><title>Missable</title></AlertTriangle> : null;
                           return (
                             <UnlockRow key={`${ach.achievementId}-${ach.date}`}
-                              href={`${SITE_URL}/achievement/${ach.achievementId}`}
                               icon={`${MEDIA_URL}/Badge/${ach.badgeName}.png`}
                               title={ach.title} titleStyle={{ color: ach.hardcoreMode ? '#e5b143' : '#c6d4df' }}
                               marks={typeIcon}
@@ -1124,7 +1126,7 @@ const SeriesSheet = ({ card: series, awards, onOpenGame, onClose, onScope }) => 
           {series.subs && sub == null && <SubStrip subs={series.subs} onPick={onScope} />}
           {c.latestAch && <div className={`ssheet-sec ${series.subs && sub == null ? 'next' : ''}`} style={{ '--c': '#e5b143' }}>Latest unlock</div>}
           {c.latestAch && (
-            <a href={`${SITE_URL}/achievement/${c.latestAch.achId}`} target="_blank" rel="noreferrer" className="grow compact" style={{ borderLeftColor: '#e5b143' }} title="Latest unlock in this series">
+            <a {...tapProps('ra', c.latestAch.gameId, id => { const x = c.games.find(y => String(y.id) === String(id)); if (x?.g) onOpenGame(x.g); else openGameById(id); })} className="grow compact" style={{ borderLeftColor: '#e5b143' }} title="Latest unlock in this series">
               <img src={`${MEDIA_URL}/Badge/${c.latestAch.badgeName}.png`} alt="" className="grow-icon px" />
               <div className="grow-main">
                 <span className="grow-title" style={{ color: '#e5b143' }}><Trophy size={11} className="inline -mt-0.5 mr-1" />{c.latestAch.title}</span>
@@ -1141,7 +1143,7 @@ const SeriesSheet = ({ card: series, awards, onOpenGame, onClose, onScope }) => 
                 : x.g && x.hasAch
                 ? <GameListRow key={x.id} game={x.g} onViewDetails={onOpenGame} compact />
                 : (
-                  <a key={x.id} href={`${SITE_URL}/game/${x.id}`} target="_blank" rel="noreferrer" className={`wrow ${x.hasAch ? '' : 'dim'}`} style={{ borderLeftColor: x.hasAch ? '#323f4c' : '#1e2a35' }}>
+                  <a key={x.id} {...tapProps('ra', x.id, id => openSharedGame({ p: 'ra', id, title: x.title, icon: x.icon }))} className={`wrow ${x.hasAch ? '' : 'dim'}`} style={{ borderLeftColor: x.hasAch ? '#323f4c' : '#1e2a35' }}>
                     {x.icon ? <img src={x.icon} alt="" loading="lazy" className="wrow-icon" /> : <span className="wrow-icon" />}
                     <div className="wrow-main">
                       <div className="wrow-title"><span>{parseTitle(x.title).baseTitle || x.title}</span></div>
@@ -1303,6 +1305,8 @@ export default function App() {
   // Opening a game: its sheet shows a skeleton until the game's file is in (from any tab, Overview's
   // Last played included), then the full entry
   const openGame = g => { setSelectedGame(g); if (!g.achievements?.length) loadGameFile(g.id); };
+  // Any game by id: its sheet here when the profile knows it, else the shared sheet (want-to-play games)
+  openGameById = id => { const g = ALL_GAMES.find(x => String(x.id) === String(id)); if (g) openGame(g); else openSharedGame({ p: 'ra', id }); };
 
   // ── Merge loaded achievement chunks (newest first) ────────
   const allLoadedAchievements = useMemo(() => {
@@ -1540,12 +1544,12 @@ export default function App() {
                   </h2>
                   {PROFILE_DATA.mostRecentAchievement ? (
                     <div className="bg-[#1b2838]/80 border border-[#323f4c] border-l-[3px] border-l-[#e5b143] rounded-[3px] p-3 flex gap-3 hover:bg-[#202d39] transition-colors shadow-sm">
-                      <a href={`${SITE_URL}/achievement/${PROFILE_DATA.mostRecentAchievement.id}`} target="_blank" rel="noreferrer" className="shrink-0 w-12 h-12 rounded-[2px] overflow-hidden border border-[#101214] bg-black block hover:scale-105 transition-transform">
+                      <a {...tapProps('ra', PROFILE_DATA.mostRecentAchievement.gameId, openGameById)} className="shrink-0 w-12 h-12 rounded-[2px] overflow-hidden border border-[#101214] bg-black block hover:scale-105 transition-transform">
                         <img src={`${MEDIA_URL}/Badge/${PROFILE_DATA.mostRecentAchievement.badgeName}.png`} alt={PROFILE_DATA.mostRecentAchievement.title} className="w-full h-full object-cover" />
                       </a>
                       <div className="flex-1 min-w-0 flex flex-col justify-center">
                         <div className="flex items-center gap-2 flex-wrap mb-0.5">
-                          <a href={`${SITE_URL}/achievement/${PROFILE_DATA.mostRecentAchievement.id}`} target="_blank" rel="noreferrer" className="text-[13px] font-medium text-[#e5b143] hover:underline truncate leading-tight">
+                          <a {...tapProps('ra', PROFILE_DATA.mostRecentAchievement.gameId, openGameById)} className="text-[13px] font-medium text-[#e5b143] hover:underline truncate leading-tight">
                             {PROFILE_DATA.mostRecentAchievement.title}
                           </a>
                           <span className="text-[9px] font-bold text-[#66c0f4] bg-[#101214] border border-[#323f4c] px-1.5 py-[1px] rounded-sm shrink-0">{PROFILE_DATA.mostRecentAchievement.points} pts</span>
@@ -1556,7 +1560,7 @@ export default function App() {
                         </div>
                         <p className="text-[10px] text-[#8f98a0] leading-snug mb-1 truncate">{PROFILE_DATA.mostRecentAchievement.description}</p>
                         <div className="flex items-center gap-1.5 text-[10px]">
-                          <a href={`${SITE_URL}/game/${PROFILE_DATA.mostRecentAchievement.gameId}`} target="_blank" rel="noreferrer" className="flex items-center gap-1 group">
+                          <a {...tapProps('ra', PROFILE_DATA.mostRecentAchievement.gameId, openGameById)} className="flex items-center gap-1 group">
                             <img src={PROFILE_DATA.mostRecentAchievement.gameIcon} alt="" className="w-3.5 h-3.5 rounded-[1px] border border-[#101214]" />
                             <span className="text-[#66c0f4] group-hover:text-[#c6d4df] transition-colors">{PROFILE_DATA.mostRecentAchievement.baseTitle || PROFILE_DATA.mostRecentAchievement.gameTitle}</span>
                             {renderTildeTags(PROFILE_DATA.mostRecentAchievement.tags)}
@@ -1575,7 +1579,7 @@ export default function App() {
                   {ovUnlocks?.some(a => a.achievementId !== PROFILE_DATA.mostRecentAchievement?.id) && (
                     <div className="ulist anim-fade">
                       {ovUnlocks.filter(a => a.achievementId !== PROFILE_DATA.mostRecentAchievement?.id).slice(0, 5).map(a => (
-                        <a key={`${a.achievementId}-${a.date}`} href={`${SITE_URL}/achievement/${a.achievementId}`} target="_blank" rel="noreferrer" className="urow">
+                        <a key={`${a.achievementId}-${a.date}`} {...tapProps('ra', a.gameId, openGameById)} className="urow">
                           <img src={`${MEDIA_URL}/Badge/${a.badgeName}.png`} alt="" loading="lazy" className="px" />
                           <div className="urow-main">
                             <span className="urow-title">{a.title}</span>
@@ -1719,7 +1723,7 @@ export default function App() {
                 const stripe = stripeOf(game);
                 const pct = game.achievementsTotal > 0 ? (game.numAwarded / game.achievementsTotal) * 100 : 0;
                 return (
-                  <a key={game.id} href={`${SITE_URL}/game/${game.id}`} target="_blank" rel="noreferrer" className={`wrow ${hasNoAch ? 'dim' : ''}`} style={{ borderLeftColor: stripe }}>
+                  <a key={game.id} {...tapProps('ra', game.id, openGameById)} className={`wrow ${hasNoAch ? 'dim' : ''}`} style={{ borderLeftColor: stripe }}>
                     <img src={game.icon} alt="" loading="lazy" className="wrow-icon" />
                     <div className="wrow-main">
                       <div className="wrow-title">
@@ -1783,7 +1787,7 @@ export default function App() {
                 const status = getStatus(game);
                 const pct = game.achievementsTotal > 0 ? (game.numAwarded / game.achievementsTotal) * 100 : 0;
                 return (
-                  <a key={game.id} href={`${SITE_URL}/game/${game.id}`} target="_blank" rel="noreferrer" title={game.title}
+                  <a key={game.id} {...tapProps('ra', game.id, openGameById)} title={game.title}
                     className={`wsub ${base ? '' : 'subset'} ${status === 'noach' ? 'dim' : ''}`} style={{ borderLeftColor: stripeOf(game) }}>
                     <img src={game.icon} alt="" loading="lazy" className="icon" />
                     <span className="name">{base ? 'Base set' : game.subsetName}</span>
@@ -1800,7 +1804,7 @@ export default function App() {
               // A game with subsets: name and console once on top, then the base set and each subset
               const stackCard = (game, subsets) => (
                 <div key={game.id} className="wstack">
-                  <a href={`${SITE_URL}/game/${game.id}`} target="_blank" rel="noreferrer" className="whead">
+                  <a {...tapProps('ra', game.id, openGameById)} className="whead">
                     <span className="t"><span>{game.baseTitle || game.title}</span>{renderTildeTags(game.tags)}</span>
                     {watchlistGrouping !== 'console' && <span className="c">{game.console}</span>}
                   </a>

@@ -185,13 +185,14 @@ function StripArt({ art, icon }) {
 const FOLD = 5;   // runs longer than this fold after FOLD - 1 rows
 
 // One run of consecutive unlocks in one game. `title` and `sub` are nodes (the page's own
-// title parsing, console, time range); `rows` the UnlockRows, newest first
-export function RunCard({ accent, href, icon, art, title, subset, sub, rows }) {
+// title parsing, console, time range); `rows` the UnlockRows, newest first; `link` the head's link props
+// (tapProps from assets/game-sheet.js: opens the game's sheet)
+export function RunCard({ accent, link, icon, art, title, subset, sub, rows }) {
   const [open, setOpen] = useState(false);
   const folded = rows.length > FOLD && !open;
   const shown = folded ? rows.slice(0, FOLD - 1) : rows;
   return h('div', { className: 'tcard', style: { borderLeftColor: accent } },
-    h('a', { href, target: '_blank', rel: 'noreferrer', className: 'tcard-head' },
+    h('a', { ...link, className: 'tcard-head' },
       h(StripArt, { art, icon }),
       icon ? h('img', { src: icon, alt: '', loading: 'lazy', className: 'tcard-icon' }) : h('span', { className: 'trow-ph tcard-icon' }),
       h('div', { className: 'tcard-main' },
@@ -208,10 +209,11 @@ export function RunCard({ accent, href, icon, art, title, subset, sub, rows }) {
 export const RunCount = ({ n, extra }) => h('span', { className: 'tcard-n' }, h(Icon, { name: 'trophy', size: 11 }), ' ', n, extra);
 
 // One unlock: badge, name (+ marks), description, and time with its value (points, rarity…) under it
-export function UnlockRow({ href, icon, title, titleStyle, marks, desc, time, value }) {
+// (no link of its own: the run's head opens the game, whose sheet lists the achievement)
+export function UnlockRow({ icon, title, titleStyle, marks, desc, time, value }) {
   const img = icon ? h('img', { src: icon, alt: '', loading: 'lazy' }) : h('span', { className: 'trow-ph' });
   return h('div', { className: 'trow' },
-    href ? h('a', { href, target: '_blank', rel: 'noreferrer', className: 'contents' }, img) : img,
+    img,
     h('div', { className: 'trow-main' },
       h('span', { className: 'trow-title flex items-center gap-1.5' }, h('span', { className: 'truncate', style: titleStyle }, title), marks),
       desc && h('span', { className: 'trow-sub' }, desc)),

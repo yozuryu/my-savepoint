@@ -4,11 +4,12 @@ import { BarChart3, ChevronDown, ChevronRight, Table, Check, Plus, EyeOff, Calen
 import { TabBar, useSwipeTabs, scrollToTabs } from '../assets/tabs.js';
 import { TZ, dayKey, todayKey, addDays, keyToDate, splitByDay, fmtDayKey } from '../assets/time.js';
 import { raIcon } from '../assets/ra-icon.js';
+import { gameProps } from '../assets/game-sheet.js';
 import {
     RA_MEDIA, PLATFORMS, PLATFORM_COLOR, PLATFORM_LABEL, PLATFORM_SHORT, RARITY_TIERS, rarityTier, HEAT_RAMP,
     FARM_PER_HOUR, FARM_MIN_UNLOCKS, TILDE_TAG_COLORS, DAY_PARTS, DROPPED_MAX_MINUTES, DROPPED_IDLE_DAYS,
     COMEBACK_GAP_DAYS, COMEBACK_MIN_MINUTES, COMEBACK_MIN_UNLOCKS, BINGE_MIN_DAYS, BINGE_MIN_MINUTES,
-    fmtMinutes, fmtHours, fmtNum, parseTitle, xboxImg, gameUrl, niceMax, median,
+    fmtMinutes, fmtHours, fmtNum, parseTitle, xboxImg, niceMax, median,
 } from './utils.js';
 
 // Playtime logging started in 2026 (data/{ra,steam}/playtime/{YYYY}.json)
@@ -454,23 +455,23 @@ const Column = ({ bucket, series, max, height, format }) => {
     );
 };
 
-// Horizontal bars for ranked lists: rows [{ key, label, sub, value, color, icon, href }]
+// Horizontal bars for ranked lists: rows [{ key, label, sub, value, color, icon, game }]; a row with a game opens its sheet
 // `max` fixes the scale (e.g. 100 for percentages); otherwise bars are relative to the top row
 const BarList = ({ rows, format, max: fixedMax, empty = 'Nothing in this period.' }) => {
     if (!rows.length) return <div className="an-empty">{empty}</div>;
     const max = fixedMax ?? Math.max(...rows.map(r => r.value));
     return (
         <div className="an-blist">
-            {rows.map((r, i) => (
-                <div key={r.key} className="an-brow">
+            {rows.map((r, i) => {
+                const Row = r.game ? 'a' : 'div';
+                return (
+                <Row key={r.key} className="an-brow" {...(r.game ? gameProps(r.game.p, r.game.id, { title: r.game.title, icon: r.game.icon }) : {})}>
                     {r.icon !== undefined && (
                         r.icon ? <img src={r.icon} alt="" className="an-bicon" loading="lazy" /> : <span className="an-bicon" />
                     )}
                     <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-1.5 min-w-0">
-                            {r.href
-                                ? <a href={r.href} target="_blank" rel="noreferrer" className="an-bname">{r.label}</a>
-                                : <span className="an-bname">{r.label}</span>}
+                            <span className="an-bname">{r.label}</span>
                             {r.marks}
                             <span className="ml-auto an-bval">{r.text ?? format(r.value)}</span>
                         </div>
@@ -479,8 +480,9 @@ const BarList = ({ rows, format, max: fixedMax, empty = 'Nothing in this period.
                             <div style={{ width: r.value > 0 ? `${Math.max(2, (r.value / max) * 100)}%` : 0, background: r.color }} />
                         </div>
                     </div>
-                </div>
-            ))}
+                </Row>
+                );
+            })}
         </div>
     );
 };
@@ -1023,7 +1025,7 @@ const App = () => {
             value,
             color: PLATFORM_COLOR[x.platform],
             icon: data.meta[x.platform][x.id]?.icon ?? null,
-            href: gameUrl(x.platform, x.id, nameOf(x.platform, x.id)),
+            game: { p: x.platform, id: x.id, title: nameOf(x.platform, x.id), icon: data.meta[x.platform][x.id]?.icon ?? undefined },
         });
         const games = Object.values(perGame);
         const topHours = games.filter(x => x.minutes >= 1).sort((a, b) => b.minutes - a.minutes).slice(0, 8)
@@ -1121,7 +1123,7 @@ const App = () => {
         const periodCompletions = completions.filter(c => inRange(c.key, startKey, endKey));
         // The latest completion (any time, same filters), shown when the period has none
         const lastDone = completions.reduce((m, c) => (!m || c.ms > m.ms ? c : m), null);
-        const doneCard = (c) => c && ({ key: `${c.platform}-${c.gameId}`, ms: c.ms, platform: c.platform,
+        const doneCard = (c) => c && ({ key: `${c.platform}-${c.gameId}`, ms: c.ms, platform: c.platform, id: String(c.gameId),
             name: parseTitle(nameOf(c.platform, c.gameId)).baseTitle, icon: data.meta[c.platform][c.gameId]?.icon ?? null });
         const daysToComplete = periodCompletions
             .map(c => { const f = base.firstUnlock[`${c.platform}-${c.gameId}`]; return f != null ? (c.ms - f) / 86400000 : null; })
@@ -1433,7 +1435,7 @@ const App = () => {
                                 {view.rarest.map(u => {
                                     const icon = data.meta[u.platform][String(u.g)]?.icon;
                                     return (
-                                        <div key={`${u.platform}-${u.g}-${u.a}`} className="an-brow">
+                                        <a key={`${u.platform}-${u.g}-${u.a}`} className="an-brow" {...gameProps(u.platform, String(u.g), { title: view.nameOf(u.platform, u.g), icon: icon ?? undefined })}>
                                             {icon ? <img src={icon} alt="" className="an-bicon" loading="lazy" /> : <span className="an-bicon" />}
                                             <div className="flex-1 min-w-0">
                                                 <div className="flex items-center gap-1.5 min-w-0">
@@ -1446,7 +1448,7 @@ const App = () => {
                                                     <TitleMarks platform={u.platform} name={view.nameOf(u.platform, u.g)} />
                                                 </div>
                                             </div>
-                                        </div>
+                                        </a>
                                     );
                                 })}
                             </div>
@@ -1462,18 +1464,18 @@ const App = () => {
                                 <div className="an-done-v">{fmtNum(done)} <span>completed</span></div>
                                 <div className="an-hl-s">{view.daysToComplete.length ? <>median <b>{Math.round(median(view.daysToComplete))} days</b> from first unlock</> : 'in this period'}</div>
                             </div>
-                            <span className="an-done-icons">{view.doneGames.map(g => g.icon ? <img key={g.key} src={g.icon} alt="" title={g.name} /> : <span key={g.key} />)}</span>
+                            <span className="an-done-icons">{view.doneGames.map(g => <a key={g.key} {...gameProps(g.platform, g.id, { title: g.name, icon: g.icon ?? undefined })} title={g.name}>{g.icon ? <img src={g.icon} alt="" /> : <span />}</a>)}</span>
                         </div>
                     ) : view.lastDone ? (
                         // None in the period: the latest one instead of a lone zero
-                        <div className="an-done">
+                        <a className="an-done" {...gameProps(view.lastDone.platform, view.lastDone.id, { title: view.lastDone.name, icon: view.lastDone.icon ?? undefined })}>
                             {view.lastDone.icon ? <img src={view.lastDone.icon} alt="" className="an-done-game" /> : <span className="an-done-game" />}
                             <div className="min-w-0">
                                 <div className="an-hl-s">Last completed</div>
                                 <div className="an-done-name">{view.lastDone.name}</div>
                                 <div className="an-hl-s"><span className="text-[#e5b143]">★ {agoLabel(view.lastDone.ms)}</span> · none in this period</div>
                             </div>
-                        </div>
+                        </a>
                     ) : <div className="an-empty">No completions yet.</div>}
                     <div className="an-sep">
                         <div className="an-sub">Funnel <span className="cpill">All time</span></div>
