@@ -38048,7 +38048,7 @@
             "unlocked": 5,
             "gameName": "LEGO® 2K Drive",
             "playtimeForever": 643,
-            "lastPlayedTs": "2026-11-15T08:57:13.000Z",
+            "lastPlayedTs": "2026-11-21T01:36:51.000Z",
             "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1451810/8310e788a7972d6ae815c157a58207b5bb50f369.jpg",
             "lastUnlockedAt": "2026-11-15T07:07:10.000Z",
             "lastUnlockName": "Read the Manual",
@@ -39774,7 +39774,7 @@
                     "unlockedAt": null,
                     "iconUrl": "36a4273e4004f0846a146137f0e208a010e7f28b.jpg",
                     "iconGrayUrl": "de0ee6792613ca54d406734d997f64c06bd38c99.jpg",
-                    "globalPct": 87.6
+                    "globalPct": 87.7
                 },
                 {
                     "apiName": "NotAllGoldThatShimmers",
@@ -39810,7 +39810,7 @@
                     "unlockedAt": null,
                     "iconUrl": "10e78b64d5dfdf186b3580fd41c19b96503ee4b1.jpg",
                     "iconGrayUrl": "9c034e43cc82f380d7d4d0dfae412b977eadf3d9.jpg",
-                    "globalPct": 41.1
+                    "globalPct": 41
                 },
                 {
                     "apiName": "SocksNTails",
@@ -39819,7 +39819,7 @@
                     "unlockedAt": null,
                     "iconUrl": "0a5e17c3803e135638bf740267caeab0c5af7bfd.jpg",
                     "iconGrayUrl": "773e901b54f8e160df408508057fbb6df241ca7b.jpg",
-                    "globalPct": 40.8
+                    "globalPct": 40.7
                 }
             ]
         },

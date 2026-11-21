@@ -1,13 +1,13 @@
 {
     "metadata": {
-        "extractionTimestamp": "2026-11-21T00:05:25.331Z"
+        "extractionTimestamp": "2026-11-21T01:46:48.165Z"
     },
     "profile": {
         "steamId": "76561198188939413",
         "displayName": "Yozuryu",
         "avatar": "https://avatars.steamstatic.com/3f5e9daea59216d7fe13df4e031d3537580e5e21_full.jpg",
         "profileUrl": "https://steamcommunity.com/id/yozuryu/",
-        "status": 0,
+        "status": 1,
         "lastOnline": "2026-11-20T15:04:06.000Z",
         "countryCode": "ID"
     },
@@ -24,6 +24,17 @@
         "avgPlaytimeMin": 427
     },
     "recentlyPlayed": [
+        {
+            "appId": 1451810,
+            "name": "LEGO® 2K Drive",
+            "playtime2Weeks": 643,
+            "playtimeForever": 643,
+            "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1451810/8310e788a7972d6ae815c157a58207b5bb50f369.jpg",
+            "storeUrl": "https://store.steampowered.com/app/1451810",
+            "lastPlayedTs": "2026-11-21T01:36:51.000Z",
+            "achUnlocked": 5,
+            "achTotal": 38
+        },
         {
             "appId": 1658290,
             "name": "Eiyuden Chronicle: Rising",
@@ -56,17 +67,6 @@
             "lastPlayedTs": "2026-11-15T14:26:35.000Z",
             "achUnlocked": 8,
             "achTotal": 69
-        },
-        {
-            "appId": 1451810,
-            "name": "LEGO® 2K Drive",
-            "playtime2Weeks": 643,
-            "playtimeForever": 643,
-            "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1451810/8310e788a7972d6ae815c157a58207b5bb50f369.jpg",
-            "storeUrl": "https://store.steampowered.com/app/1451810",
-            "lastPlayedTs": "2026-11-15T08:57:13.000Z",
-            "achUnlocked": 5,
-            "achTotal": 38
         },
         {
             "appId": 2322380,
@@ -103,13 +103,13 @@
         }
     ],
     "mostRecentGame": {
-        "appId": 1658290,
-        "name": "Eiyuden Chronicle: Rising",
-        "playtime2Weeks": 277,
-        "playtimeForever": 338,
-        "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1658290/449ec8f09bf72c9f8e00c113c1e12a7c70a86de4.jpg",
-        "storeUrl": "https://store.steampowered.com/app/1658290",
-        "lastPlayedTs": "2026-11-20T15:01:14.000Z"
+        "appId": 1451810,
+        "name": "LEGO® 2K Drive",
+        "playtime2Weeks": 643,
+        "playtimeForever": 643,
+        "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1451810/8310e788a7972d6ae815c157a58207b5bb50f369.jpg",
+        "storeUrl": "https://store.steampowered.com/app/1451810",
+        "lastPlayedTs": "2026-11-21T01:36:51.000Z"
     },
     "mostRecentUnlock": {
         "appId": 1658290,
