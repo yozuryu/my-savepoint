@@ -14,7 +14,7 @@
             "iconUrl": "f7ed43ebaffa7609f7161e2acae4cd3415f1967c.jpg",
             "iconGrayUrl": "27fb3f587ff5db0f90bca6117beb1b2163ae3445.jpg",
             "hidden": false,
-            "globalPct": 79
+            "globalPct": 78.9
         },
         {
             "apiName": "ach002",
@@ -47,7 +47,7 @@
             "iconUrl": "49a05cf8932cfb9e3462a64b947db90b021092ad.jpg",
             "iconGrayUrl": "659aabe2f7ab7899c50f15afb562ac78c1c5cea8.jpg",
             "hidden": false,
-            "globalPct": 18.3
+            "globalPct": 18.4
         },
         {
             "apiName": "ach005",
@@ -80,7 +80,7 @@
             "iconUrl": "c5108a8244f0149b89eee8410c1ea679017b0147.jpg",
             "iconGrayUrl": "7bbcc1bb6cb926eb1b0a6d1163e32b44c922d615.jpg",
             "hidden": false,
-            "globalPct": 17.6
+            "globalPct": 17.5
         },
         {
             "apiName": "ach008",
@@ -179,7 +179,7 @@
             "iconUrl": "b03a557e558c33a9d947ea2e71c58e2a9cc01f98.jpg",
             "iconGrayUrl": "45f14741bcf36deabec419836fc14e302eeb9c90.jpg",
             "hidden": false,
-            "globalPct": 47.8
+            "globalPct": 47.9
         },
         {
             "apiName": "ach017",
@@ -212,7 +212,7 @@
             "iconUrl": "b64e317e460439d9e4050a8be7d1fd515917cc48.jpg",
             "iconGrayUrl": "169d3fd94fa54f154b8373b66b30baeee6760198.jpg",
             "hidden": false,
-            "globalPct": 16.4
+            "globalPct": 16.5
         },
         {
             "apiName": "ach020",
@@ -223,7 +223,7 @@
             "iconUrl": "4e3f00f02b7d7fb96f95335ad7c95c6f7134c7a0.jpg",
             "iconGrayUrl": "672d2b957b64a02da4cab2047cdd18dbb43a919d.jpg",
             "hidden": false,
-            "globalPct": 38.3
+            "globalPct": 38.4
         },
         {
             "apiName": "ach021",
@@ -420,7 +420,7 @@
             "unlockedAt": "2026-11-08T05:05:26.000Z",
             "iconUrl": "f7ed43ebaffa7609f7161e2acae4cd3415f1967c.jpg",
             "iconGrayUrl": "27fb3f587ff5db0f90bca6117beb1b2163ae3445.jpg",
-            "globalPct": 79
+            "globalPct": 78.9
         },
         {
             "apiName": "ach002",

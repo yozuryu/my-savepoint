@@ -38251,8 +38251,8 @@
             "total": 50,
             "unlocked": 13,
             "gameName": "Eiyuden Chronicle: Rising",
-            "playtimeForever": 368,
-            "lastPlayedTs": "2026-11-21T13:07:52.000Z",
+            "playtimeForever": 398,
+            "lastPlayedTs": "2026-11-21T13:37:52.000Z",
             "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1658290/449ec8f09bf72c9f8e00c113c1e12a7c70a86de4.jpg",
             "lastUnlockedAt": "2026-11-17T15:29:56.000Z",
             "lastUnlockName": "...And Your Tax Money",
@@ -39732,7 +39732,7 @@
                     "unlockedAt": "2026-11-08T05:05:26.000Z",
                     "iconUrl": "f7ed43ebaffa7609f7161e2acae4cd3415f1967c.jpg",
                     "iconGrayUrl": "27fb3f587ff5db0f90bca6117beb1b2163ae3445.jpg",
-                    "globalPct": 79
+                    "globalPct": 78.9
                 },
                 {
                     "apiName": "ach002",
@@ -39937,7 +39937,7 @@
                     "unlockedAt": "2026-05-09T08:38:38.000Z",
                     "iconUrl": "8289deab066f28263e8f73ba929fd68958b040a2.jpg",
                     "iconGrayUrl": "ddd944bafb49b5f7f13dd8333a4e5add32828825.jpg",
-                    "globalPct": 74
+                    "globalPct": 74.1
                 },
                 {
                     "apiName": "1015",
