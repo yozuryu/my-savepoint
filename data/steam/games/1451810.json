@@ -2,7 +2,7 @@
     "appId": 1451810,
     "hasAchievements": true,
     "total": 38,
-    "unlocked": 6,
+    "unlocked": 7,
     "gameName": "LEGO® 2K Drive",
     "achievements": [
         {
@@ -139,8 +139,8 @@
         },
         {
             "apiName": "ACH_MASTER_PUNTER",
-            "unlocked": false,
-            "unlockedAt": null,
+            "unlocked": true,
+            "unlockedAt": "2026-11-21T04:07:57.000Z",
             "displayName": "Sidewalk Hog",
             "description": "Punt 200 pedestrians into the air",
             "iconUrl": "1c02d5564326863fb47ad9f99281331a67615918.jpg",
@@ -424,12 +424,21 @@
             "globalPct": 1.9
         }
     ],
-    "playtimeForever": 763,
-    "lastPlayedTs": "2026-11-21T03:36:53.000Z",
+    "playtimeForever": 793,
+    "lastPlayedTs": "2026-11-21T04:06:53.000Z",
     "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1451810/8310e788a7972d6ae815c157a58207b5bb50f369.jpg",
-    "lastUnlockedAt": "2026-11-21T02:26:53.000Z",
-    "lastUnlockName": "Road Hog",
+    "lastUnlockedAt": "2026-11-21T04:07:57.000Z",
+    "lastUnlockName": "Sidewalk Hog",
     "preview": [
+        {
+            "apiName": "ACH_MASTER_PUNTER",
+            "displayName": "Sidewalk Hog",
+            "unlocked": true,
+            "unlockedAt": "2026-11-21T04:07:57.000Z",
+            "iconUrl": "1c02d5564326863fb47ad9f99281331a67615918.jpg",
+            "iconGrayUrl": "9f4485b1017165f4089afecc727b02c62932a31f.jpg",
+            "globalPct": 27.7
+        },
         {
             "apiName": "ACH_ROADRAGE",
             "displayName": "Road Hog",
@@ -474,15 +483,6 @@
             "iconUrl": "249e96d7f1074b1045038ec7e0bfc030e9731c14.jpg",
             "iconGrayUrl": "364598ecf4456713313b749e96d6e52d90fac9f7.jpg",
             "globalPct": 70.2
-        },
-        {
-            "apiName": "ACH_SKID_ROAD",
-            "displayName": "Couldn't Have Drifted Better Myself",
-            "unlocked": true,
-            "unlockedAt": "2026-11-14T02:57:05.000Z",
-            "iconUrl": "e84a665d3834c6a5c461311c0215db205651bbb5.jpg",
-            "iconGrayUrl": "26acaf7e22f3d2339af7ca42f6652f0d16cea47b.jpg",
-            "globalPct": 45.2
         }
     ]
 }

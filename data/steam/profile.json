@@ -1,6 +1,6 @@
 {
     "metadata": {
-        "extractionTimestamp": "2026-11-21T03:46:50.549Z"
+        "extractionTimestamp": "2026-11-21T04:16:54.013Z"
     },
     "profile": {
         "steamId": "76561198188939413",
@@ -13,11 +13,11 @@
     },
     "stats": {
         "totalGames": 1295,
-        "totalPlaytimeMin": 352639,
-        "totalPlaytimeHrs": 5877,
+        "totalPlaytimeMin": 352669,
+        "totalPlaytimeHrs": 5878,
         "gamesWithPlaytime": 824,
         "totalAchievements": 10250,
-        "unlockedAchievements": 2878,
+        "unlockedAchievements": 2879,
         "gamesWithAchievements": 174,
         "perfectCount": 17,
         "completionPct": 28,
@@ -27,12 +27,12 @@
         {
             "appId": 1451810,
             "name": "LEGO® 2K Drive",
-            "playtime2Weeks": 763,
-            "playtimeForever": 763,
+            "playtime2Weeks": 793,
+            "playtimeForever": 793,
             "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1451810/8310e788a7972d6ae815c157a58207b5bb50f369.jpg",
             "storeUrl": "https://store.steampowered.com/app/1451810",
-            "lastPlayedTs": "2026-11-21T03:36:53.000Z",
-            "achUnlocked": 6,
+            "lastPlayedTs": "2026-11-21T04:06:53.000Z",
+            "achUnlocked": 7,
             "achTotal": 38
         },
         {
@@ -105,21 +105,21 @@
     "mostRecentGame": {
         "appId": 1451810,
         "name": "LEGO® 2K Drive",
-        "playtime2Weeks": 763,
-        "playtimeForever": 763,
+        "playtime2Weeks": 793,
+        "playtimeForever": 793,
         "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1451810/8310e788a7972d6ae815c157a58207b5bb50f369.jpg",
         "storeUrl": "https://store.steampowered.com/app/1451810",
-        "lastPlayedTs": "2026-11-21T03:36:53.000Z"
+        "lastPlayedTs": "2026-11-21T04:06:53.000Z"
     },
     "mostRecentUnlock": {
         "appId": 1451810,
         "gameName": "LEGO® 2K Drive",
-        "apiName": "ACH_ROADRAGE",
-        "displayName": "Road Hog",
-        "description": "Destroy 200 traffic vehicles",
-        "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1451810/b87790da2cc7ed71b487338da1516a3686b18e56.jpg",
-        "unlockedAt": "2026-11-21T02:26:53.000Z",
-        "globalPct": 19.1
+        "apiName": "ACH_MASTER_PUNTER",
+        "displayName": "Sidewalk Hog",
+        "description": "Punt 200 pedestrians into the air",
+        "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1451810/1c02d5564326863fb47ad9f99281331a67615918.jpg",
+        "unlockedAt": "2026-11-21T04:07:57.000Z",
+        "globalPct": 27.7
     },
     "perfectGames": [
         {

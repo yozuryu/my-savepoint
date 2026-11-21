@@ -38045,14 +38045,23 @@
             "appId": 1451810,
             "hasAchievements": true,
             "total": 38,
-            "unlocked": 6,
+            "unlocked": 7,
             "gameName": "LEGO® 2K Drive",
-            "playtimeForever": 763,
-            "lastPlayedTs": "2026-11-21T03:36:53.000Z",
+            "playtimeForever": 793,
+            "lastPlayedTs": "2026-11-21T04:06:53.000Z",
             "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1451810/8310e788a7972d6ae815c157a58207b5bb50f369.jpg",
-            "lastUnlockedAt": "2026-11-21T02:26:53.000Z",
-            "lastUnlockName": "Road Hog",
+            "lastUnlockedAt": "2026-11-21T04:07:57.000Z",
+            "lastUnlockName": "Sidewalk Hog",
             "preview": [
+                {
+                    "apiName": "ACH_MASTER_PUNTER",
+                    "displayName": "Sidewalk Hog",
+                    "unlocked": true,
+                    "unlockedAt": "2026-11-21T04:07:57.000Z",
+                    "iconUrl": "1c02d5564326863fb47ad9f99281331a67615918.jpg",
+                    "iconGrayUrl": "9f4485b1017165f4089afecc727b02c62932a31f.jpg",
+                    "globalPct": 27.7
+                },
                 {
                     "apiName": "ACH_ROADRAGE",
                     "displayName": "Road Hog",
@@ -38097,15 +38106,6 @@
                     "iconUrl": "249e96d7f1074b1045038ec7e0bfc030e9731c14.jpg",
                     "iconGrayUrl": "364598ecf4456713313b749e96d6e52d90fac9f7.jpg",
                     "globalPct": 70.2
-                },
-                {
-                    "apiName": "ACH_SKID_ROAD",
-                    "displayName": "Couldn't Have Drifted Better Myself",
-                    "unlocked": true,
-                    "unlockedAt": "2026-11-14T02:57:05.000Z",
-                    "iconUrl": "e84a665d3834c6a5c461311c0215db205651bbb5.jpg",
-                    "iconGrayUrl": "26acaf7e22f3d2339af7ca42f6652f0d16cea47b.jpg",
-                    "globalPct": 45.2
                 }
             ]
         },
@@ -39705,7 +39705,7 @@
                     "unlockedAt": "2026-11-08T10:28:13.000Z",
                     "iconUrl": "b245962141c9669bb20a21ba27555345f47a561b.jpg",
                     "iconGrayUrl": "f2bf8289ba403366ce0d5bbf859d9898eb73315e.jpg",
-                    "globalPct": 38.9
+                    "globalPct": 39
                 },
                 {
                     "apiName": "ach018",
@@ -39732,7 +39732,7 @@
                     "unlockedAt": "2026-11-08T05:05:26.000Z",
                     "iconUrl": "f7ed43ebaffa7609f7161e2acae4cd3415f1967c.jpg",
                     "iconGrayUrl": "27fb3f587ff5db0f90bca6117beb1b2163ae3445.jpg",
-                    "globalPct": 79
+                    "globalPct": 78.9
                 },
                 {
                     "apiName": "ach002",
@@ -39801,7 +39801,7 @@
                     "unlockedAt": null,
                     "iconUrl": "b6d55da4834ca70897f53e01378a10b37c2cb488.jpg",
                     "iconGrayUrl": "21dc5dde373e9f7da18b361def601ad32664ee79.jpg",
-                    "globalPct": 43.7
+                    "globalPct": 43.8
                 },
                 {
                     "apiName": "GetTheGoldenSpatula",
@@ -39810,7 +39810,7 @@
                     "unlockedAt": null,
                     "iconUrl": "10e78b64d5dfdf186b3580fd41c19b96503ee4b1.jpg",
                     "iconGrayUrl": "9c034e43cc82f380d7d4d0dfae412b977eadf3d9.jpg",
-                    "globalPct": 41
+                    "globalPct": 41.1
                 },
                 {
                     "apiName": "SocksNTails",
@@ -39819,7 +39819,7 @@
                     "unlockedAt": null,
                     "iconUrl": "0a5e17c3803e135638bf740267caeab0c5af7bfd.jpg",
                     "iconGrayUrl": "773e901b54f8e160df408508057fbb6df241ca7b.jpg",
-                    "globalPct": 40.7
+                    "globalPct": 40.8
                 }
             ]
         },
@@ -39937,7 +39937,7 @@
                     "unlockedAt": "2026-05-09T08:38:38.000Z",
                     "iconUrl": "8289deab066f28263e8f73ba929fd68958b040a2.jpg",
                     "iconGrayUrl": "ddd944bafb49b5f7f13dd8333a4e5add32828825.jpg",
-                    "globalPct": 74.1
+                    "globalPct": 74
                 },
                 {
                     "apiName": "1015",
