@@ -13,6 +13,11 @@ Completions speaks one visual language: the same marks for the same things every
 - fix: **Rarity colours** match the rest of the site
   Ultra rare is under 5% (gold), then Very rare, Rare, Uncommon and Common, as on Analytics and Activity.
 
+### Structure
+
+- fix: **Memory Card** link previews show the new picture after a change
+  Discord and WhatsApp kept the first picture they saw for a link. The picture's address now changes whenever the picture does.
+
 ## v26.11.20
 
 Eight more Steam games can be marked beaten

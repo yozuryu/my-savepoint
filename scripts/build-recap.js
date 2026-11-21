@@ -509,7 +509,10 @@ if (template) {
         const facts = [t.minutes ? hoursText(t.minutes) : null, `${t.unlocks.toLocaleString('en-US')} unlocks`, `${t.games} games`,
             t.completed + t.beaten ? `${t.completed + t.beaten} finished` : null].filter(Boolean).join(' · ');
         const desc = `${facts}${r.top[0] ? `. ${r.rankBy === 'time' ? 'Most played' : 'Most unlocked'}: ${r.top[0].name}` : ''}. ${r.title.name}.`;
-        const url = `${SITE}/memory-card/${r.year}/`, image = `${SITE}/memory-card/share/${r.year}-link.jpg`;
+        // The picture's address carries a hash of what it shows (the recap and the page template), so link
+        // previews that keep a picture by its address (Discord, WhatsApp) fetch the new one after a change
+        const ver = require('crypto').createHash('sha1').update(JSON.stringify(r) + template).digest('hex').slice(0, 8);
+        const url = `${SITE}/memory-card/${r.year}/`, image = `${SITE}/memory-card/share/${r.year}-link.jpg?v=${ver}`;
         const meta = [
             `<title>${esc(title)}</title>`,
             `<meta name="description" content="${esc(desc)}">`,
