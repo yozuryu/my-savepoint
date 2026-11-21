@@ -14,7 +14,7 @@
             "iconUrl": "36a4273e4004f0846a146137f0e208a010e7f28b.jpg",
             "iconGrayUrl": "de0ee6792613ca54d406734d997f64c06bd38c99.jpg",
             "hidden": true,
-            "globalPct": 87.6
+            "globalPct": 87.7
         },
         {
             "apiName": "NotAllGoldThatShimmers",
@@ -190,7 +190,7 @@
             "iconUrl": "93147ceab061f13d805e7804145b5fcd02167ccf.jpg",
             "iconGrayUrl": "304665f54962e869e80621be096600f30ddfe8bd.jpg",
             "hidden": false,
-            "globalPct": 9.5
+            "globalPct": 9.6
         },
         {
             "apiName": "Hoarder",
@@ -278,7 +278,7 @@
             "iconUrl": "3f8aeeb12582b960c8db43fac88b4d42ba4bda89.jpg",
             "iconGrayUrl": "7bd52cc562e933c3be0dc19e9d03160e0201a1a8.jpg",
             "hidden": false,
-            "globalPct": 9.7
+            "globalPct": 9.8
         },
         {
             "apiName": "TheWisdom",
@@ -317,7 +317,7 @@
             "unlockedAt": null,
             "iconUrl": "36a4273e4004f0846a146137f0e208a010e7f28b.jpg",
             "iconGrayUrl": "de0ee6792613ca54d406734d997f64c06bd38c99.jpg",
-            "globalPct": 87.6
+            "globalPct": 87.7
         },
         {
             "apiName": "NotAllGoldThatShimmers",
