@@ -1,6 +1,6 @@
 {
     "metadata": {
-        "extractionTimestamp": "2026-11-21T06:45:58.441Z"
+        "extractionTimestamp": "2026-11-21T07:42:57.498Z"
     },
     "games": {
         "449": {
@@ -213,8 +213,8 @@
             "consoleId": 5,
             "consoleName": "Game Boy Advance",
             "parentGameId": null,
-            "numDistinctPlayersCasual": 4633,
-            "numDistinctPlayersHardcore": 4633,
+            "numDistinctPlayersCasual": 4634,
+            "numDistinctPlayersHardcore": 4634,
             "numAchievements": 49,
             "numAwardedToUser": 0,
             "numAwardedToUserHardcore": 0,

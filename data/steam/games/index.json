@@ -38048,7 +38048,7 @@
             "unlocked": 7,
             "gameName": "LEGO® 2K Drive",
             "playtimeForever": 836,
-            "lastPlayedTs": "2026-11-21T04:50:28.000Z",
+            "lastPlayedTs": "2026-11-21T07:32:01.000Z",
             "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1451810/8310e788a7972d6ae815c157a58207b5bb50f369.jpg",
             "lastUnlockedAt": "2026-11-21T04:07:57.000Z",
             "lastUnlockName": "Sidewalk Hog",
@@ -39801,7 +39801,7 @@
                     "unlockedAt": null,
                     "iconUrl": "b6d55da4834ca70897f53e01378a10b37c2cb488.jpg",
                     "iconGrayUrl": "21dc5dde373e9f7da18b361def601ad32664ee79.jpg",
-                    "globalPct": 43.7
+                    "globalPct": 43.8
                 },
                 {
                     "apiName": "GetTheGoldenSpatula",
@@ -39810,7 +39810,7 @@
                     "unlockedAt": null,
                     "iconUrl": "10e78b64d5dfdf186b3580fd41c19b96503ee4b1.jpg",
                     "iconGrayUrl": "9c034e43cc82f380d7d4d0dfae412b977eadf3d9.jpg",
-                    "globalPct": 41
+                    "globalPct": 41.1
                 },
                 {
                     "apiName": "SocksNTails",

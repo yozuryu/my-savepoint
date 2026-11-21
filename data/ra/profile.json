@@ -1,6 +1,6 @@
 {
     "metadata": {
-        "extractionTimestamp": "2026-11-21T06:45:58.441Z"
+        "extractionTimestamp": "2026-11-21T07:42:57.498Z"
     },
     "username": "Yozuryu",
     "coreProfile": {
@@ -8,8 +8,8 @@
         "ulid": "01H8627JHT1CFHY27EYKD6K59D",
         "userPic": "/UserPic/Yozuryu.png",
         "memberSince": "2023-08-19 04:53:06",
-        "richPresenceMsg": "Playing Pokémon SoulSilver Version [Subset - Professor Oak Challenge (SoulSilver)]",
-        "lastGameId": 22693,
+        "richPresenceMsg": "Playing Final Fantasy: The 4 Heroes of Light",
+        "lastGameId": 14837,
         "contribCount": 0,
         "contribYield": 0,
         "totalPoints": 3584,
@@ -33,9 +33,9 @@
             "data": null,
             "data2": null
         },
-        "richPresenceMsg": "Playing Pokémon SoulSilver Version [Subset - Professor Oak Challenge (SoulSilver)]",
-        "richPresenceMsgDate": "2026-11-18 11:47:23",
-        "lastGameId": 22693,
+        "richPresenceMsg": "Playing Final Fantasy: The 4 Heroes of Light",
+        "richPresenceMsgDate": "2026-11-21 07:36:41",
+        "lastGameId": 14837,
         "contribCount": 0,
         "contribYield": 0,
         "totalPoints": 3584,
@@ -46,12 +46,12 @@
         "id": 533508,
         "userWallActive": true,
         "motto": "JRPG Maniac. Pixel Graphic Lover. Gaming for fun!",
-        "rank": 37796,
+        "rank": 37797,
         "recentlyPlayedCount": 0,
         "recentlyPlayed": [],
         "ulid": "01H8627JHT1CFHY27EYKD6K59D",
         "userPic": "/UserPic/Yozuryu.png",
-        "totalRanked": 173816,
+        "totalRanked": 173820,
         "awarded": {},
         "recentAchievements": {},
         "status": "Offline"
@@ -278,6 +278,24 @@
         ]
     },
     "recentlyPlayedGames": [
+        {
+            "gameId": 14837,
+            "consoleId": 18,
+            "consoleName": "Nintendo DS",
+            "title": "Final Fantasy: The 4 Heroes of Light",
+            "imageIcon": "/Images/054808.png",
+            "imageTitle": "/Images/141453.png",
+            "imageIngame": "/Images/141454.png",
+            "imageBoxArt": "/Images/028830.png",
+            "lastPlayed": "2026-11-21 07:36:41",
+            "achievementsTotal": 93,
+            "numPossibleAchievements": 93,
+            "possibleScore": 573,
+            "numAchieved": 75,
+            "scoreAchieved": 357,
+            "numAchievedHardcore": 75,
+            "scoreAchievedHardcore": 357
+        },
         {
             "gameId": 22693,
             "consoleId": 18,
@@ -525,24 +543,6 @@
             "achievementsTotal": 69,
             "numPossibleAchievements": 69,
             "possibleScore": 583,
-            "numAchieved": 1,
-            "scoreAchieved": 1,
-            "numAchievedHardcore": 1,
-            "scoreAchievedHardcore": 1
-        },
-        {
-            "gameId": 30725,
-            "consoleId": 6,
-            "consoleName": "Game Boy Color",
-            "title": "~Homebrew~ Hatsune Miku Bomb Squad",
-            "imageIcon": "/Images/101115.png",
-            "imageTitle": "/Images/141065.png",
-            "imageIngame": "/Images/141064.png",
-            "imageBoxArt": "/Images/101118.png",
-            "lastPlayed": "2026-10-02 16:17:16",
-            "achievementsTotal": 6,
-            "numPossibleAchievements": 6,
-            "possibleScore": 27,
             "numAchieved": 1,
             "scoreAchieved": 1,
             "numAchievedHardcore": 1,
@@ -1822,22 +1822,22 @@
         "gameUrl": "/game/22693"
     },
     "mostRecentGame": {
-        "gameId": 22693,
+        "gameId": 14837,
         "consoleId": 18,
         "consoleName": "Nintendo DS",
-        "title": "Pokémon SoulSilver Version [Subset - Professor Oak Challenge (SoulSilver)]",
-        "imageIcon": "/Images/149664.png",
-        "imageTitle": "/Images/069700.png",
-        "imageIngame": "/Images/069701.png",
-        "imageBoxArt": "/Images/069702.png",
-        "lastPlayed": "2026-11-18 11:47:23",
-        "achievementsTotal": 389,
-        "numPossibleAchievements": 389,
-        "possibleScore": 815,
-        "numAchieved": 32,
-        "scoreAchieved": 46,
-        "numAchievedHardcore": 32,
-        "scoreAchievedHardcore": 46
+        "title": "Final Fantasy: The 4 Heroes of Light",
+        "imageIcon": "/Images/054808.png",
+        "imageTitle": "/Images/141453.png",
+        "imageIngame": "/Images/141454.png",
+        "imageBoxArt": "/Images/028830.png",
+        "lastPlayed": "2026-11-21 07:36:41",
+        "achievementsTotal": 93,
+        "numPossibleAchievements": 93,
+        "possibleScore": 573,
+        "numAchieved": 75,
+        "scoreAchieved": 357,
+        "numAchievedHardcore": 75,
+        "scoreAchievedHardcore": 357
     },
     "points7Days": 14,
     "points30Days": 63

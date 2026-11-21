@@ -4,8 +4,8 @@
     "consoleId": 5,
     "consoleName": "Game Boy Advance",
     "parentGameId": null,
-    "numDistinctPlayersCasual": 4633,
-    "numDistinctPlayersHardcore": 4633,
+    "numDistinctPlayersCasual": 4634,
+    "numDistinctPlayersHardcore": 4634,
     "numAchievements": 49,
     "numAwardedToUser": 0,
     "numAwardedToUserHardcore": 0,
@@ -74,7 +74,7 @@
             "trueRatio": 11,
             "type": "missable",
             "badgeName": "144693",
-            "numAwarded": 3005,
+            "numAwarded": 3006,
             "numAwardedHardcore": 1736,
             "displayOrder": 2
         },
@@ -86,7 +86,7 @@
             "trueRatio": 10,
             "type": "progression",
             "badgeName": "144692",
-            "numAwarded": 3605,
+            "numAwarded": 3606,
             "numAwardedHardcore": 2001,
             "displayOrder": 1
         },
@@ -158,7 +158,7 @@
             "trueRatio": 19,
             "type": "progression",
             "badgeName": "144698",
-            "numAwarded": 1101,
+            "numAwarded": 1102,
             "numAwardedHardcore": 703,
             "displayOrder": 8
         },
