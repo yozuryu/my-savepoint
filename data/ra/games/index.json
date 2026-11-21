@@ -1,6 +1,6 @@
 {
     "metadata": {
-        "extractionTimestamp": "2026-11-21T00:01:23.340Z"
+        "extractionTimestamp": "2026-11-21T06:45:58.441Z"
     },
     "games": {
         "449": {
@@ -213,8 +213,8 @@
             "consoleId": 5,
             "consoleName": "Game Boy Advance",
             "parentGameId": null,
-            "numDistinctPlayersCasual": 4631,
-            "numDistinctPlayersHardcore": 4631,
+            "numDistinctPlayersCasual": 4633,
+            "numDistinctPlayersHardcore": 4633,
             "numAchievements": 49,
             "numAwardedToUser": 0,
             "numAwardedToUserHardcore": 0,
@@ -1208,8 +1208,8 @@
             "consoleId": 18,
             "consoleName": "Nintendo DS",
             "parentGameId": null,
-            "numDistinctPlayersCasual": 94,
-            "numDistinctPlayersHardcore": 94,
+            "numDistinctPlayersCasual": 95,
+            "numDistinctPlayersHardcore": 95,
             "numAchievements": 81,
             "numAwardedToUser": 2,
             "numAwardedToUserHardcore": 2,
@@ -3208,8 +3208,8 @@
             "consoleId": 6,
             "consoleName": "Game Boy Color",
             "parentGameId": null,
-            "numDistinctPlayersCasual": 1792,
-            "numDistinctPlayersHardcore": 1792,
+            "numDistinctPlayersCasual": 1793,
+            "numDistinctPlayersHardcore": 1793,
             "numAchievements": 6,
             "numAwardedToUser": 1,
             "numAwardedToUserHardcore": 1,
@@ -3344,8 +3344,8 @@
             "consoleId": 6,
             "consoleName": "Game Boy Color",
             "parentGameId": null,
-            "numDistinctPlayersCasual": 694,
-            "numDistinctPlayersHardcore": 694,
+            "numDistinctPlayersCasual": 695,
+            "numDistinctPlayersHardcore": 695,
             "numAchievements": 31,
             "numAwardedToUser": 2,
             "numAwardedToUserHardcore": 2,
@@ -3407,8 +3407,8 @@
             "consoleId": 102,
             "consoleName": "Standalone",
             "parentGameId": null,
-            "numDistinctPlayersCasual": 3256,
-            "numDistinctPlayersHardcore": 3256,
+            "numDistinctPlayersCasual": 3259,
+            "numDistinctPlayersHardcore": 3259,
             "numAchievements": 156,
             "numAwardedToUser": 61,
             "numAwardedToUserHardcore": 61,

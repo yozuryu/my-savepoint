@@ -1559,11 +1559,11 @@
             "title": "Everyday Together, Always",
             "description": "Evolve Kelack to level 24.",
             "points": 10,
-            "trueRatio": 50,
+            "trueRatio": 49,
             "type": null,
             "badgeName": "464904",
-            "numAwarded": 108,
-            "numAwardedHardcore": 79,
+            "numAwarded": 109,
+            "numAwardedHardcore": 80,
             "displayOrder": 1017
         },
         "410367": {
@@ -1574,8 +1574,8 @@
             "trueRatio": 49,
             "type": null,
             "badgeName": "464905",
-            "numAwarded": 108,
-            "numAwardedHardcore": 80,
+            "numAwarded": 109,
+            "numAwardedHardcore": 81,
             "displayOrder": 1018
         },
         "410368": {
@@ -1598,8 +1598,8 @@
             "trueRatio": 55,
             "type": null,
             "badgeName": "464907",
-            "numAwarded": 90,
-            "numAwardedHardcore": 70,
+            "numAwarded": 91,
+            "numAwardedHardcore": 71,
             "displayOrder": 1020
         },
         "410370": {
@@ -1931,11 +1931,11 @@
             "title": "Hahaha... Bring It On!",
             "description": "Acquire the sixth Tournament Arena reward.",
             "points": 25,
-            "trueRatio": 113,
+            "trueRatio": 112,
             "type": null,
             "badgeName": "464935",
-            "numAwarded": 104,
-            "numAwardedHardcore": 89,
+            "numAwarded": 105,
+            "numAwardedHardcore": 90,
             "displayOrder": 560
         },
         "410398": {
@@ -2051,11 +2051,11 @@
             "title": "Is It Over? Where Is The Challenge? Hahaha~",
             "description": "Acquire the seventh Tournament Arena reward.",
             "points": 50,
-            "trueRatio": 230,
+            "trueRatio": 228,
             "type": null,
             "badgeName": "464945",
-            "numAwarded": 101,
-            "numAwardedHardcore": 87,
+            "numAwarded": 102,
+            "numAwardedHardcore": 88,
             "displayOrder": 561
         },
         "410408": {

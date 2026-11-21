@@ -4,8 +4,8 @@
     "consoleId": 6,
     "consoleName": "Game Boy Color",
     "parentGameId": null,
-    "numDistinctPlayersCasual": 694,
-    "numDistinctPlayersHardcore": 694,
+    "numDistinctPlayersCasual": 695,
+    "numDistinctPlayersHardcore": 695,
     "numAchievements": 31,
     "numAwardedToUser": 2,
     "numAwardedToUserHardcore": 2,
@@ -26,8 +26,8 @@
             "trueRatio": 2,
             "type": "progression",
             "badgeName": "662982",
-            "numAwarded": 672,
-            "numAwardedHardcore": 480,
+            "numAwarded": 673,
+            "numAwardedHardcore": 481,
             "displayOrder": 0,
             "dateEarned": "2026-05-14 12:52:43",
             "dateEarnedHardcore": "2026-05-14 12:52:43"
@@ -40,8 +40,8 @@
             "trueRatio": 2,
             "type": "progression",
             "badgeName": "662983",
-            "numAwarded": 644,
-            "numAwardedHardcore": 466,
+            "numAwarded": 645,
+            "numAwardedHardcore": 467,
             "displayOrder": 0,
             "dateEarned": "2026-05-14 12:55:50",
             "dateEarnedHardcore": "2026-05-14 12:55:50"
@@ -54,8 +54,8 @@
             "trueRatio": 3,
             "type": "progression",
             "badgeName": "662984",
-            "numAwarded": 538,
-            "numAwardedHardcore": 411,
+            "numAwarded": 539,
+            "numAwardedHardcore": 412,
             "displayOrder": 0
         },
         "584515": {
@@ -66,8 +66,8 @@
             "trueRatio": 4,
             "type": "progression",
             "badgeName": "662985",
-            "numAwarded": 502,
-            "numAwardedHardcore": 386,
+            "numAwarded": 503,
+            "numAwardedHardcore": 387,
             "displayOrder": 0
         },
         "584516": {
@@ -78,8 +78,8 @@
             "trueRatio": 4,
             "type": "progression",
             "badgeName": "662986",
-            "numAwarded": 454,
-            "numAwardedHardcore": 356,
+            "numAwarded": 455,
+            "numAwardedHardcore": 357,
             "displayOrder": 0
         },
         "584517": {
@@ -90,8 +90,8 @@
             "trueRatio": 4,
             "type": "progression",
             "badgeName": "662987",
-            "numAwarded": 425,
-            "numAwardedHardcore": 345,
+            "numAwarded": 426,
+            "numAwardedHardcore": 346,
             "displayOrder": 0
         },
         "584518": {
@@ -102,8 +102,8 @@
             "trueRatio": 4,
             "type": "progression",
             "badgeName": "662988",
-            "numAwarded": 413,
-            "numAwardedHardcore": 333,
+            "numAwarded": 414,
+            "numAwardedHardcore": 334,
             "displayOrder": 0
         },
         "584519": {
@@ -114,8 +114,8 @@
             "trueRatio": 6,
             "type": "progression",
             "badgeName": "662989",
-            "numAwarded": 386,
-            "numAwardedHardcore": 313,
+            "numAwarded": 387,
+            "numAwardedHardcore": 314,
             "displayOrder": 0
         },
         "584520": {
@@ -126,8 +126,8 @@
             "trueRatio": 6,
             "type": "progression",
             "badgeName": "662990",
-            "numAwarded": 364,
-            "numAwardedHardcore": 293,
+            "numAwarded": 365,
+            "numAwardedHardcore": 294,
             "displayOrder": 0
         },
         "584521": {
@@ -138,8 +138,8 @@
             "trueRatio": 6,
             "type": "progression",
             "badgeName": "662991",
-            "numAwarded": 352,
-            "numAwardedHardcore": 284,
+            "numAwarded": 353,
+            "numAwardedHardcore": 285,
             "displayOrder": 0
         },
         "584522": {
@@ -150,8 +150,8 @@
             "trueRatio": 6,
             "type": "progression",
             "badgeName": "662992",
-            "numAwarded": 342,
-            "numAwardedHardcore": 275,
+            "numAwarded": 343,
+            "numAwardedHardcore": 276,
             "displayOrder": 0
         },
         "584523": {

@@ -1,5 +1,5 @@
 {
-    "total": 951,
+    "total": 955,
     "results": [
         {
             "id": 27,
@@ -1224,6 +1224,15 @@
             "imageIcon": "/Images/102614.png",
             "pointsTotal": 1000,
             "achievementsPublished": 114
+        },
+        {
+            "id": 2535,
+            "title": "Phantasy Star Collection",
+            "consoleId": 5,
+            "consoleName": "Game Boy Advance",
+            "imageIcon": "/Images/082332.png",
+            "pointsTotal": 0,
+            "achievementsPublished": 0
         },
         {
             "id": 2588,
@@ -3285,6 +3294,15 @@
             "imageIcon": "/Images/101383.png",
             "pointsTotal": 900,
             "achievementsPublished": 107
+        },
+        {
+            "id": 5404,
+            "title": "Phantasy Star Online Episode I & II Plus",
+            "consoleId": 16,
+            "consoleName": "GameCube",
+            "imageIcon": "/Images/089983.png",
+            "pointsTotal": 1925,
+            "achievementsPublished": 137
         },
         {
             "id": 5431,
@@ -7049,6 +7067,15 @@
             "achievementsPublished": 92
         },
         {
+            "id": 19268,
+            "title": "Phantasy Star Universe: Ambition of the Illuminus",
+            "consoleId": 21,
+            "consoleName": "PlayStation 2",
+            "imageIcon": "/Images/116080.png",
+            "pointsTotal": 0,
+            "achievementsPublished": 0
+        },
+        {
             "id": 19290,
             "title": "Kingdom Hearts Re:Chain of Memories",
             "consoleId": 21,
@@ -7785,6 +7812,15 @@
             "imageIcon": "/Images/093034.png",
             "pointsTotal": 561,
             "achievementsPublished": 50
+        },
+        {
+            "id": 25462,
+            "title": "Phantasy Star Online Episode III: C.A.R.D. Revolution",
+            "consoleId": 16,
+            "consoleName": "GameCube",
+            "imageIcon": "/Images/089853.png",
+            "pointsTotal": 0,
+            "achievementsPublished": 0
         },
         {
             "id": 25631,

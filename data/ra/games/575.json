@@ -4,8 +4,8 @@
     "consoleId": 5,
     "consoleName": "Game Boy Advance",
     "parentGameId": null,
-    "numDistinctPlayersCasual": 4631,
-    "numDistinctPlayersHardcore": 4631,
+    "numDistinctPlayersCasual": 4633,
+    "numDistinctPlayersHardcore": 4633,
     "numAchievements": 49,
     "numAwardedToUser": 0,
     "numAwardedToUserHardcore": 0,
@@ -26,8 +26,8 @@
             "trueRatio": 6,
             "type": null,
             "badgeName": "144705",
-            "numAwarded": 2757,
-            "numAwardedHardcore": 1481,
+            "numAwarded": 2759,
+            "numAwardedHardcore": 1482,
             "displayOrder": 15
         },
         "8457": {
@@ -50,8 +50,8 @@
             "trueRatio": 5,
             "type": null,
             "badgeName": "144703",
-            "numAwarded": 3817,
-            "numAwardedHardcore": 2112,
+            "numAwarded": 3819,
+            "numAwardedHardcore": 2113,
             "displayOrder": 13
         },
         "8459": {
@@ -62,8 +62,8 @@
             "trueRatio": 5,
             "type": null,
             "badgeName": "144702",
-            "numAwarded": 3088,
-            "numAwardedHardcore": 1737,
+            "numAwarded": 3090,
+            "numAwardedHardcore": 1738,
             "displayOrder": 12
         },
         "8460": {
@@ -86,8 +86,8 @@
             "trueRatio": 10,
             "type": "progression",
             "badgeName": "144692",
-            "numAwarded": 3603,
-            "numAwardedHardcore": 2000,
+            "numAwarded": 3605,
+            "numAwardedHardcore": 2001,
             "displayOrder": 1
         },
         "8463": {
@@ -122,8 +122,8 @@
             "trueRatio": 16,
             "type": "progression",
             "badgeName": "144696",
-            "numAwarded": 1444,
-            "numAwardedHardcore": 884,
+            "numAwarded": 1445,
+            "numAwardedHardcore": 885,
             "displayOrder": 6
         },
         "8500": {
@@ -290,8 +290,8 @@
             "trueRatio": 38,
             "type": null,
             "badgeName": "144730",
-            "numAwarded": 345,
-            "numAwardedHardcore": 299,
+            "numAwarded": 346,
+            "numAwardedHardcore": 300,
             "displayOrder": 40
         },
         "8616": {
@@ -335,7 +335,7 @@
             "title": "Beware! Sharks!",
             "description": "Defeat SharkManV3 with a Busting Lv. S rating",
             "points": 10,
-            "trueRatio": 37,
+            "trueRatio": 38,
             "type": null,
             "badgeName": "144736",
             "numAwarded": 365,
@@ -446,8 +446,8 @@
             "trueRatio": 24,
             "type": null,
             "badgeName": "144722",
-            "numAwarded": 707,
-            "numAwardedHardcore": 526,
+            "numAwarded": 708,
+            "numAwardedHardcore": 527,
             "displayOrder": 32
         },
         "8649": {
@@ -518,8 +518,8 @@
             "trueRatio": 17,
             "type": null,
             "badgeName": "144716",
-            "numAwarded": 380,
-            "numAwardedHardcore": 324,
+            "numAwarded": 381,
+            "numAwardedHardcore": 325,
             "displayOrder": 26
         },
         "8797": {
@@ -566,8 +566,8 @@
             "trueRatio": 11,
             "type": null,
             "badgeName": "144714",
-            "numAwarded": 777,
-            "numAwardedHardcore": 549,
+            "numAwarded": 778,
+            "numAwardedHardcore": 550,
             "displayOrder": 24
         },
         "9053": {
@@ -590,8 +590,8 @@
             "trueRatio": 8,
             "type": null,
             "badgeName": "144720",
-            "numAwarded": 1580,
-            "numAwardedHardcore": 959,
+            "numAwarded": 1581,
+            "numAwardedHardcore": 960,
             "displayOrder": 30
         },
         "10117": {

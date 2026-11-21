@@ -49,11 +49,11 @@
             "title": "Starter Evolved",
             "description": "Evolve your starter for the first time",
             "points": 2,
-            "trueRatio": 26,
+            "trueRatio": 25,
             "type": null,
             "badgeName": "331423",
-            "numAwarded": 230,
-            "numAwardedHardcore": 209,
+            "numAwarded": 231,
+            "numAwardedHardcore": 210,
             "displayOrder": 0,
             "dateEarned": "2026-06-01 23:23:50",
             "dateEarnedHardcore": "2026-06-01 23:23:50"
@@ -142,8 +142,8 @@
             "trueRatio": 11,
             "type": null,
             "badgeName": "331430",
-            "numAwarded": 258,
-            "numAwardedHardcore": 233,
+            "numAwarded": 259,
+            "numAwardedHardcore": 234,
             "displayOrder": 0,
             "dateEarned": "2026-05-10 15:51:34",
             "dateEarnedHardcore": "2026-05-10 15:51:34"
@@ -566,8 +566,8 @@
             "trueRatio": 41,
             "type": null,
             "badgeName": "331461",
-            "numAwarded": 137,
-            "numAwardedHardcore": 129,
+            "numAwarded": 138,
+            "numAwardedHardcore": 130,
             "displayOrder": 0,
             "dateEarned": "2026-11-18 11:47:08",
             "dateEarnedHardcore": "2026-11-18 11:47:08"
@@ -606,8 +606,8 @@
             "trueRatio": 44,
             "type": null,
             "badgeName": "331464",
-            "numAwarded": 126,
-            "numAwardedHardcore": 119,
+            "numAwarded": 127,
+            "numAwardedHardcore": 120,
             "displayOrder": 0
         },
         "298807": {
