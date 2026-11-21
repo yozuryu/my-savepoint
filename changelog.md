@@ -15,6 +15,8 @@ Completions speaks one visual language: the same marks for the same things every
 
 ### Structure
 
+- new: **Update notice** when a new version is out
+  "New save point reached" slides up with the new version number. Tap Load to reload with the new files; the Refresh button stays.
 - fix: **Memory Card** link previews show the new picture after a change
   Discord and WhatsApp kept the first picture they saw for a link. The picture's address now changes whenever the picture does.
 

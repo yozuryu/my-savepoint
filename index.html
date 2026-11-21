@@ -1320,6 +1320,7 @@
   // Refresh app — clear cached app files (not data) and reload
   document.getElementById('refresh-app-btn').addEventListener('click', async e => {
     e.currentTarget.classList.add('spin');   // the icon turns while the cache clears
+    if (window.spRefreshApp) return window.spRefreshApp();   // assets/update-notice.js: also records the version
     try {
       if ('caches' in window) {
         const keys = await caches.keys();

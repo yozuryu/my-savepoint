@@ -251,6 +251,7 @@ const App = () => {
     // so the latest deployed HTML/JS is fetched fresh
     const refreshApp = async () => {
         setRefreshing(true);
+        if (window.spRefreshApp) return window.spRefreshApp();   // assets/update-notice.js: also records the version
         try {
             if ('caches' in window) {
                 const keys = await caches.keys();

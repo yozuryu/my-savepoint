@@ -10,6 +10,11 @@
     .replace(/\/assets\/mobile-nav\.js.*$/, '');
 
   const path = window.location.pathname;
+
+  // Update notice (new deploy → "Savepoint updated", tap to reload), shared by every page with this nav
+  const upd = document.createElement('script');
+  upd.src = BASE + '/assets/update-notice.js';
+  document.head.appendChild(upd);
   const rootPath = BASE.replace(window.location.origin, ''); // e.g. '/my-savepoint' or ''
 
   // ── Platform registry ──────────────────────────────────────────────────────

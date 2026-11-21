@@ -70,6 +70,11 @@ jobs:
           node scripts/build-recap.js _site
           rm -f _site/memory-card/page.html
           node scripts/render-recap.js _site || echo "::warning::Memory Card share pictures were not rendered"
+          # App version for the update notice (assets/update-notice.js): a hash of the app files only,
+          # so the deploys that follow a data run keep the same version
+          V=$(cd _site && find . -type f ! -path './data/*' ! -path './memory-card/*' -print0 | sort -z | xargs -0 sha1sum | sha1sum | cut -c1-12)
+          VER=$(grep -m1 '^## v' changelog.md | cut -c4- | tr -cd 'v0-9.')
+          echo "{\"v\":\"$V\",\"version\":\"$VER\"}" > _site/version.json
           echo "Site: $(find _site -type f | wc -l) files, $(du -sh _site | cut -f1)"
 
       - uses: actions/configure-pages@v5

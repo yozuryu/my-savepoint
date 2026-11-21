@@ -70,6 +70,8 @@ self.addEventListener('fetch', event => {
 
   // Only handle same-origin GET requests
   if (url.origin !== self.location.origin || event.request.method !== 'GET') return;
+  // The deployed version, read by assets/update-notice.js: always from the network, never cached
+  if (url.pathname === '/my-savepoint/version.json') return;
 
   const isData = url.pathname.startsWith('/my-savepoint/data/') ||
                  url.pathname.startsWith('/my-savepoint/changelog.md');
