@@ -38251,8 +38251,8 @@
             "total": 50,
             "unlocked": 13,
             "gameName": "Eiyuden Chronicle: Rising",
-            "playtimeForever": 398,
-            "lastPlayedTs": "2026-11-21T13:37:52.000Z",
+            "playtimeForever": 428,
+            "lastPlayedTs": "2026-11-21T14:07:52.000Z",
             "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1658290/449ec8f09bf72c9f8e00c113c1e12a7c70a86de4.jpg",
             "lastUnlockedAt": "2026-11-17T15:29:56.000Z",
             "lastUnlockName": "...And Your Tax Money",
@@ -39783,7 +39783,7 @@
                     "unlockedAt": null,
                     "iconUrl": "844e26379f2329001a4e7becce7064f57bfd9c41.jpg",
                     "iconGrayUrl": "a130ec9c9e203aa64a9a1988d044f806eb972814.jpg",
-                    "globalPct": 64.4
+                    "globalPct": 64.3
                 },
                 {
                     "apiName": "ShinyMuscularAndDeadly",
@@ -39792,7 +39792,7 @@
                     "unlockedAt": null,
                     "iconUrl": "c511183ed90bde9e31421e0f24784caebd0ffc1d.jpg",
                     "iconGrayUrl": "043ea4540ff2620ec322517776e1fb8bc6ee8cd5.jpg",
-                    "globalPct": 48.3
+                    "globalPct": 48.2
                 },
                 {
                     "apiName": "DefeatHibernationSandy",
@@ -39801,7 +39801,7 @@
                     "unlockedAt": null,
                     "iconUrl": "b6d55da4834ca70897f53e01378a10b37c2cb488.jpg",
                     "iconGrayUrl": "21dc5dde373e9f7da18b361def601ad32664ee79.jpg",
-                    "globalPct": 43.8
+                    "globalPct": 43.7
                 },
                 {
                     "apiName": "GetTheGoldenSpatula",
@@ -39810,7 +39810,7 @@
                     "unlockedAt": null,
                     "iconUrl": "10e78b64d5dfdf186b3580fd41c19b96503ee4b1.jpg",
                     "iconGrayUrl": "9c034e43cc82f380d7d4d0dfae412b977eadf3d9.jpg",
-                    "globalPct": 41.1
+                    "globalPct": 41
                 },
                 {
                     "apiName": "SocksNTails",
@@ -39819,7 +39819,7 @@
                     "unlockedAt": null,
                     "iconUrl": "0a5e17c3803e135638bf740267caeab0c5af7bfd.jpg",
                     "iconGrayUrl": "773e901b54f8e160df408508057fbb6df241ca7b.jpg",
-                    "globalPct": 40.8
+                    "globalPct": 40.7
                 }
             ]
         },
