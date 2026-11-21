@@ -1,6 +1,6 @@
 {
     "metadata": {
-        "extractionTimestamp": "2026-11-21T03:16:46.885Z"
+        "extractionTimestamp": "2026-11-21T03:46:50.549Z"
     },
     "profile": {
         "steamId": "76561198188939413",
@@ -13,7 +13,7 @@
     },
     "stats": {
         "totalGames": 1295,
-        "totalPlaytimeMin": 352609,
+        "totalPlaytimeMin": 352639,
         "totalPlaytimeHrs": 5877,
         "gamesWithPlaytime": 824,
         "totalAchievements": 10250,
@@ -27,11 +27,11 @@
         {
             "appId": 1451810,
             "name": "LEGO® 2K Drive",
-            "playtime2Weeks": 733,
-            "playtimeForever": 733,
+            "playtime2Weeks": 763,
+            "playtimeForever": 763,
             "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1451810/8310e788a7972d6ae815c157a58207b5bb50f369.jpg",
             "storeUrl": "https://store.steampowered.com/app/1451810",
-            "lastPlayedTs": "2026-11-21T03:06:52.000Z",
+            "lastPlayedTs": "2026-11-21T03:36:53.000Z",
             "achUnlocked": 6,
             "achTotal": 38
         },
@@ -105,11 +105,11 @@
     "mostRecentGame": {
         "appId": 1451810,
         "name": "LEGO® 2K Drive",
-        "playtime2Weeks": 733,
-        "playtimeForever": 733,
+        "playtime2Weeks": 763,
+        "playtimeForever": 763,
         "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1451810/8310e788a7972d6ae815c157a58207b5bb50f369.jpg",
         "storeUrl": "https://store.steampowered.com/app/1451810",
-        "lastPlayedTs": "2026-11-21T03:06:52.000Z"
+        "lastPlayedTs": "2026-11-21T03:36:53.000Z"
     },
     "mostRecentUnlock": {
         "appId": 1451810,
