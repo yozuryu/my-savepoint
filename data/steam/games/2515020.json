@@ -36,7 +36,7 @@
             "iconUrl": "8289deab066f28263e8f73ba929fd68958b040a2.jpg",
             "iconGrayUrl": "ddd944bafb49b5f7f13dd8333a4e5add32828825.jpg",
             "hidden": true,
-            "globalPct": 74
+            "globalPct": 74.1
         },
         {
             "apiName": "1003",
@@ -124,7 +124,7 @@
             "iconUrl": "8289deab066f28263e8f73ba929fd68958b040a2.jpg",
             "iconGrayUrl": "ddd944bafb49b5f7f13dd8333a4e5add32828825.jpg",
             "hidden": true,
-            "globalPct": 35.8
+            "globalPct": 35.9
         },
         {
             "apiName": "1011",
@@ -146,7 +146,7 @@
             "iconUrl": "ff76a844428b5f131cea2a73d758a44b64d070f0.jpg",
             "iconGrayUrl": "ddd944bafb49b5f7f13dd8333a4e5add32828825.jpg",
             "hidden": true,
-            "globalPct": 31.6
+            "globalPct": 31.7
         },
         {
             "apiName": "1015",
@@ -805,7 +805,7 @@
             "unlockedAt": "2026-05-09T08:38:38.000Z",
             "iconUrl": "8289deab066f28263e8f73ba929fd68958b040a2.jpg",
             "iconGrayUrl": "ddd944bafb49b5f7f13dd8333a4e5add32828825.jpg",
-            "globalPct": 74
+            "globalPct": 74.1
         },
         {
             "apiName": "1015",

@@ -2,7 +2,7 @@
     "appId": 1451810,
     "hasAchievements": true,
     "total": 38,
-    "unlocked": 5,
+    "unlocked": 6,
     "gameName": "LEGO® 2K Drive",
     "achievements": [
         {
@@ -106,8 +106,8 @@
         },
         {
             "apiName": "ACH_ROADRAGE",
-            "unlocked": false,
-            "unlockedAt": null,
+            "unlocked": true,
+            "unlockedAt": "2026-11-21T02:26:53.000Z",
             "displayName": "Road Hog",
             "description": "Destroy 200 traffic vehicles",
             "iconUrl": "b87790da2cc7ed71b487338da1516a3686b18e56.jpg",
@@ -424,12 +424,21 @@
             "globalPct": 1.9
         }
     ],
-    "playtimeForever": 673,
-    "lastPlayedTs": "2026-11-21T02:06:52.000Z",
+    "playtimeForever": 703,
+    "lastPlayedTs": "2026-11-21T02:36:52.000Z",
     "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1451810/8310e788a7972d6ae815c157a58207b5bb50f369.jpg",
-    "lastUnlockedAt": "2026-11-15T07:07:10.000Z",
-    "lastUnlockName": "Read the Manual",
+    "lastUnlockedAt": "2026-11-21T02:26:53.000Z",
+    "lastUnlockName": "Road Hog",
     "preview": [
+        {
+            "apiName": "ACH_ROADRAGE",
+            "displayName": "Road Hog",
+            "unlocked": true,
+            "unlockedAt": "2026-11-21T02:26:53.000Z",
+            "iconUrl": "b87790da2cc7ed71b487338da1516a3686b18e56.jpg",
+            "iconGrayUrl": "0c61280fdce7837409cb976f6932b61cbda4fd9a.jpg",
+            "globalPct": 19.1
+        },
         {
             "apiName": "ACH_TINKERER",
             "displayName": "Read the Manual",
@@ -474,15 +483,6 @@
             "iconUrl": "e84a665d3834c6a5c461311c0215db205651bbb5.jpg",
             "iconGrayUrl": "26acaf7e22f3d2339af7ca42f6652f0d16cea47b.jpg",
             "globalPct": 45.2
-        },
-        {
-            "apiName": "ACH_WELCOME_BB",
-            "displayName": "Cruising Big Butte County",
-            "unlocked": false,
-            "unlockedAt": null,
-            "iconUrl": "0d45204033682f55bc5d14ae20b35be61c11799f.jpg",
-            "iconGrayUrl": "4110ff881ccf42395efb225265a8d310a3254a02.jpg",
-            "globalPct": 48.3
         }
     ]
 }

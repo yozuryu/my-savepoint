@@ -1,6 +1,6 @@
 {
     "metadata": {
-        "extractionTimestamp": "2026-11-21T02:16:51.297Z"
+        "extractionTimestamp": "2026-11-21T02:46:52.299Z"
     },
     "profile": {
         "steamId": "76561198188939413",
@@ -13,11 +13,11 @@
     },
     "stats": {
         "totalGames": 1295,
-        "totalPlaytimeMin": 352549,
+        "totalPlaytimeMin": 352579,
         "totalPlaytimeHrs": 5876,
         "gamesWithPlaytime": 824,
         "totalAchievements": 10250,
-        "unlockedAchievements": 2877,
+        "unlockedAchievements": 2878,
         "gamesWithAchievements": 174,
         "perfectCount": 17,
         "completionPct": 28,
@@ -27,12 +27,12 @@
         {
             "appId": 1451810,
             "name": "LEGO® 2K Drive",
-            "playtime2Weeks": 673,
-            "playtimeForever": 673,
+            "playtime2Weeks": 703,
+            "playtimeForever": 703,
             "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1451810/8310e788a7972d6ae815c157a58207b5bb50f369.jpg",
             "storeUrl": "https://store.steampowered.com/app/1451810",
-            "lastPlayedTs": "2026-11-21T02:06:52.000Z",
-            "achUnlocked": 5,
+            "lastPlayedTs": "2026-11-21T02:36:52.000Z",
+            "achUnlocked": 6,
             "achTotal": 38
         },
         {
@@ -105,21 +105,21 @@
     "mostRecentGame": {
         "appId": 1451810,
         "name": "LEGO® 2K Drive",
-        "playtime2Weeks": 673,
-        "playtimeForever": 673,
+        "playtime2Weeks": 703,
+        "playtimeForever": 703,
         "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1451810/8310e788a7972d6ae815c157a58207b5bb50f369.jpg",
         "storeUrl": "https://store.steampowered.com/app/1451810",
-        "lastPlayedTs": "2026-11-21T02:06:52.000Z"
+        "lastPlayedTs": "2026-11-21T02:36:52.000Z"
     },
     "mostRecentUnlock": {
-        "appId": 1658290,
-        "gameName": "Eiyuden Chronicle: Rising",
-        "apiName": "ACHIEVEMENT003",
-        "displayName": "...And Your Tax Money",
-        "description": "",
-        "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1658290/5ef5bbbf3d1de10a39c0b40ffd4371bb417c7ea8.jpg",
-        "unlockedAt": "2026-11-17T15:29:56.000Z",
-        "globalPct": 46.3
+        "appId": 1451810,
+        "gameName": "LEGO® 2K Drive",
+        "apiName": "ACH_ROADRAGE",
+        "displayName": "Road Hog",
+        "description": "Destroy 200 traffic vehicles",
+        "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1451810/b87790da2cc7ed71b487338da1516a3686b18e56.jpg",
+        "unlockedAt": "2026-11-21T02:26:53.000Z",
+        "globalPct": 19.1
     },
     "perfectGames": [
         {

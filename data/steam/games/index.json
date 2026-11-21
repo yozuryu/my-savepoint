@@ -38045,14 +38045,23 @@
             "appId": 1451810,
             "hasAchievements": true,
             "total": 38,
-            "unlocked": 5,
+            "unlocked": 6,
             "gameName": "LEGO® 2K Drive",
-            "playtimeForever": 673,
-            "lastPlayedTs": "2026-11-21T02:06:52.000Z",
+            "playtimeForever": 703,
+            "lastPlayedTs": "2026-11-21T02:36:52.000Z",
             "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1451810/8310e788a7972d6ae815c157a58207b5bb50f369.jpg",
-            "lastUnlockedAt": "2026-11-15T07:07:10.000Z",
-            "lastUnlockName": "Read the Manual",
+            "lastUnlockedAt": "2026-11-21T02:26:53.000Z",
+            "lastUnlockName": "Road Hog",
             "preview": [
+                {
+                    "apiName": "ACH_ROADRAGE",
+                    "displayName": "Road Hog",
+                    "unlocked": true,
+                    "unlockedAt": "2026-11-21T02:26:53.000Z",
+                    "iconUrl": "b87790da2cc7ed71b487338da1516a3686b18e56.jpg",
+                    "iconGrayUrl": "0c61280fdce7837409cb976f6932b61cbda4fd9a.jpg",
+                    "globalPct": 19.1
+                },
                 {
                     "apiName": "ACH_TINKERER",
                     "displayName": "Read the Manual",
@@ -38097,15 +38106,6 @@
                     "iconUrl": "e84a665d3834c6a5c461311c0215db205651bbb5.jpg",
                     "iconGrayUrl": "26acaf7e22f3d2339af7ca42f6652f0d16cea47b.jpg",
                     "globalPct": 45.2
-                },
-                {
-                    "apiName": "ACH_WELCOME_BB",
-                    "displayName": "Cruising Big Butte County",
-                    "unlocked": false,
-                    "unlockedAt": null,
-                    "iconUrl": "0d45204033682f55bc5d14ae20b35be61c11799f.jpg",
-                    "iconGrayUrl": "4110ff881ccf42395efb225265a8d310a3254a02.jpg",
-                    "globalPct": 48.3
                 }
             ]
         },
@@ -39705,7 +39705,7 @@
                     "unlockedAt": "2026-11-08T10:28:13.000Z",
                     "iconUrl": "b245962141c9669bb20a21ba27555345f47a561b.jpg",
                     "iconGrayUrl": "f2bf8289ba403366ce0d5bbf859d9898eb73315e.jpg",
-                    "globalPct": 39
+                    "globalPct": 38.9
                 },
                 {
                     "apiName": "ach018",
@@ -39732,7 +39732,7 @@
                     "unlockedAt": "2026-11-08T05:05:26.000Z",
                     "iconUrl": "f7ed43ebaffa7609f7161e2acae4cd3415f1967c.jpg",
                     "iconGrayUrl": "27fb3f587ff5db0f90bca6117beb1b2163ae3445.jpg",
-                    "globalPct": 78.9
+                    "globalPct": 79
                 },
                 {
                     "apiName": "ach002",
@@ -39819,7 +39819,7 @@
                     "unlockedAt": null,
                     "iconUrl": "0a5e17c3803e135638bf740267caeab0c5af7bfd.jpg",
                     "iconGrayUrl": "773e901b54f8e160df408508057fbb6df241ca7b.jpg",
-                    "globalPct": 40.8
+                    "globalPct": 40.7
                 }
             ]
         },
@@ -39937,7 +39937,7 @@
                     "unlockedAt": "2026-05-09T08:38:38.000Z",
                     "iconUrl": "8289deab066f28263e8f73ba929fd68958b040a2.jpg",
                     "iconGrayUrl": "ddd944bafb49b5f7f13dd8333a4e5add32828825.jpg",
-                    "globalPct": 74
+                    "globalPct": 74.1
                 },
                 {
                     "apiName": "1015",
