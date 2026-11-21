@@ -3,6 +3,16 @@
         {
             "appId": 1451810,
             "gameName": "LEGO® 2K Drive",
+            "apiName": "ACH_WELCOME_BB",
+            "displayName": "Cruising Big Butte County",
+            "description": "Drive around in Big Butte County in Story mode",
+            "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1451810/0d45204033682f55bc5d14ae20b35be61c11799f.jpg",
+            "unlockedAt": "2026-11-21T07:55:42.000Z",
+            "globalPct": 48.3
+        },
+        {
+            "appId": 1451810,
+            "gameName": "LEGO® 2K Drive",
             "apiName": "ACH_MASTER_PUNTER",
             "displayName": "Sidewalk Hog",
             "description": "Punt 200 pedestrians into the air",

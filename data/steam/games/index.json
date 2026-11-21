@@ -38045,14 +38045,23 @@
             "appId": 1451810,
             "hasAchievements": true,
             "total": 38,
-            "unlocked": 7,
+            "unlocked": 8,
             "gameName": "LEGO® 2K Drive",
-            "playtimeForever": 836,
-            "lastPlayedTs": "2026-11-21T07:32:01.000Z",
+            "playtimeForever": 866,
+            "lastPlayedTs": "2026-11-21T08:02:02.000Z",
             "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1451810/8310e788a7972d6ae815c157a58207b5bb50f369.jpg",
-            "lastUnlockedAt": "2026-11-21T04:07:57.000Z",
-            "lastUnlockName": "Sidewalk Hog",
+            "lastUnlockedAt": "2026-11-21T07:55:42.000Z",
+            "lastUnlockName": "Cruising Big Butte County",
             "preview": [
+                {
+                    "apiName": "ACH_WELCOME_BB",
+                    "displayName": "Cruising Big Butte County",
+                    "unlocked": true,
+                    "unlockedAt": "2026-11-21T07:55:42.000Z",
+                    "iconUrl": "0d45204033682f55bc5d14ae20b35be61c11799f.jpg",
+                    "iconGrayUrl": "4110ff881ccf42395efb225265a8d310a3254a02.jpg",
+                    "globalPct": 48.3
+                },
                 {
                     "apiName": "ACH_MASTER_PUNTER",
                     "displayName": "Sidewalk Hog",
@@ -38097,15 +38106,6 @@
                     "iconUrl": "5026e77fe20acefcf9410f4f00c222f7f6345366.jpg",
                     "iconGrayUrl": "be7bbb1cc25f7a9931388026b5207a48605b635e.jpg",
                     "globalPct": 5.1
-                },
-                {
-                    "apiName": "ACH_CLUTCHS_PUPIL",
-                    "displayName": "A Charismatic Mentor",
-                    "unlocked": true,
-                    "unlockedAt": "2026-11-14T02:57:39.000Z",
-                    "iconUrl": "249e96d7f1074b1045038ec7e0bfc030e9731c14.jpg",
-                    "iconGrayUrl": "364598ecf4456713313b749e96d6e52d90fac9f7.jpg",
-                    "globalPct": 70.2
                 }
             ]
         },

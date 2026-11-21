@@ -1,6 +1,6 @@
 {
     "metadata": {
-        "extractionTimestamp": "2026-11-21T07:43:52.841Z"
+        "extractionTimestamp": "2026-11-21T08:16:52.539Z"
     },
     "profile": {
         "steamId": "76561198188939413",
@@ -13,11 +13,11 @@
     },
     "stats": {
         "totalGames": 1295,
-        "totalPlaytimeMin": 352712,
+        "totalPlaytimeMin": 352742,
         "totalPlaytimeHrs": 5879,
         "gamesWithPlaytime": 824,
         "totalAchievements": 10250,
-        "unlockedAchievements": 2879,
+        "unlockedAchievements": 2880,
         "gamesWithAchievements": 174,
         "perfectCount": 17,
         "completionPct": 28,
@@ -27,12 +27,12 @@
         {
             "appId": 1451810,
             "name": "LEGO® 2K Drive",
-            "playtime2Weeks": 836,
-            "playtimeForever": 836,
+            "playtime2Weeks": 866,
+            "playtimeForever": 866,
             "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1451810/8310e788a7972d6ae815c157a58207b5bb50f369.jpg",
             "storeUrl": "https://store.steampowered.com/app/1451810",
-            "lastPlayedTs": "2026-11-21T07:32:01.000Z",
-            "achUnlocked": 7,
+            "lastPlayedTs": "2026-11-21T08:02:02.000Z",
+            "achUnlocked": 8,
             "achTotal": 38
         },
         {
@@ -105,21 +105,21 @@
     "mostRecentGame": {
         "appId": 1451810,
         "name": "LEGO® 2K Drive",
-        "playtime2Weeks": 836,
-        "playtimeForever": 836,
+        "playtime2Weeks": 866,
+        "playtimeForever": 866,
         "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1451810/8310e788a7972d6ae815c157a58207b5bb50f369.jpg",
         "storeUrl": "https://store.steampowered.com/app/1451810",
-        "lastPlayedTs": "2026-11-21T07:32:01.000Z"
+        "lastPlayedTs": "2026-11-21T08:02:02.000Z"
     },
     "mostRecentUnlock": {
         "appId": 1451810,
         "gameName": "LEGO® 2K Drive",
-        "apiName": "ACH_MASTER_PUNTER",
-        "displayName": "Sidewalk Hog",
-        "description": "Punt 200 pedestrians into the air",
-        "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1451810/1c02d5564326863fb47ad9f99281331a67615918.jpg",
-        "unlockedAt": "2026-11-21T04:07:57.000Z",
-        "globalPct": 27.7
+        "apiName": "ACH_WELCOME_BB",
+        "displayName": "Cruising Big Butte County",
+        "description": "Drive around in Big Butte County in Story mode",
+        "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1451810/0d45204033682f55bc5d14ae20b35be61c11799f.jpg",
+        "unlockedAt": "2026-11-21T07:55:42.000Z",
+        "globalPct": 48.3
     },
     "perfectGames": [
         {
