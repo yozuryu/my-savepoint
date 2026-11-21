@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Star, Gem, ChevronDown, Flame, Feather, Check, Plus, Medal } from 'lucide-react';
+import { Star, Gem, ChevronDown, Flame, Feather, Check, Plus, Medal, Clock } from 'lucide-react';
 import { TZ, fmtDate, monthKey, yearOf, keyToDate } from '../assets/time.js';
 import { raIcon } from '../assets/ra-icon.js';
 
@@ -14,13 +14,14 @@ const formatPlaytime = mins => {
     if (!mins) return null;
     const h = Math.floor(mins / 60);
     const m = mins % 60;
-    return h > 0 ? `${h}h ${m > 0 ? ` ${m}m` : ''}`.trim() : `${m}m`;
+    return h > 0 ? `${h.toLocaleString()}h${m > 0 ? ` ${m}m` : ''}` : `${m}m`;
 };
 
 // Dates, month groups and the dedupe year all use the viewer's timezone (assets/time.js)
 
-const rarityLabel = pct => pct < 1 ? 'Ultra Rare' : pct < 10 ? 'Very Rare' : pct < 25 ? 'Rare' : pct < 50 ? 'Uncommon' : 'Common';
-const rarityColor = pct => pct < 1 ? '#ff6b6b' : pct < 10 ? '#e5b143' : pct < 25 ? '#66c0f4' : '#8f98a0';
+// The site's rarity tiers (same as Analytics / Activity / Series)
+const rarityLabel = pct => pct < 5 ? 'Ultra rare' : pct < 10 ? 'Very rare' : pct < 25 ? 'Rare' : pct < 50 ? 'Uncommon' : 'Common';
+const rarityColor = pct => pct < 5 ? '#e5b143' : pct < 10 ? '#c8901a' : pct < 25 ? '#66c0f4' : pct < 50 ? '#8f98a0' : '#546270';
 
 const parseTitle = title => {
     if (!title) return { baseTitle: title, subsetName: null, isSubset: false, tags: [] };
@@ -242,14 +243,22 @@ const PLATFORM_CHIP = {
     xbox:  { label: 'Xbox',  color: '#52b043', border: 'rgba(82,176,67,0.45)'  },
 };
 const fmtDayMonth = v => fmtDate(v, { day: 'numeric', month: 'short' });
-const chipCls = 'text-[10px] font-bold uppercase tracking-[0.06em] px-1.5 py-[1px] rounded-[2px] border shrink-0 inline-flex items-center gap-1';
+// Right padding minus the letter spacing the browser adds after the last letter, so the word sits centred
+const chipCls = 'text-[10px] font-bold uppercase tracking-[0.06em] pl-1.5 pr-[calc(0.375rem-0.06em)] py-[1px] rounded-[2px] border shrink-0 inline-flex items-center gap-1';
 
 const PlatformChip = ({ platform }) => {
     const c = PLATFORM_CHIP[platform];
     return <span className={chipCls} style={{ color: c.color, borderColor: c.border, background: 'rgba(16,18,20,0.75)' }}>{c.label}</span>;
 };
+const BeatenChip = () => (
+    <span className={chipCls} style={{ color: '#c6d4df', borderColor: 'rgba(184,196,206,0.35)', background: '#2a3440' }}><Medal size={10} />Beaten</span>
+);
+const CompletedChip = ({ type }) => (
+    <span className={chipCls} style={{ background: '#e5b143', borderColor: '#e5b143', color: '#101214' }}><Star size={10} fill="currentColor" />{STATUS_LABEL[type]}</span>
+);
+// Hardcore: the flame alone (the same red flame as the hardcore unlock rates), so beaten rows keep room for the console
 const HardcoreChip = () => (
-    <span className={chipCls} style={{ color: '#ff6b6b', borderColor: 'rgba(255,107,107,0.45)', background: 'rgba(16,18,20,0.75)' }}><Flame size={10} />Hardcore</span>
+    <span className={`${chipCls} !px-1 !gap-0 justify-center`} title="Hardcore" aria-label="Hardcore" style={{ color: '#ff6b6b', borderColor: 'rgba(255,107,107,0.45)', background: 'rgba(16,18,20,0.75)' }}><Flame size={10} />{'\u200b'}</span>
 );
 
 // Rarest achievement: its icon, unlock rate (RA: hardcore red / softcore grey, like the modal;
@@ -316,7 +325,7 @@ const Highlight = ({ item, rare }) => (
             <span className="absolute top-2 right-2 text-[11px] font-semibold text-white bg-[#101214]/85 px-1.5 py-[1px] rounded-[2px]">{fmtDayMonth(item.completedAt)}</span>
         </div>
         <div className="flex items-center flex-wrap gap-x-2 gap-y-0.5 px-3 py-2 min-w-0">
-            <span className={chipCls} style={{ background: '#e5b143', borderColor: '#e5b143', color: '#101214' }}><Star size={10} fill="currentColor" />{STATUS_LABEL[item.type]}</span>
+            <CompletedChip type={item.type} />
             <span className="text-[13px] font-semibold text-white truncate min-w-0 max-w-full">{item.baseTitle || item.gameName}</span>
             {item.tags?.length > 0 && <TildeTags tags={item.tags} />}
             {item.console && <span className="text-[11px] text-[#8f98a0] truncate min-w-0">{item.console}</span>}
@@ -355,11 +364,11 @@ const BeatenRow = ({ item }) => (
         <div className="grow-main">
             <span className="grow-title" title={item.gameName}>{item.baseTitle || item.gameName}</span>
             <div className="grow-sub">
-                <span className={chipCls} style={{ color: '#c6d4df', borderColor: 'rgba(184,196,206,0.35)', background: '#2a3440' }}>Beaten</span>
+                <BeatenChip />
                 <PlatformChip platform={item.platform} />
-                {item.platform === 'ra' && item.hardcore && <Flame size={11} className="text-[#ff6b6b]" />}
-                {item.console && <span className="shrink">{item.console}</span>}
+                {item.platform === 'ra' && item.hardcore && <HardcoreChip />}
                 {item.tags?.length > 0 && <TildeTags tags={item.tags} />}
+                {item.console && <span className="shrink">{item.console}</span>}
             </div>
             {item.lastAchName && (
                 <div className="grow-sub" title={item.lastAchName}>
@@ -379,17 +388,17 @@ const BeatenRow = ({ item }) => (
         </div>
         <div className="flex flex-col items-end gap-1 shrink-0 text-[11px] text-[#8f98a0] tabular-nums" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.9)' }}>
             <span>{fmtDayMonth(item.completedAt)}</span>
-            {item.playtime > 0 && <span>{formatPlaytime(item.playtime)}</span>}
+            {item.playtime > 0 && <span className="flex items-center gap-1"><Clock size={10} />{formatPlaytime(item.playtime)}</span>}
         </div>
     </a>
 );
 
 // Timeline group: a ring on the line, label and count, then its entries
-const TimelineGroup = ({ label, count, children }) => (
+const TimelineGroup = ({ label, icon, count, children }) => (
     <div className="relative pl-6">
         <span className="absolute left-[7px] top-[18px] bottom-[-20px] w-px bg-[#22344a]" />
         <span className="absolute left-0 top-[2px] w-[15px] h-[15px] rounded-full border-2 border-[#2a475e] bg-[#171a21]" />
-        <div className="text-[12px] font-semibold text-[#8f98a0] mb-2">{label} <span className="text-[#546270] font-normal ml-1">{count}</span></div>
+        <div className="text-[12px] font-semibold text-[#8f98a0] mb-2 flex items-center gap-1">{icon}{label} <span className="text-[#546270] font-normal ml-1">{count}</span></div>
         {children}
     </div>
 );
@@ -399,10 +408,11 @@ const YearSummary = ({ items }) => {
     const beaten = items.length - done;
     const mins = items.reduce((sum, i) => sum + (i.playtime || 0), 0);
     const parts = [];
-    if (done) parts.push(<span key="d" className="text-[#e5b143] font-semibold">{done} ★ complete</span>);
-    if (beaten) parts.push(<span key="b"><span className="text-[#c6d4df] font-semibold">{beaten}</span> beaten</span>);
-    if (mins >= 60) parts.push(<span key="h">{Math.round(mins / 60).toLocaleString()}h played</span>);
-    return <span className="text-[12px] text-[#8f98a0]">{parts.flatMap((p, i) => i ? [<span key={`s${i}`} className="mx-1.5 text-[#546270]">·</span>, p] : [p])}</span>;
+    // Same marks as a closed year's line: ★ completed (gold), medal beaten (silver), clock played
+    if (done) parts.push(<span key="d" className="inline-flex items-center gap-1"><Star size={11} fill="currentColor" className="text-[#e5b143]" /><b className="text-[#e5b143] font-semibold">{done}</b> completed</span>);
+    if (beaten) parts.push(<span key="b" className="inline-flex items-center gap-1"><Medal size={12} className="text-[#b8c4ce]" /><b className="text-[#b8c4ce] font-semibold">{beaten}</b> beaten</span>);
+    if (mins >= 60) parts.push(<span key="h" className="inline-flex items-center gap-1"><Clock size={11} /><b className="text-[#c6d4df] font-semibold">{Math.round(mins / 60).toLocaleString()}h</b> played</span>);
+    return <span className="text-[12px] text-[#8f98a0] inline-flex flex-wrap items-center gap-y-0.5">{parts.flatMap((p, i) => i ? [<span key={`s${i}`} className="mx-1.5 text-[#546270]">·</span>, p] : [p])}</span>;
 };
 
 // An open year. Phone: month timeline, highlights and rows in date order. Desktop: completed
@@ -434,14 +444,14 @@ const YearOpen = ({ year, items, rarest, onToggle }) => {
 
             <div className="hidden md:flex flex-col gap-5">
                 {done.length > 0 && (
-                    <TimelineGroup label="Completed" count={done.length}>
+                    <TimelineGroup label="Completed" icon={<Star size={11} fill="currentColor" className="text-[#e5b143]" />} count={done.length}>
                         <div className="grid grid-cols-3 gap-3">
                             {done.map((item, i) => <Highlight key={`${item.platform}-${item.gameId}-${i}`} item={item} rare={rare(item)} />)}
                         </div>
                     </TimelineGroup>
                 )}
                 {beaten.length > 0 && (
-                    <TimelineGroup label="Beaten" count={beaten.length}>
+                    <TimelineGroup label="Beaten" icon={<Medal size={12} className="text-[#b8c4ce]" />} count={beaten.length}>
                         <div className="grid grid-cols-3 gap-3">
                             {beaten.map((item, i) => <BeatenRow key={`${item.platform}-${item.gameId}-${i}`} item={item} />)}
                         </div>
@@ -452,19 +462,19 @@ const YearOpen = ({ year, items, rarest, onToggle }) => {
     );
 };
 
-// A closed year: one line with its counts (★ complete, medal beaten) and its covers (★ on
+// A closed year: one line with its counts (★ completed, medal beaten) and its covers (★ on
 // completed ones). The covers scroll sideways on phone; a tap anywhere opens the year.
 const YearClosed = ({ year, items, onToggle }) => {
     const done = items.filter(isComplete).length;
     const beaten = items.length - done;
     return (
         <div role="button" tabIndex={0} onClick={onToggle} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onToggle(); } }}
-            aria-label={`${year}: ${done} complete, ${beaten} beaten. Show`}
+            aria-label={`${year}: ${done} completed, ${beaten} beaten. Show`}
             className="w-full flex items-center gap-3 py-1.5 border-t border-[#22344a] text-left group outline-none cursor-pointer min-w-0 focus-visible:bg-[#1b2838]">
             <span className="text-[15px] font-semibold text-white w-11 shrink-0">{year}</span>
             {/* Two fixed slots (complete, beaten), kept even when empty, so every strip starts at the same x */}
             <span className="grid grid-cols-[34px_34px] gap-1.5 text-[12px] shrink-0 tabular-nums">
-                <span className="flex items-center gap-1 text-[#e5b143] font-semibold" title={done ? `${done} complete` : undefined}>{done > 0 && <><Star size={11} fill="currentColor" />{done}</>}</span>
+                <span className="flex items-center gap-1 text-[#e5b143] font-semibold" title={done ? `${done} completed` : undefined}>{done > 0 && <><Star size={11} fill="currentColor" />{done}</>}</span>
                 <span className="flex items-center gap-1 text-[#b8c4ce] font-semibold" title={beaten ? `${beaten} beaten` : undefined}>{beaten > 0 && <><Medal size={12} />{beaten}</>}</span>
             </span>
             <span className="frow flex-1 min-w-0 gap-1.5 py-1.5 pr-1.5">
@@ -665,7 +675,7 @@ const App = () => {
                     <div className="flex items-center gap-3">
                         <span className="w-[3px] h-6 bg-[#e5b143] rounded-[1px] shrink-0" />
                         <h1 className="text-2xl md:text-[26px] text-white font-medium tracking-wide leading-none flex items-center gap-3">
-                            <Star size={22} className="text-[#e5b143]" /> Completions
+                            <Star size={22} fill="currentColor" className="text-[#e5b143]" /> Completions
                         </h1>
                         {!loading && (
                             <span className="ml-1 text-[12px] text-[#8f98a0] anim-fade"><span className="text-[#c6d4df] font-semibold">{completions.length}</span> total</span>

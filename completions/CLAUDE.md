@@ -22,7 +22,7 @@ Two normalizers in `app.js`:
 
 ## Display
 - Entries grouped by month (`groupByMonth`), then grouped by year for rendering
-- **Open years** (the current year to start with; tap a year to toggle): the year line (`5 ★ complete · 4 beaten · 127h played`), then
+- **Open years** (the current year to start with; tap a year to toggle): the year line (`★ 5 completed · medal 4 beaten · clock 127h played`, the same ★ / medal marks as the closed-year lines, the status chips (★ Mastered / Perfect / Completed, medal Beaten) and the desktop group labels; RA hardcore is the same flame-only chip on cards and rows ("Hardcore" in its tooltip), so the beaten rows keep room for the console; rarity uses the site's five tiers), then
   - phone: a month timeline (ring + line per month) with entries in date order
   - desktop: "Completed" highlights three across, then "Beaten" rows three across
 - **Completed** (Mastered / Perfect / Completed) = `Highlight`: art banner (Steam banner uncropped; RA screenshot with the icon over it, or the icon zoomed and blurred when there's no screenshot; Xbox hero with icon), platform chip + Hardcore chip + date on the art, status chip, title, console, then a stats band in the Playing tile style (Achievements / Played, hidden without playtime / Rarest with the achievement icon). Gold left edge

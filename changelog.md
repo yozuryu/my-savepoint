@@ -1,5 +1,18 @@
 # Changelog
 
+## v26.11.21
+
+Completions speaks one visual language: the same marks for the same things everywhere
+
+### Completions
+
+- improved: **Same marks everywhere** for completed, beaten and played
+  The year line now reads ★ completed, medal beaten and clock played, like the closed years. The Beaten tag and the group labels carry their mark too.
+- improved: **Hardcore** is the same flame tag on beaten rows as on completed cards
+  Small enough that the console name still fits on the row.
+- fix: **Rarity colours** match the rest of the site
+  Ultra rare is under 5% (gold), then Very rare, Rare, Uncommon and Common, as on Analytics and Activity.
+
 ## v26.11.20
 
 Eight more Steam games can be marked beaten
