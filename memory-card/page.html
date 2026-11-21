@@ -495,7 +495,7 @@
         .story.still { position: static; width: 450px; height: 800px; animation: none; }
         .story.film { animation: none; } .story.film .stop button { display: none; }      /* filmed: no controls in the picture */
         .story.film .sbars { visibility: hidden; }
-        .story.film .stop { top: 116px; } .story.film .stage { padding-top: 162px; zoom: 0.94; }      /* the brand row below the top ~14% where Instagram / Facebook put the poster's name, the slide under it */      /* nor the story bars: Instagram / Facebook draw their own (hidden, not removed: their end tells the film the section is over) */
+        .story.film .stop, .story.still:not(.wide) .stop { top: 116px; } .story.film .stage, .story.still:not(.wide) .stage { padding-top: 162px; zoom: 0.94; }      /* the tall slide pictures too */      /* the brand row below the top ~14% where Instagram / Facebook put the poster's name, the slide under it */      /* nor the story bars: Instagram / Facebook draw their own (hidden, not removed: their end tells the film the section is over) */
         .story.still *, .story.still *::before { animation: none !important; }
         .story.still .stop { top: 20px; } .story.still .stage { padding-top: 54px; }
         /* Desktop mode: the same slides laid out wide, 800 × 420 (the wide card's shape) and scaled to the window. Slides
@@ -626,6 +626,8 @@
         .sc-story.v-title .tf h3 { font-size: 32px; } .sc-story.v-title .tf b { font-size: 36px; }
 
         .sc-story { width: 1080px; height: 1920px; padding: 140px 76px 150px; display: flex; flex-direction: column; }
+        /* The brand below the top ~14% where Instagram / Facebook put the poster's name over a story; what follows ~8% smaller to make room */
+        .sc-story { padding-top: 262px; } .sc-story > :not(.brand, .foot) { zoom: 0.92; }
         .sc-story::before { background: radial-gradient(100% 50% at 50% 0%, rgba(var(--a), 0.3), transparent 70%), linear-gradient(180deg, rgba(9, 11, 18, 0.6) 0%, rgba(9, 11, 18, 0.9) 45%, rgba(9, 11, 18, 0.97) 100%); }
         .sc-story .brand { font-size: 34px; }
         .sc-story .slot { margin-top: 44px; } .sc-story .px { font-size: 20px; } .sc-story .slot i { width: 14px; height: 14px; }
