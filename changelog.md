@@ -2,7 +2,7 @@
 
 ## v26.11.21
 
-Every game opens its own sheet in place, Completions uses the same marks everywhere, and a Memory Card shares as a story video
+Every game opens its own sheet in place, Completions uses the same marks everywhere, and Memory Card sections share as story videos
 
 ### RetroAchievements
 
@@ -25,8 +25,10 @@ Every game opens its own sheet in place, Completions uses the same marks everywh
 
 ### Structure
 
-- new: **Memory Card** shares as a 30-second story video
-  Share › Video makes an MP4 of the year's story on your phone, ready for an Instagram or Facebook story: each slide opens on its line in the year's colour, then the slide itself.
+- new: **Memory Card** sections share as story videos
+  Share › Video: pick a section of the latest year and share it as a 10-second video, animated exactly like the story, ready for an Instagram or Facebook story.
+- improved: **Memory Card** for the running year opens in October
+  Until then the latest card is last year's.
 - new: **Update notice** when a new version is out
   "New save point reached" slides up with the new version number. Tap Load to reload with the new files; the Refresh button stays.
 - fix: **Memory Card** link previews show the new picture after a change

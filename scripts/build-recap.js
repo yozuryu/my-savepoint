@@ -200,7 +200,7 @@ const sharedSeries = (x => Array.isArray(x) ? x : x.series ?? [])(read('data/hub
 
 // ── One year ────────────────────────────────────────────────────────────────
 const now = process.env.RECAP_NOW ? Date.parse(process.env.RECAP_NOW) : Date.now(), thisYear = local(now).year;      // RECAP_NOW=2027-03-01: build as if on that day
-const OPENS_MONTH = 7;      // the running year gets its card once six months of it are done
+const OPENS_MONTH = 10;     // the running year gets its card (and its story videos) from October; before that the latest is last year
 function buildYear(year) {
     // Farms and hidden games are left out of everything; idle games only lose their play time
     const hidden = k => farms.has(k) || hiddenGames.has(k);

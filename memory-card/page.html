@@ -269,17 +269,9 @@
         .pv { display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr); place-items: center; padding: 10px; height: min(46vh, 380px); border-radius: 6px; background: #0a0c13; border: 1px solid var(--line); overflow: hidden; }
         .pv img { width: 100%; height: 100%; object-fit: contain; display: block; border-radius: 6px; animation: fade 220ms ease-out backwards; }
         .pv p { margin: 0; padding: 20px; text-align: center; color: var(--dim); font-size: 13.5px; }
-        .thumbs[hidden], .acts [hidden] { display: none; }
-        .acts:has([data-save][hidden]) { grid-template-columns: 1fr; }
-        /* Video: the poster dimmed under the making bar, then the MP4 itself */
+        .seg [hidden] { display: none; }
+        /* Video: the section's film plays in the preview */
         .pv video { width: 100%; height: 100%; object-fit: contain; display: block; border-radius: 6px; background: #000; animation: fade 220ms ease-out backwards; }
-        .vmake { position: relative; width: 100%; height: 100%; display: grid; place-items: center; }
-        .vmake img { position: absolute; inset: 0; opacity: 0.35; }
-        .vmeta { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; width: min(260px, 80%); text-align: center; }
-        .vmeta b { font: 700 18px/1.2 var(--title, inherit); }
-        .vmeta span { font-size: 13px; color: var(--dim); }
-        .vbar { width: 100%; height: 6px; margin-top: 8px; border-radius: 3px; background: rgba(255, 255, 255, 0.12); overflow: hidden; }
-        .vbar i { display: block; width: 0; height: 100%; background: rgb(var(--a)); transition: width 120ms linear; }
         .acts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
         .acts .btn { justify-content: center; height: 44px; font-size: 14px; }
         .acts .btn.wide { grid-column: 1 / -1; }
@@ -501,6 +493,7 @@
         @media (prefers-reduced-motion: reduce) { .sbars .on b { transform: none; } }
         /* The same slide as a picture: no bars, no buttons, nothing moving */
         .story.still { position: static; width: 450px; height: 800px; animation: none; }
+        .story.film { animation: none; } .story.film .stop button { display: none; }      /* filmed: no controls in the picture */
         .story.still *, .story.still *::before { animation: none !important; }
         .story.still .stop { top: 20px; } .story.still .stage { padding-top: 54px; }
         /* Desktop mode: the same slides laid out wide, 800 × 420 (the wide card's shape) and scaled to the window. Slides
@@ -1196,12 +1189,15 @@
             const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
             document.querySelectorAll('.rv').forEach(el => io.observe(el));
         }
+        // While a section is filmed (?card=film) the film's clock drives time: NOW() and RAF() follow it instead of the screen's
+        let FILM_CLOCK = null;
+        const filmTickers = [], NOW = () => FILM_CLOCK ?? performance.now(), RAF = f => FILM_CLOCK != null ? filmTickers.push(f) : requestAnimationFrame(f);
         // Numbers count up once, on the page and on each slide
         const countUp = root => { if (!calm) root.querySelectorAll('[data-count]').forEach(el => {
-            const end = +el.dataset.count, final = el.textContent, t0 = performance.now(), dur = 900;
+            const end = +el.dataset.count, final = el.textContent, t0 = NOW(), dur = 900;
             if (end < 10) return;
-            const tick = t => { const k = Math.max(0, Math.min(1, (t - t0) / dur)), e = 1 - Math.pow(1 - k, 3); el.textContent = k < 1 ? n(Math.round(end * e)) : final; if (k < 1) requestAnimationFrame(tick); };
-            requestAnimationFrame(tick);
+            const tick = t => { const k = Math.max(0, Math.min(1, (t - t0) / dur)), e = 1 - Math.pow(1 - k, 3); el.textContent = k < 1 ? n(Math.round(end * e)) : final; if (k < 1) RAF(tick); };
+            RAF(tick);
         }); };
         countUp(document);
 
@@ -1229,165 +1225,60 @@
                 return 'shared';
             } catch (err) { return err?.name === 'AbortError' ? 'cancelled' : 'failed'; }
         };
-        // ── Video: the story as an MP4 for Instagram / Facebook stories, made on this device (nothing stored on the site).
-        //    The slide pictures (rendered at deploy, same origin) go onto a 1080 × 1920 canvas: each opens on a cover in the
-        //    year's colour with its line landing word by word, wipes up to the slide, which pushes in slowly under the story
-        //    bars; an end card closes it. Frames are encoded with WebCodecs (H.264, the phone's encoder) and boxed with
-        //    mp4-muxer; without WebCodecs the canvas is recorded in real time (MediaRecorder). ~30 s, no sound ──
-        const VW = 1080, VH = 1920, FPS = 30;
-        const V_COVER = 1.6, V_WIPE = 0.45, V_HOLD = 3.4, V_END = 2.8;
-        const loadScript = src => new Promise((ok, no) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = no; document.head.append(s); });
-        const easeOut = k => 1 - Math.pow(1 - Math.min(1, Math.max(0, k)), 3), easeIn = k => Math.pow(Math.min(1, Math.max(0, k)), 3);
-        const makeVideo = async onProgress => {
-            const col = colorOf(R.year), rgb = a => `rgba(${col}, ${a})`;
-            await Promise.all(['800 100px Oxanium', '600 60px Figtree', '400 30px Silkscreen'].map(f => document.fonts.load(f).catch(() => {})));
-            const pics = await Promise.all(SLIDES.map(async sl => { const im = new Image(); im.src = slidePic(sl.key, false);
-                try { await im.decode(); return im; } catch { return null; } }));
-            const parts = SLIDES.map((sl, i) => ({ sl, pic: pics[i], k: i })).filter(p => p.pic);
-            if (!parts.length) throw new Error('no-pictures');
-            const segLen = V_COVER + V_WIPE + V_HOLD, total = parts.length * segLen + V_END, frames = Math.round(total * FPS);
-            const cv = Object.assign(document.createElement('canvas'), { width: VW, height: VH }), cx = cv.getContext('2d');
-            const plainLine = key => lineFor(key).split(/\s+/).map(w => ({ w: w.replace(/<\/?b>/g, ''), hi: /<b>/.test(w) || /<\/b>/.test(w) }));
-            // A cover line set to fit: the biggest size where it wraps to at most five lines inside the margins
-            const layout = words => { for (let size = 150; size >= 56; size -= 6) {
-                cx.font = `800 ${size}px Oxanium, sans-serif`;
-                const lines = [[]]; let wl = 0;
-                for (const wd of words) { const ww = cx.measureText(wd.w + ' ').width;
-                    if (wl + ww > VW - 160 && lines.at(-1).length) { lines.push([]); wl = 0; }
-                    lines.at(-1).push({ ...wd, x: wl, width: cx.measureText(wd.w).width }); wl += ww; }
-                if (lines.length <= 5) return { size, lines }; }
-                return { size: 56, lines: [words.map(w => ({ ...w, x: 0, width: 0 }))] }; };
-            const covers = parts.map(p => layout(plainLine(p.sl.key)));
-            const bars = (cur, fill) => { const n = parts.length + 1, gap = 10, w = (VW - 80 - gap * (n - 1)) / n;
-                for (let i = 0; i < n; i++) { const x = 40 + i * (w + gap);
-                    cx.fillStyle = 'rgba(255,255,255,0.28)'; cx.fillRect(x, 44, w, 7);
-                    const f = i < cur ? 1 : i === cur ? fill : 0; if (f > 0) { cx.fillStyle = 'rgba(255,255,255,0.95)'; cx.fillRect(x, 44, w * f, 7); } } };
-            const drawSlide = (pic, t) => { const z = 1 + 0.05 * Math.min(1, t / (V_WIPE + V_HOLD)), w = VW * z, h = VH * z;
-                cx.drawImage(pic, (VW - w) / 2, (VH - h) / 2, w, h); };
-            const drawCover = (p, c, t, dy) => {
-                cx.save(); cx.translate(0, dy);
-                cx.fillStyle = rgb(1); cx.fillRect(0, 0, VW, VH);
-                cx.fillStyle = 'rgba(9,11,18,0.75)'; cx.font = '400 34px Silkscreen, monospace'; cx.textBaseline = 'alphabetic';
-                cx.fillText(`${String(p.k + 1).padStart(2, '0')} / ${String(parts.length).padStart(2, '0')}  ·  ${p.sl.name.toUpperCase()}`, 80, 190);
-                const lh = c.size * 1.08, top = (VH - lh * c.lines.length) / 2 + c.size * 0.8;
-                cx.font = `800 ${c.size}px Oxanium, sans-serif`;
-                let j = 0;
-                c.lines.forEach((line, li) => line.forEach(wd => {
-                    const k = easeOut((t - 0.12 - j++ * 0.09) / 0.32); if (k <= 0) return;
-                    const x = 80 + wd.x, y = top + li * lh + (1 - k) * 40;
-                    cx.globalAlpha = k;
-                    if (wd.hi) { cx.fillStyle = '#090b12'; cx.fillRect(x - 12, y - c.size * 0.95, wd.width + 24, c.size * 1.16); cx.fillStyle = rgb(1); }
-                    else cx.fillStyle = '#090b12';
-                    cx.fillText(wd.w, x, y); cx.globalAlpha = 1;
-                }));
-                cx.restore(); };
-            const drawEnd = t => {
-                const k = easeOut(t / 0.6);
-                cx.fillStyle = '#090b12'; cx.fillRect(0, 0, VW, VH);
-                cx.globalAlpha = k; cx.textAlign = 'center';
-                cx.fillStyle = rgb(1); cx.font = '400 38px Silkscreen, monospace'; cx.fillText('MEMORY CARD', VW / 2, 640);
-                cx.font = '800 300px Oxanium, sans-serif'; cx.fillText(String(R.year), VW / 2, 960 + (1 - k) * 30);
-                cx.fillStyle = '#f2f4f8'; cx.font = '600 60px Figtree, sans-serif'; cx.fillText(`${R.user.name}’s year in games`, VW / 2, 1090);
-                if (R.title?.name) { cx.fillStyle = rgb(1); cx.font = '700 64px Oxanium, sans-serif'; cx.fillText(R.title.name, VW / 2, 1200); }
-                cx.fillStyle = 'rgba(242,244,248,0.6)'; cx.font = '500 40px Figtree, sans-serif'; cx.fillText(pageUrl.replace(/^https?:\/\//, ''), VW / 2, 1700);
-                cx.textAlign = 'left'; cx.globalAlpha = 1; };
-            const draw = time => {
-                const seg = Math.floor(time / segLen);
-                if (seg >= parts.length) { drawEnd(time - parts.length * segLen); bars(parts.length, Math.min(1, (time - parts.length * segLen) / V_END)); return; }
-                const p = parts[seg], c = covers[seg], t = time - seg * segLen;
-                if (t < V_COVER) drawCover(p, c, t, 0);
-                else { drawSlide(p.pic, t - V_COVER); if (t < V_COVER + V_WIPE) drawCover(p, c, t, -VH * easeIn((t - V_COVER) / V_WIPE)); }
-                if (t < V_COVER + V_WIPE) bars(seg, t / segLen);     // the slide picture has its own top row: no bars over it
-            };
-            // WebCodecs: every frame drawn and encoded as fast as the device goes
-            if (window.VideoEncoder && window.VideoFrame) {
-                if (!window.Mp4Muxer) await loadScript('https://cdn.jsdelivr.net/npm/mp4-muxer@5.1.3/build/mp4-muxer.js');
-                const base = { width: VW, height: VH, bitrate: 2_500_000, bitrateMode: 'variable', framerate: FPS };   // mostly still frames: ~8–10 MB for 30 s
-                let config = null;
-                for (const codec of ['avc1.640028', 'avc1.4d0028', 'avc1.640032', 'avc1.4d0032']) {
-                    const c = { ...base, codec }; try { if ((await VideoEncoder.isConfigSupported(c)).supported) { config = c; break; } } catch {}
-                }
-                if (config) {
-                    const muxer = new Mp4Muxer.Muxer({ target: new Mp4Muxer.ArrayBufferTarget(), video: { codec: 'avc', width: VW, height: VH, frameRate: FPS }, fastStart: 'in-memory' });
-                    let failed = null;
-                    const enc = new VideoEncoder({ output: (chunk, meta) => muxer.addVideoChunk(chunk, meta), error: e => { failed = e; } });
-                    enc.configure(config);
-                    for (let i = 0; i < frames; i++) {
-                        if (failed) throw failed;
-                        draw(i / FPS);
-                        const vf = new VideoFrame(cv, { timestamp: Math.round(i * 1e6 / FPS), duration: Math.round(1e6 / FPS) });
-                        enc.encode(vf, { keyFrame: i % (FPS * 2) === 0 }); vf.close();
-                        while (enc.encodeQueueSize > 6) await new Promise(r => setTimeout(r, 4));
-                        if (i % 6 === 0) { onProgress(i / frames); await new Promise(r => setTimeout(r, 0)); }
-                    }
-                    await enc.flush(); enc.close(); muxer.finalize();
-                    onProgress(1);
-                    return { blob: new Blob([muxer.target.buffer], { type: 'video/mp4' }), ext: 'mp4' };
-                }
-            }
-            // Fallback: record the canvas while it plays in real time (not a screen recording: just this canvas)
-            const type = ['video/mp4;codecs=avc1', 'video/mp4', 'video/webm;codecs=vp9', 'video/webm'].find(t => window.MediaRecorder?.isTypeSupported(t));
-            if (!type || !cv.captureStream) throw new Error('unsupported');
-            const rec = new MediaRecorder(cv.captureStream(FPS), { mimeType: type, videoBitsPerSecond: 2_500_000 }), chunks = [];
-            rec.ondataavailable = e => e.data.size && chunks.push(e.data);
-            const done = new Promise(r => { rec.onstop = r; });
-            rec.start(250);
-            const t0 = performance.now();
-            await new Promise(fin => { const tick = () => { const time = (performance.now() - t0) / 1000;
-                draw(Math.min(time, total)); onProgress(Math.min(1, time / total));
-                if (time < total) requestAnimationFrame(tick); else fin(); }; tick(); });
-            rec.stop(); await done;
-            const mp4 = type.startsWith('video/mp4');
-            return { blob: new Blob(chunks, { type: mp4 ? 'video/mp4' : 'video/webm' }), ext: mp4 ? 'mp4' : 'webm' };
-        };
-        let videoMade = null;       // { blob, ext, url } once made on this visit
-        const sendVideo = async v => {
-            const name = `memory-card-${R.year}.${v.ext}`, file = new File([v.blob], name, { type: v.blob.type });
+        // ── Story videos: each section of the latest year filmed at deploy (render-recap.js opens ?card=film), saved as
+        //    share/{YYYY}-video-{key}.mp4 and listed in share/video.json; the Share sheet's Video tab offers the ones for this year ──
+        let videoKeys = null;
+        const getVideos = () => videoKeys ??= fetch(`${BASE}memory-card/share/video.json`, { cache: 'no-cache' }).then(r => r.ok ? r.json() : null).catch(() => null)
+            .then(v => v && v.year === R.year ? (v.keys || []).filter(k => SLIDES.some(x => x.key === k)) : []);
+        const videoFile = key => `${R.year}-video-${key}.mp4`;
+        const videoUrl = key => `${BASE}memory-card/share/${videoFile(key)}`;
+        // Shares the video as a file where the device can, saves it otherwise
+        const sendVideo = async (url, name) => {
             try {
+                const res = await fetch(url);
+                if (!res.ok) return 'failed';
+                const file = new File([await res.blob()], name, { type: 'video/mp4' });
                 if (navigator.canShare?.({ files: [file] })) { await navigator.share({ files: [file], title: shareTitle, text: `${shareTitle} ${pageUrl}` }); return 'shared'; }
-                const a = Object.assign(document.createElement('a'), { href: v.url, download: name }); document.body.append(a); a.click(); a.remove(); return 'saved';
+                const a = Object.assign(document.createElement('a'), { href: url, download: name }); document.body.append(a); a.click(); a.remove(); return 'saved';
             } catch (err) { return err?.name === 'AbortError' ? 'cancelled' : 'failed'; }
         };
         const openShare = (from = 'story', wide = DESK.matches) => {
             // Three sections, one picture picked from thumbnails in each: the tall and the wide picture in their five styles, and the story's
             // slides (wide ones on a desktop, or when the story was playing wide)
             let kind = from, pick = '';
-            const picks = () => kind === 'slides' ? SLIDES.map(x => ({ id: `slide-${x.key}`, name: x.name, url: slidePic(x.key, wide), file: slideFile(x.key, wide) }))
+            const picks = () => kind === 'video' ? SLIDES.filter(x => vids.includes(x.key)).map(x => ({ id: `video-${x.key}`, name: x.name, url: slidePic(x.key, false), file: videoFile(x.key), video: videoUrl(x.key) }))
+                : kind === 'slides' ? SLIDES.map(x => ({ id: `slide-${x.key}`, name: x.name, url: slidePic(x.key, wide), file: slideFile(x.key, wide) }))
                 : STYLES.map(([id, name]) => ({ id, name, url: imageUrl(kind, id), file: picName(kind, id) }));
             const el = document.createElement('div');
             el.className = 'scrim';
             el.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-label="Share ${R.year}">
                 <header><h2>Share ${R.year}</h2><button class="x" data-close aria-label="Close">${svg.x}</button></header>
-                <div class="pick"><div class="seg" aria-label="Shape"><button data-kind="story">Tall</button><button data-kind="link">Wide</button><button data-kind="slides">Story</button><button data-kind="video">Video</button></div></div>
+                <div class="pick"><div class="seg" aria-label="Shape"><button data-kind="story">Tall</button><button data-kind="link">Wide</button><button data-kind="slides">Story</button><button data-kind="video" hidden>Video</button></div></div>
                 <div class="thumbs" aria-label="Picture"></div>
                 <div class="pv"></div>
                 <div class="acts"><button class="btn go" data-send>${svg.share}<span>Share picture</span></button><a class="btn" data-save download>${svg.down}<span>Save picture</span></a></div>
                 <div class="linkrow"><span>${esc(pageUrl.replace(/^https?:\/\//, ''))}</span><button class="btn" data-copy>${svg.link}<span>Copy link</span></button></div></div>`;
             const pv = el.querySelector('.pv'), save = el.querySelector('[data-save]'), send = el.querySelector('[data-send]'), thumbs = el.querySelector('.thumbs');
-            let cur, drawn, making = false;
-            const sendLabel = send.querySelector('span'), saveLabel = save.querySelector('span');
-            // Video: the slide picture as a poster with Make video; while making, a bar fills; once made, the MP4 plays here
-            const showVideo = () => {
-                el.querySelectorAll('[data-kind]').forEach(b => b.classList.toggle('on', b.dataset.kind === 'video'));
-                thumbs.hidden = true; drawn = 'video';
-                pv.innerHTML = videoMade ? `<video src="${videoMade.url}" autoplay muted loop playsinline controls></video>`
-                    : `<div class="vmake"><img src="${slidePic(SLIDES[0].key, false)}" alt="" onerror="this.remove()"><div class="vmeta"><b>Story video</b><span>About 30 seconds, made on this device</span><div class="vbar"><i></i></div></div></div>`;
-                sendLabel.textContent = videoMade ? 'Share video' : 'Make video';
-                save.hidden = !videoMade;
-                if (videoMade) { save.href = videoMade.url; save.download = `memory-card-${R.year}.${videoMade.ext}`; saveLabel.textContent = 'Save video'; }
-            };
+            let cur, drawn, vids = [];
+            const sendLabel = send.querySelector('span'), saveLabel = save.querySelector('span'), vidBtn = el.querySelector('[data-kind="video"]');
+            getVideos().then(keys => { vids = keys; vidBtn.hidden = !keys.length; });
             const show = () => {
-                if (kind === 'video') return showVideo();
-                thumbs.hidden = false; save.hidden = false; sendLabel.textContent = 'Share picture'; saveLabel.textContent = 'Save picture';
+                const isVid = kind === 'video';
+                sendLabel.textContent = isVid ? 'Share video' : 'Share picture'; saveLabel.textContent = isVid ? 'Save video' : 'Save picture';
                 const list = picks();
                 cur = list.find(x => x.id === pick) ?? list[0]; pick = cur.id;
                 el.querySelectorAll('[data-kind]').forEach(b => b.classList.toggle('on', b.dataset.kind === kind));
                 if (drawn !== kind) {
                     drawn = kind;
-                    thumbs.className = `thumbs k-${kind}${kind === 'slides' && wide ? ' k-wide' : ''}`;
+                    thumbs.className = `thumbs k-${kind === 'video' ? 'slides' : kind}${kind === 'slides' && wide ? ' k-wide' : ''}`;
                     thumbs.innerHTML = list.map(x => `<button class="th" data-pick="${x.id}" aria-label="${esc(x.name)}" title="${esc(x.name)}"><img src="${x.url}" alt="" loading="lazy" onerror="this.parentNode.remove()"></button>`).join('');
                 }
                 thumbs.querySelectorAll('.th').forEach(b => b.classList.toggle('on', b.dataset.pick === pick));
+                if (isVid) {          // the section's film, playing in the preview
+                    pv.innerHTML = `<video src="${cur.video}" poster="${cur.url}" autoplay muted loop playsinline controls aria-label="${esc(`${shareTitle}, ${cur.name}`)}"></video>`;
+                    save.href = cur.video; save.download = `memory-card-${cur.file}`;
+                    return;
+                }
                 const pic = new Image();
                 pic.alt = `${shareTitle}, ${kind === 'link' ? 'wide picture' : kind === 'slides' ? 'story card' : 'tall picture'}, ${cur.name}`;
                 pic.onload = () => { pv.replaceChildren(pic); };
@@ -1404,20 +1295,8 @@
                 if (t?.dataset.pick) { pick = t.dataset.pick; t.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' }); return show(); }
                 if (t?.dataset.copy != null) return copy(t);
                 if (t?.dataset.send != null && kind === 'video') {
-                    if (making) return;
-                    if (videoMade) { const got = await sendVideo(videoMade);
-                        if (got === 'saved' || got === 'failed') { sendLabel.textContent = got === 'saved' ? 'Saved instead' : 'Couldn’t share'; setTimeout(() => { sendLabel.textContent = 'Share video'; }, 1600); }
-                        return; }
-                    making = true; send.disabled = true;
-                    const bar = pv.querySelector('.vbar i'), meta = pv.querySelector('.vmeta span');
-                    try {
-                        const made = await makeVideo(k => { const pc = Math.round(k * 100); if (bar) bar.style.width = `${pc}%`; sendLabel.textContent = `Making… ${pc}%`; });
-                        videoMade = { ...made, url: URL.createObjectURL(made.blob) };
-                        if (kind === 'video') showVideo();
-                    } catch (err) {
-                        sendLabel.textContent = 'Make video';
-                        if (meta) meta.textContent = err?.message === 'unsupported' ? 'This browser can’t make videos. Try Chrome or Safari on your phone.' : err?.message === 'no-pictures' ? 'The story pictures for this year aren’t built yet.' : 'Couldn’t make the video. Try again.';
-                    } finally { making = false; send.disabled = false; }
+                    const got = await sendVideo(cur.video, `memory-card-${cur.file}`);
+                    if (got === 'saved' || got === 'failed') { sendLabel.textContent = got === 'saved' ? 'Saved instead' : 'Couldn’t share'; setTimeout(() => { sendLabel.textContent = 'Share video'; }, 1600); }
                     return;
                 }
                 if (t?.dataset.send != null) {
@@ -1433,9 +1312,9 @@
         };
         // ── Story: the slides played back. Each bar on top fills while its slide shows and its end moves on; tap right / left
         //    to step, hold to pause. The share button sends the picture of the slide on screen; the last slide opens the Share sheet ──
-        const openStory = () => {
+        const openStory = ({ start = 0, film = false } = {}) => {
             // Wide on a desktop, where a button in the top bar switches between the two shapes (remembered on this device)
-            let wide = DESK.matches && (() => { try { return localStorage.getItem('mc:storyShape') !== 'tall'; } catch { return true; } })();
+            let wide = !film && DESK.matches && (() => { try { return localStorage.getItem('mc:storyShape') !== 'tall'; } catch { return true; } })();
             const endHtml = () => `<div class="hf1"><div class="sfan sa">${(n => SLIDES.slice(0, 3).map((x, i) => `<img src="${slidePic(x.key, wide)}" alt="" style="--r:${(i - (n - 1) / 2) * 9}deg;--x:${(i - (n - 1) / 2) * 62}px;--i:${i}" onerror="this.remove()">`).join(''))(Math.min(3, SLIDES.length))}</div></div>
                 <div class="hf2"><div class="slot px sa" style="justify-content:center"><i></i>Slot ${slotNo} <b>of ${YEARS.length} · saved</b></div>
                 <h2 class="sa">${R.year} saved</h2>
@@ -1530,8 +1409,9 @@
                 else if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(at + 1); }
                 else if (e.key === 'ArrowLeft') go(at - 1);
             };
-            el.addEventListener('animationend', e => { const a = e.animationName; if (a === 'sbar') go(at + 1); else if (a === 'scin') e.target.swap?.(); else if (a === 'scout') e.target.remove(); });
-            el.addEventListener('animationstart', e => { if (e.animationName === 'scout') countUp(frame.querySelector('.stage')); });        // numbers count as the cover leaves
+            if (film) el.classList.add('film', 'paused');       // filmed: nothing runs on its own, the film steps every animation
+            el.addEventListener('animationend', e => { if (film) return; const a = e.animationName; if (a === 'sbar') go(at + 1); else if (a === 'scin') e.target.swap?.(); else if (a === 'scout') e.target.remove(); });
+            el.addEventListener('animationstart', e => { if (!film && e.animationName === 'scout') countUp(frame.querySelector('.stage')); });        // numbers count as the cover leaves
             el.addEventListener('contextmenu', e => e.preventDefault());
             frame.addEventListener('pointerdown', e => { if (!e.target.closest('button')) holdTimer = setTimeout(() => hold(true), 220); });
             frame.addEventListener('pointercancel', () => { clearTimeout(holdTimer); hold(false); });
@@ -1554,8 +1434,38 @@
             document.body.append(el);
             addEventListener('resize', fit);
             fit(); shape();
-            go(0);
+            if (!film) return go(0);
+            // Filming: every frame the renderer calls __filmStep(ms); each animation is paused and set to the time since it appeared,
+            // and what the story does on animation events (cover swaps the slide in, cover leaves and numbers count, bar ends) is done
+            // here when an animation passes that point. Resolves true once the section's bar has filled
+            let clock = 0, over = false;
+            const born = new WeakMap(), ended = new WeakSet(), begun = new WeakSet();
+            window.__filmStep = async dt => {
+                clock += dt; FILM_CLOCK = clock;
+                for (const a of document.getAnimations()) {
+                    if (!born.has(a)) born.set(a, clock - dt);
+                    a.pause(); a.currentTime = Math.max(0, clock - born.get(a));
+                    const name = a.animationName, tg = a.effect?.target, tm = a.effect?.getComputedTiming();
+                    if (name === 'scout' && !begun.has(a) && a.currentTime >= (a.effect.getTiming().delay || 0)) { begun.add(a); countUp(frame.querySelector('.stage')); }
+                    if (!ended.has(a) && tm && isFinite(tm.endTime) && a.currentTime >= tm.endTime) {
+                        ended.add(a);
+                        if (name === 'scin') tg?.swap?.(); else if (name === 'scout') tg?.remove(); else if (name === 'sbar') over = true;
+                    }
+                }
+                filmTickers.splice(0).forEach(f => f(clock));
+                await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+                return over;
+            };
+            // Ready once fonts are in and the section's pictures are loaded (the slide is built only when the cover swaps it in)
+            const pre = document.createElement('div'); pre.innerHTML = slides[start].html;
+            Promise.all([document.fonts.ready, ...[...pre.querySelectorAll('img')].map(i => new Promise(r => { const im = new Image(); im.onload = im.onerror = r; im.src = i.src; }))])
+                .then(() => { go(start); requestAnimationFrame(() => { document.body.dataset.ready = '1'; }); });
         };
+        // ── Filming a section (?card=film&s=<key>, 450 × 800): the story opened on that slide, stepped by render-recap.js ──
+        if (CARD === 'film') {
+            document.body.dataset.slides = SLIDES.map(x => x.key).join(',');
+            openStory({ film: true, start: Math.max(0, SLIDES.findIndex(x => x.key === Q.get('s'))) });
+        }
         document.addEventListener('click', e => {
             const t = e.target.closest('[data-share], [data-copy], [data-play]');
             if (!t || t.closest('.scrim, .story')) return;

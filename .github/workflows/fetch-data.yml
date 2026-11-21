@@ -219,3 +219,5 @@ jobs:
       pages: write
       id-token: write
     uses: ./.github/workflows/deploy.yml
+    with:
+      videos: ${{ inputs.mode == 'midnight' || inputs.mode == 'full-refresh' }}   # story videos once a day; other runs reuse the live ones
