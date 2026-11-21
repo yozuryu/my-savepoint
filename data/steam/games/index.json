@@ -38047,8 +38047,8 @@
             "total": 38,
             "unlocked": 7,
             "gameName": "LEGO® 2K Drive",
-            "playtimeForever": 793,
-            "lastPlayedTs": "2026-11-21T04:06:53.000Z",
+            "playtimeForever": 823,
+            "lastPlayedTs": "2026-11-21T04:36:54.000Z",
             "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1451810/8310e788a7972d6ae815c157a58207b5bb50f369.jpg",
             "lastUnlockedAt": "2026-11-21T04:07:57.000Z",
             "lastUnlockName": "Sidewalk Hog",
@@ -39705,7 +39705,7 @@
                     "unlockedAt": "2026-11-08T10:28:13.000Z",
                     "iconUrl": "b245962141c9669bb20a21ba27555345f47a561b.jpg",
                     "iconGrayUrl": "f2bf8289ba403366ce0d5bbf859d9898eb73315e.jpg",
-                    "globalPct": 39
+                    "globalPct": 38.9
                 },
                 {
                     "apiName": "ach018",
@@ -39732,7 +39732,7 @@
                     "unlockedAt": "2026-11-08T05:05:26.000Z",
                     "iconUrl": "f7ed43ebaffa7609f7161e2acae4cd3415f1967c.jpg",
                     "iconGrayUrl": "27fb3f587ff5db0f90bca6117beb1b2163ae3445.jpg",
-                    "globalPct": 78.9
+                    "globalPct": 79
                 },
                 {
                     "apiName": "ach002",
@@ -39819,7 +39819,7 @@
                     "unlockedAt": null,
                     "iconUrl": "0a5e17c3803e135638bf740267caeab0c5af7bfd.jpg",
                     "iconGrayUrl": "773e901b54f8e160df408508057fbb6df241ca7b.jpg",
-                    "globalPct": 40.8
+                    "globalPct": 40.7
                 }
             ]
         },

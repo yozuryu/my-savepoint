@@ -69,7 +69,7 @@
             "iconUrl": "0a5e17c3803e135638bf740267caeab0c5af7bfd.jpg",
             "iconGrayUrl": "773e901b54f8e160df408508057fbb6df241ca7b.jpg",
             "hidden": true,
-            "globalPct": 40.8
+            "globalPct": 40.7
         },
         {
             "apiName": "BummerVacation",
@@ -135,7 +135,7 @@
             "iconUrl": "b19c2c9d5cf51432a03288c8802395eb76c3357c.jpg",
             "iconGrayUrl": "faaf874f762ace852def96a4a99a9c86621b5e44.jpg",
             "hidden": false,
-            "globalPct": 26.1
+            "globalPct": 26
         },
         {
             "apiName": "FirmlyGraspIt",
@@ -190,7 +190,7 @@
             "iconUrl": "93147ceab061f13d805e7804145b5fcd02167ccf.jpg",
             "iconGrayUrl": "304665f54962e869e80621be096600f30ddfe8bd.jpg",
             "hidden": false,
-            "globalPct": 9.6
+            "globalPct": 9.5
         },
         {
             "apiName": "Hoarder",
@@ -278,7 +278,7 @@
             "iconUrl": "3f8aeeb12582b960c8db43fac88b4d42ba4bda89.jpg",
             "iconGrayUrl": "7bd52cc562e933c3be0dc19e9d03160e0201a1a8.jpg",
             "hidden": false,
-            "globalPct": 9.8
+            "globalPct": 9.7
         },
         {
             "apiName": "TheWisdom",
@@ -362,7 +362,7 @@
             "unlockedAt": null,
             "iconUrl": "0a5e17c3803e135638bf740267caeab0c5af7bfd.jpg",
             "iconGrayUrl": "773e901b54f8e160df408508057fbb6df241ca7b.jpg",
-            "globalPct": 40.8
+            "globalPct": 40.7
         }
     ]
 }
