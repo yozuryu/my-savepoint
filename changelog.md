@@ -4,6 +4,11 @@
 
 Completions speaks one visual language: the same marks for the same things everywhere
 
+### RetroAchievements
+
+- improved: **Series** take in the new want-to-play games
+  Eight Persona games, four more Sims games with The Sims, The Urbz and MySims as sub-series, Crash Twinsanity, Shining Force Neo, and a new Bomberman series.
+
 ### Completions
 
 - improved: **Same marks everywhere** for completed, beaten and played
