@@ -1,6 +1,6 @@
 {
     "metadata": {
-        "extractionTimestamp": "2026-11-21T12:46:51.285Z"
+        "extractionTimestamp": "2026-11-21T13:16:49.244Z"
     },
     "profile": {
         "steamId": "76561198188939413",
@@ -13,7 +13,7 @@
     },
     "stats": {
         "totalGames": 1295,
-        "totalPlaytimeMin": 352773,
+        "totalPlaytimeMin": 352803,
         "totalPlaytimeHrs": 5880,
         "gamesWithPlaytime": 824,
         "totalAchievements": 10250,
@@ -27,11 +27,11 @@
         {
             "appId": 1658290,
             "name": "Eiyuden Chronicle: Rising",
-            "playtime2Weeks": 277,
-            "playtimeForever": 338,
+            "playtime2Weeks": 307,
+            "playtimeForever": 368,
             "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1658290/449ec8f09bf72c9f8e00c113c1e12a7c70a86de4.jpg",
             "storeUrl": "https://store.steampowered.com/app/1658290",
-            "lastPlayedTs": "2026-11-21T12:37:51.000Z",
+            "lastPlayedTs": "2026-11-21T13:07:52.000Z",
             "achUnlocked": 13,
             "achTotal": 50
         },
@@ -105,11 +105,11 @@
     "mostRecentGame": {
         "appId": 1658290,
         "name": "Eiyuden Chronicle: Rising",
-        "playtime2Weeks": 277,
-        "playtimeForever": 338,
+        "playtime2Weeks": 307,
+        "playtimeForever": 368,
         "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1658290/449ec8f09bf72c9f8e00c113c1e12a7c70a86de4.jpg",
         "storeUrl": "https://store.steampowered.com/app/1658290",
-        "lastPlayedTs": "2026-11-21T12:37:51.000Z"
+        "lastPlayedTs": "2026-11-21T13:07:52.000Z"
     },
     "mostRecentUnlock": {
         "appId": 1451810,
