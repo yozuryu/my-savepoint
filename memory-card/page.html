@@ -494,6 +494,8 @@
         /* The same slide as a picture: no bars, no buttons, nothing moving */
         .story.still { position: static; width: 450px; height: 800px; animation: none; }
         .story.film { animation: none; } .story.film .stop button { display: none; }      /* filmed: no controls in the picture */
+        .story.film .sbars { visibility: hidden; }
+        .story.film .stop { top: 116px; } .story.film .stage { padding-top: 162px; zoom: 0.94; }      /* the brand row below the top ~14% where Instagram / Facebook put the poster's name, the slide under it */      /* nor the story bars: Instagram / Facebook draw their own (hidden, not removed: their end tells the film the section is over) */
         .story.still *, .story.still *::before { animation: none !important; }
         .story.still .stop { top: 20px; } .story.still .stage { padding-top: 54px; }
         /* Desktop mode: the same slides laid out wide, 800 × 420 (the wide card's shape) and scaled to the window. Slides
