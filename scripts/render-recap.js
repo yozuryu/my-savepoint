@@ -6,6 +6,10 @@
 //   memory-card/share/{YYYY}-slide-{key}.jpg   the story's slides, 1080 × 1920; …-slide-{key}-wide.jpg the same slides wide, 1200 × 630
 //   memory-card/share/{YYYY}-video-{key}.mp4   the latest year only: each story section filmed, 1080 × 1920, 30 fps, H.264
 //   memory-card/share/video.json   { year, hash, keys }: which year the videos are of, and of which version of its page
+//   memory-card/share/{name}-t.jpg   a 216 px wide thumbnail of every picture, for the Share sheet (ffmpeg; none without it)
+//   memory-card/share/pictures.json   { year: { hash, files } }: each year's pictures and the version of its page they show
+// Pictures: a year whose page is unchanged since the live site's copy (same hash of its index.html) is downloaded from the live site
+// instead of rendered; past years rarely change, so a deploy usually renders only the running year. RECAP_PICTURE_CACHE=0 renders all.
 // Videos: the page's film mode (?card=film&s=<key>) steps every animation itself; each frame is a screenshot piped to ffmpeg.
 // If the live site already has videos of the same page (same hash), they're downloaded instead. RECAP_VIDEO_RENDER=0 takes the live
 // ones even when the page changed since (same year and sections): the deploys after data runs do, the midnight run and pushes to
@@ -107,14 +111,44 @@ const server = http.createServer((req, res) => {
             const shot = await tab('Page.captureScreenshot', { format: 'jpeg', quality: 86, clip: { x: 0, y: 0, width: w, height: h, scale: 1 } });
             fs.writeFileSync(path.join(OUT, `${year}-${name}.jpg`), Buffer.from(shot.data, 'base64'));
         };
+        // The live site's pictures, for the years whose page hasn't changed
+        const pageHash = year => crypto.createHash('sha1').update(fs.readFileSync(path.join(ROOT, 'memory-card', String(year), 'index.html'))).digest('hex').slice(0, 12);
+        const siteOf = year => (fs.readFileSync(path.join(ROOT, 'memory-card', String(year), 'index.html'), 'utf8').match(/"site":"([^"]+)"/) || [])[1];
+        const site = years.length ? siteOf(years[0]) : null;
+        let livePics = {};
+        if (site && process.env.RECAP_PICTURE_CACHE !== '0') { try { livePics = await (await fetch(`${site}/memory-card/share/pictures.json`, { cache: 'no-store' })).json(); } catch {} }
+        const fromLive = async (year, hash) => {
+            const live = livePics[year];
+            if (!live || live.hash !== hash || !live.files?.length) return null;
+            try {
+                const got = await Promise.all(live.files.map(async f => { const r = await fetch(`${site}/memory-card/share/${f}`); if (!r.ok) throw new Error(f); return [f, Buffer.from(await r.arrayBuffer())]; }));
+                for (const [f, b] of got) fs.writeFileSync(path.join(OUT, f), b);
+                return live.files;
+            } catch { return null; }
+        };
+        const thumbs = hasFfmpeg();
+        let index = {};
+        try { index = JSON.parse(fs.readFileSync(path.join(OUT, 'pictures.json'), 'utf8')); } catch {}      // a run for some years keeps the others
+        let reused = 0;
         for (const year of years) {
+            const hash = pageHash(year), cached = await fromLive(year, hash);
+            if (cached) { index[year] = { hash, files: cached }; reused++; continue; }
             for (const card of CARDS) await shoot(year, card);
             // The story's slides: the first load also tells which slides this year has
             await shoot(year, { ...SLIDE, query: 'card=slide', name: 'slide-year' });
             const keys = (await tab('Runtime.evaluate', { expression: `document.body?.dataset.slides ?? ''` })).result?.value ?? '';
             for (const key of keys.split(',').filter(k => k && k !== 'year')) await shoot(year, { ...SLIDE, query: `card=slide&s=${key}`, name: `slide-${key}` });
             for (const key of keys.split(',').filter(Boolean)) await shoot(year, { ...SLIDE_WIDE, query: `card=slide&wide&s=${key}`, name: `slide-${key}-wide` });
+            // Thumbnails for the Share sheet (the full pictures are 1080 × 1920; a thumbnail is ~10 KB)
+            const pics = fs.readdirSync(OUT).filter(f => f.startsWith(`${year}-`) && f.endsWith('.jpg') && !f.endsWith('-t.jpg') && !f.includes('-video-'));
+            if (thumbs) for (const f of pics) {
+                try { execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', path.join(OUT, f), '-vf', 'scale=216:-2', '-q:v', '5', path.join(OUT, f.replace(/\.jpg$/, '-t.jpg'))]); } catch {}
+            }
+            index[year] = { hash, files: fs.readdirSync(OUT).filter(f => f.startsWith(`${year}-`) && f.endsWith('.jpg')) };
+
         }
+        fs.writeFileSync(path.join(OUT, 'pictures.json'), JSON.stringify(index));
+        if (reused) console.log(`recap pictures: ${reused} of ${years.length} years unchanged, taken from the live site`);
         // ── Story videos of the latest year ──
         const latest = JSON.parse(fs.readFileSync(path.join(ROOT, 'memory-card', 'years.json'), 'utf8')).latest?.year;
         if (latest && years.includes(latest) && !args.includes('--no-video')) {

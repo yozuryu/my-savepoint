@@ -27,6 +27,10 @@ Every game opens its own sheet in place, Completions uses the same marks everywh
 
 - new: **Memory Card** sections share as story videos
   Share › Video: pick a section of the latest year and share it as a 10-second video, animated exactly like the story, ready for an Instagram or Facebook story.
+- improved: **Memory Card** story pictures and videos stay clear of the story's bars and reply bar
+  The tall pictures and the videos keep the top and the bottom free for Instagram and Facebook, with one item fewer where a card was full.
+- improved: **Memory Card** Share opens faster
+  Its picture choices are small thumbnails now.
 - improved: **Memory Card** for the running year opens in October
   Until then the latest card is last year's.
 - new: **Update notice** when a new version is out

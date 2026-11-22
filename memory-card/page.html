@@ -495,7 +495,9 @@
         .story.still { position: static; width: 450px; height: 800px; animation: none; }
         .story.film { animation: none; } .story.film .stop button { display: none; }      /* filmed: no controls in the picture */
         .story.film .sbars { visibility: hidden; }
-        .story.film .stop, .story.still:not(.wide) .stop { top: 116px; } .story.film .stage, .story.still:not(.wide) .stage { padding-top: 162px; zoom: 0.94; }      /* the tall slide pictures too */      /* the brand row below the top ~14% where Instagram / Facebook put the poster's name, the slide under it */      /* nor the story bars: Instagram / Facebook draw their own (hidden, not removed: their end tells the film the section is over) */
+        .story.film .stop, .story.still:not(.wide) .stop { top: 116px; } .story.film .stage, .story.still:not(.wide) .stage { padding-top: 160px; padding-bottom: 150px; zoom: 0.9; }      /* the tall slide pictures too */
+        .story.film .sfoot, .story.still:not(.wide) .sfoot { bottom: 104px; }      /* above the reply bar (bottom ~13%) */
+        .story.film .stage.s-blocks, .story.still:not(.wide) .stage.s-blocks { zoom: 0.84; }      /* the fullest slide */      /* the brand row below the top ~14% where Instagram / Facebook put the poster's name, the slide under it */      /* nor the story bars: Instagram / Facebook draw their own (hidden, not removed: their end tells the film the section is over) */
         .story.still *, .story.still *::before { animation: none !important; }
         .story.still .stop { top: 20px; } .story.still .stage { padding-top: 54px; }
         /* Desktop mode: the same slides laid out wide, 800 × 420 (the wide card's shape) and scaled to the window. Slides
@@ -627,7 +629,8 @@
 
         .sc-story { width: 1080px; height: 1920px; padding: 140px 76px 150px; display: flex; flex-direction: column; }
         /* The brand below the top ~14% where Instagram / Facebook put the poster's name over a story; what follows ~8% smaller to make room */
-        .sc-story { padding-top: 262px; } .sc-story > :not(.brand, .foot) { zoom: 0.92; }
+        .sc-story.v-blocks > .months { zoom: 0.64; } .sc-story.v-blocks .year { font-size: 280px; } .sc-story .sc-row { min-height: 94px; } .sc-story.v-title .tf div { padding: 16px 0; }
+        .sc-story { padding-top: 262px; padding-bottom: 250px; } .sc-story > :not(.brand) { zoom: 0.92; } .sc-story.v-card > :not(.brand), .sc-story.v-title > :not(.brand) { zoom: 0.88; }      /* the two with the year strip in the footer */      /* and the bottom ~13% where the reply bar sits */
         .sc-story::before { background: radial-gradient(100% 50% at 50% 0%, rgba(var(--a), 0.3), transparent 70%), linear-gradient(180deg, rgba(9, 11, 18, 0.6) 0%, rgba(9, 11, 18, 0.9) 45%, rgba(9, 11, 18, 0.97) 100%); }
         .sc-story .brand { font-size: 34px; }
         .sc-story .slot { margin-top: 44px; } .sc-story .px { font-size: 20px; } .sc-story .slot i { width: 14px; height: 14px; }
@@ -794,7 +797,8 @@
         };
         // ── Share pictures: ?card=link|story in one of five styles (&style=cover|blocks|shelf|title, none = card) ──
         if (CARD === 'link' || CARD === 'story') {
-            const rows = R.top.slice(0, 5).map((g, i) => `<div class="sc-row">${rowArt(g)}<span class="rk">${i + 1}</span><span></span><h3>${esc(g.name)}</h3>
+            // tall: four rows, a fifth would run under the story's reply bar
+            const rows = R.top.slice(0, CARD === 'story' ? 4 : 5).map((g, i) => `<div class="sc-row">${rowArt(g)}<span class="rk">${i + 1}</span><span></span><h3>${esc(g.name)}</h3>
                 <span class="v">${rowVal(g)[0]}<small>${rowVal(g)[1]}</small></span></div>`).join('');
             const st = `<div class="st">${headline.slice(0, 4).map(h => `<div><div class="num">${h.v}${h.unit ?? ''}</div><span>${h.lab}</span></div>`).join('')}</div>`;
             const slot = `<div class="slot px"><i></i>${esc(R.user.name)} <b>· ${R.partial ? `so far, to ${day(R.asOf)}` : 'year in games'}</b></div>`;
@@ -830,7 +834,7 @@
                 R.rarest[0] ? ['Rarest find', R.rarest[0].name, `${R.rarest[0].pct}%`] : null,
                 ['Longest streak', R.streak.days > 1 ? `${day(R.streak.from)} to ${day(R.streak.to)}` : 'No two days in a row', `${R.streak.days} ${plural(R.streak.days, 'day')}`],
                 R.bestDay ? ['Biggest day', `${day(R.bestDay.day)} · ${R.bestDay.game.name}`, `${R.bestDay.unlocks}`] : null,
-            ].filter(Boolean).map(([l, name, v]) => `<div><span class="px">${l}</span><h3>${esc(name)}</h3><b>${v}</b></div>`).join('')}</div>`;
+            ].filter(Boolean).slice(0, 3).map(([l, name, v]) => `<div><span class="px">${l}</span><h3>${esc(name)}</h3><b>${v}</b></div>`).join('')}</div>`;
             const cards = {
                 link: {
                     shelf: `${bg}<div class="l">${brand}${slot}${year}${ttl}${st}</div>${shelfOf(7)}`,
@@ -840,8 +844,8 @@
                     blocks: `${bg}${brand}${slot}<div class="hd">${year}<div class="hr">${ttl}${st}</div></div>${strip()}<div class="bfacts">${bfacts}<div class="site"><b>${site}</b></div></div>`,
                 },
                 story: {
-                    shelf: `${bg}${brand}${slot}${year}${ttl}${st}${shelfOf(7)}${foot('')}`,
-                    title: `${bg}${brand}${slot}${big(928, 210, false)}${year}${st}${tfacts}${foot(strip())}`,
+                    shelf: `${bg}${brand}${slot}${year}${ttl}${st}${shelfOf(5)}${foot('')}`,
+                    title: `${bg}${brand}${slot}${big(928, 176, false)}${year}${st}${tfacts}${foot(strip())}`,
                     card: `${bg}${brand}${slot}${year}${ttl}${st}${list}${foot(strip())}`,
                     cover: `${cov || bg}${brand}${slot}${game}${year}${ttl}${st}${foot(strip())}`,
                     blocks: `${bg}${brand}${slot}${year}${ttl}${st}${monthsHtml}${foot('')}`,
@@ -976,24 +980,26 @@
             <div class="pct"><div class="num">${u.pct}%</div><span>of players</span></div></div>`;
         const sEnd = (u, label) => !u ? '' : `<div class="end sa">${uIcon(u)}<div style="min-width:0"><div class="px">${label} · ${day(u.day)}</div><h3>${esc(u.name)}</h3><p>${esc(u.game.name)}</p></div></div>`;
         const sTiles = (list, max) => { const shown = Math.min(list.length, max), rows = Math.ceil(shown / 2), wrows = shown > 4 ? 2 : 1;      // wide: up to four across
-            return `<div class="done" style="--th:${Math.min(180, Math.floor(540 / rows))}px;--thw:${wrows > 1 ? 128 : 240}px;--cw:${Math.ceil(shown / wrows)}">${list.slice(0, max).map(g => tileHtml(g, 'div', 'sa pop')).join('')}</div>${list.length > max ? `<p class="lead sa">and ${list.length - max} more</p>` : ''}`; };
+            return `<div class="done" style="--th:${Math.min(180, Math.floor((TALL ? 430 : 540) / rows))}px;--thw:${wrows > 1 ? 128 : 240}px;--cw:${Math.ceil(shown / wrows)}">${list.slice(0, max).map(g => tileHtml(g, 'div', 'sa pop')).join('')}</div>${list.length > max ? `<p class="lead sa">and ${list.length - max} more</p>` : ''}`; };
         const fewDone = R.completions.length > 0 && R.completions.length < 3;      // too few for a slide of their own: they join the rarest finds
         const tierLine = `${T.completed ? `★ ${T.completed} ` : ''}${T.beaten ? `⚑ ${T.beaten}` : ''}`;
+        // The tall slide pictures and the videos keep Instagram's top and bottom bands clear: one row or tile row fewer there
+        const TALL = CARD === 'film' || (CARD === 'slide' && !Q.has('wide'));
         const SLIDES = [
             { key: 'year', name: 'The year', two: true, html: `<div class="hf1"><div class="slot px sa"><i></i>Slot ${slotNo} <b>of ${YEARS.length} · ${R.partial ? `so far, to ${day(R.asOf)}` : 'year complete'}</b></div>
                 <div class="year sa yr"${yearArt}>${R.year}</div><h2 class="sa">${esc(R.user.name)}’s year in games</h2>
                 <div class="title sa"><div class="px">Title earned</div><h2>${esc(R.title.name)}</h2><p>${esc(R.title.why)}</p></div></div>
                 <div class="hf2"><div class="snums">${headline.map(h => `<div class="snum sa pop"><div class="num"><span${count(h.v)}>${h.v}</span>${h.unit ? '<small>hours</small>' : ''}</div><span>${h.lab}</span></div>`).join('')}</div>
-                ${plats.length > 1 ? `<div class="splat sa"><div class="split">${plats.map(p => `<i style="flex:${Math.max(T.byPlatform[p], 0.01)};background:${PCOLOR[p]}"></i>`).join('')}</div>
+                ${plats.length > 1 && !TALL ? `<div class="splat sa"><div class="split">${plats.map(p => `<i style="flex:${Math.max(T.byPlatform[p], 0.01)};background:${PCOLOR[p]}"></i>`).join('')}</div>
                     <p>${plats.map(p => `<span><img src="${ICON[p]}" alt=""><b>${n(T.byPlatform[p])}</b> unlocks</span>`).join('')}</p></div>` : ''}
                 <div class="sa wipe">${strip()}</div><p class="lead sa">${n(T.activeDays)} of ${daysSoFar} days played</p></div>` },
-            top1 && { key: 'top', name: listName, two: R.top.length > 1, html: `<div class="hf1"><div class="shead sa"><h2>${listName}</h2><span class="px">Top ${R.top.length}</span></div>
+            top1 && { key: 'top', name: listName, two: R.top.length > 1, html: `<div class="hf1"><div class="shead sa"><h2>${listName}</h2><span class="px">Top ${TALL ? Math.min(4, R.top.length) : R.top.length}</span></div>
                 <div class="feat sa">${img(bigArt(top1), 'art' + (pix(top1) ? ' pixart' : ''))}<div class="rank"><small>Save file</small>01</div>
                     <div class="in"><div class="tags">${platTag(top1)}${tierTag(top1.tier)}</div><h3>${esc(top1.name)}</h3>
                     <div class="facts">${[...gameFacts(top1), top1.sessions ? { v: n(top1.sessions), l: plural(top1.sessions, 'session') } : null, top1.total ? { v: `${top1.unlockedAll ?? top1.unlocks}/${top1.total}`, l: 'achievements' } : null]
                         .filter(Boolean).map(f => `<div class="fact"><div class="num">${f.v}</div><span>${f.l}</span></div>`).join('')}</div></div></div></div>
-                ${R.top.length > 1 ? `<div class="hf2"><div class="rows">${R.top.slice(1).map((g, i) => rowHtml(g, i + 2, 'div', 'sa')).join('')}</div></div>` : ''}` },
-            R.completions.length >= 3 && { key: 'done', name: 'Seen through', html: `<div class="shead sa"><h2>Seen through</h2><span class="px">${tierLine}</span></div>${sTiles(R.completions, 8)}` },
+                ${R.top.length > 1 ? `<div class="hf2"><div class="rows">${R.top.slice(1, TALL ? 4 : 5).map((g, i) => rowHtml(g, i + 2, 'div', 'sa')).join('')}</div></div>` : ''}` },
+            R.completions.length >= 3 && { key: 'done', name: 'Seen through', html: `<div class="shead sa"><h2>Seen through</h2><span class="px">${tierLine}</span></div>${sTiles(R.completions, TALL ? 6 : 8)}` },
             T.unlocks && { key: 'blocks', name: 'Blocks', two: true, html: `<div class="hf1"><div class="shead sa"><h2>${n(T.activeDays)} blocks used</h2><span class="px">of ${daysSoFar} days</span></div>
                 <div class="sa wipe">${strip()}</div><div class="duo">${minis('sa pop')}</div></div>
                 <div class="hf2"><div class="duo"><div class="card sa"><h3>Time of day</h3><div class="big">${esc(R.dayPart.label)}<small>${R.dayPart.pct}% of unlocks</small></div>
@@ -1275,7 +1281,8 @@
                 if (drawn !== kind) {
                     drawn = kind;
                     thumbs.className = `thumbs k-${kind === 'video' ? 'slides' : kind}${kind === 'slides' && wide ? ' k-wide' : ''}`;
-                    thumbs.innerHTML = list.map(x => `<button class="th" data-pick="${x.id}" aria-label="${esc(x.name)}" title="${esc(x.name)}"><img src="${x.url}" alt="" loading="lazy" onerror="this.parentNode.remove()"></button>`).join('');
+                    // the small copy (render-recap.js makes {name}-t.jpg); the full picture if there's none, and no thumbnail if neither loads
+                    thumbs.innerHTML = list.map(x => `<button class="th" data-pick="${x.id}" aria-label="${esc(x.name)}" title="${esc(x.name)}"><img src="${x.url.replace(/\.jpg$/, '-t.jpg')}" data-full="${x.url}" alt="" loading="lazy" onerror="if (this.dataset.full) { this.src = this.dataset.full; this.removeAttribute('data-full'); } else this.parentNode.remove()"></button>`).join('');
                 }
                 thumbs.querySelectorAll('.th').forEach(b => b.classList.toggle('on', b.dataset.pick === pick));
                 if (isVid) {          // the section's film, playing in the preview
