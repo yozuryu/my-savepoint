@@ -38069,7 +38069,7 @@
                     "unlockedAt": "2026-11-21T04:07:57.000Z",
                     "iconUrl": "1c02d5564326863fb47ad9f99281331a67615918.jpg",
                     "iconGrayUrl": "9f4485b1017165f4089afecc727b02c62932a31f.jpg",
-                    "globalPct": 27.7
+                    "globalPct": 27.8
                 },
                 {
                     "apiName": "ACH_ROADRAGE",
@@ -38096,7 +38096,7 @@
                     "unlockedAt": "2026-11-14T07:07:32.000Z",
                     "iconUrl": "1fcd3f23352ea5bc09a553175c915c8a1e62231f.jpg",
                     "iconGrayUrl": "df72aa80d973580365fd36e4120dbe8c57b3cfcb.jpg",
-                    "globalPct": 42.4
+                    "globalPct": 42.5
                 },
                 {
                     "apiName": "ACH_STUNTMAN",
@@ -39692,8 +39692,8 @@
             "total": 34,
             "unlocked": 4,
             "gameName": "SpongeBob SquarePants™: The Patrick Star Game",
-            "playtimeForever": 450,
-            "lastPlayedTs": "2026-11-28T02:16:45.000Z",
+            "playtimeForever": 481,
+            "lastPlayedTs": "2026-11-28T02:46:46.000Z",
             "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/2322380/9f8057e0ae8a626a2f48eb6227b5331db304ab82.jpg",
             "lastUnlockedAt": "2026-11-08T10:28:13.000Z",
             "lastUnlockName": "The Artist Within",
