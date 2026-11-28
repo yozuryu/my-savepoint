@@ -38069,7 +38069,7 @@
                     "unlockedAt": "2026-11-21T04:07:57.000Z",
                     "iconUrl": "1c02d5564326863fb47ad9f99281331a67615918.jpg",
                     "iconGrayUrl": "9f4485b1017165f4089afecc727b02c62932a31f.jpg",
-                    "globalPct": 27.7
+                    "globalPct": 27.8
                 },
                 {
                     "apiName": "ACH_ROADRAGE",
@@ -38096,7 +38096,7 @@
                     "unlockedAt": "2026-11-14T07:07:32.000Z",
                     "iconUrl": "1fcd3f23352ea5bc09a553175c915c8a1e62231f.jpg",
                     "iconGrayUrl": "df72aa80d973580365fd36e4120dbe8c57b3cfcb.jpg",
-                    "globalPct": 42.4
+                    "globalPct": 42.5
                 },
                 {
                     "apiName": "ACH_STUNTMAN",
@@ -39692,8 +39692,8 @@
             "total": 34,
             "unlocked": 4,
             "gameName": "SpongeBob SquarePants™: The Patrick Star Game",
-            "playtimeForever": 601,
-            "lastPlayedTs": "2026-11-28T04:46:48.000Z",
+            "playtimeForever": 631,
+            "lastPlayedTs": "2026-11-28T05:16:48.000Z",
             "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/2322380/9f8057e0ae8a626a2f48eb6227b5331db304ab82.jpg",
             "lastUnlockedAt": "2026-11-08T10:28:13.000Z",
             "lastUnlockName": "The Artist Within",
@@ -39741,7 +39741,7 @@
                     "unlockedAt": null,
                     "iconUrl": "456a7b18c693ee078a98502b9ef2e826df52cca5.jpg",
                     "iconGrayUrl": "3fbad12e5dcbe011b9220d1afe35f3e0c6a0bdbf.jpg",
-                    "globalPct": 20
+                    "globalPct": 20.1
                 },
                 {
                     "apiName": "ach003",
@@ -39955,7 +39955,7 @@
                     "unlockedAt": "2026-05-03T14:22:24.000Z",
                     "iconUrl": "bc61b9e62ebb09cbc34fd311b7f5d5ca7918869b.jpg",
                     "iconGrayUrl": "b0449b2e0b3bb2d9b99c8359b5514886d7474819.jpg",
-                    "globalPct": 67.5
+                    "globalPct": 67.4
                 }
             ]
         },
