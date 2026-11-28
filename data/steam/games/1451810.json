@@ -80,7 +80,7 @@
             "iconUrl": "0128d03353dd5c3a2f3d5e3f01a2cf40ad48b540.jpg",
             "iconGrayUrl": "c9696f088ec9794d3cfa182f8bed29aff46a0da4.jpg",
             "hidden": false,
-            "globalPct": 35.7
+            "globalPct": 35.8
         },
         {
             "apiName": "ACH_BIG_COLLECTOR",
@@ -146,7 +146,7 @@
             "iconUrl": "1c02d5564326863fb47ad9f99281331a67615918.jpg",
             "iconGrayUrl": "9f4485b1017165f4089afecc727b02c62932a31f.jpg",
             "hidden": false,
-            "globalPct": 27.7
+            "globalPct": 27.8
         },
         {
             "apiName": "ACH_BB_CHAMPION",
@@ -446,7 +446,7 @@
             "unlockedAt": "2026-11-21T04:07:57.000Z",
             "iconUrl": "1c02d5564326863fb47ad9f99281331a67615918.jpg",
             "iconGrayUrl": "9f4485b1017165f4089afecc727b02c62932a31f.jpg",
-            "globalPct": 27.7
+            "globalPct": 27.8
         },
         {
             "apiName": "ACH_ROADRAGE",
