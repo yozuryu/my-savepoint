@@ -1,6 +1,16 @@
 {
     "recentAchievements": [
         {
+            "appId": 2322380,
+            "gameName": "SpongeBob SquarePants™: The Patrick Star Game",
+            "apiName": "ach009",
+            "displayName": "Squirrel Appreciation Day",
+            "description": "Clean up all of the jellyfish jelly for Sandy",
+            "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/2322380/971eaac7613797af14ccdefca1e768ca7fc0e53e.jpg",
+            "unlockedAt": "2026-11-28T06:38:00.000Z",
+            "globalPct": 25.5
+        },
+        {
             "appId": 1658290,
             "gameName": "Eiyuden Chronicle: Rising",
             "apiName": "ACHIEVEMENT006",
@@ -28,7 +38,7 @@
             "description": "Punt 200 pedestrians into the air",
             "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1451810/1c02d5564326863fb47ad9f99281331a67615918.jpg",
             "unlockedAt": "2026-11-21T04:07:57.000Z",
-            "globalPct": 27.7
+            "globalPct": 27.8
         },
         {
             "appId": 1451810,
@@ -128,7 +138,7 @@
             "description": "Destroy 1000 objects",
             "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1451810/1fcd3f23352ea5bc09a553175c915c8a1e62231f.jpg",
             "unlockedAt": "2026-11-14T07:07:32.000Z",
-            "globalPct": 42.4
+            "globalPct": 42.5
         },
         {
             "appId": 1451810,
@@ -208,7 +218,7 @@
             "description": "",
             "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1658290/f11f05dd5563baa760d0451753feeb410a70dd9d.jpg",
             "unlockedAt": "2026-11-07T15:03:44.000Z",
-            "globalPct": 60.8
+            "globalPct": 60.7
         },
         {
             "appId": 1658290,
@@ -528,7 +538,7 @@
             "description": "",
             "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/2515020/3973c1845891e306d202b7628fc00d1892d2b70e.jpg",
             "unlockedAt": "2026-09-27T14:31:57.000Z",
-            "globalPct": 48.3
+            "globalPct": 48.4
         },
         {
             "appId": 578330,
@@ -548,7 +558,7 @@
             "description": "",
             "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/2515020/8289deab066f28263e8f73ba929fd68958b040a2.jpg",
             "unlockedAt": "2026-09-22T14:28:53.000Z",
-            "globalPct": 57.9
+            "globalPct": 58
         },
         {
             "appId": 578330,

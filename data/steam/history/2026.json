@@ -1,5 +1,5 @@
 {
-"metadata": {"generatedAt":"2026-11-28T00:11:35.427Z","year":2026,"count":146},
+"metadata": {"generatedAt":"2026-11-28T06:47:03.871Z","year":2026,"count":147},
 "unlocks": [
 {"t":"2026-01-16T09:44:02Z","g":2235440,"a":"3","n":"Zipp","r":26.2},
 {"t":"2026-01-16T10:25:15Z","g":2235440,"a":"4","n":"Misty","r":24.1},
@@ -146,5 +146,6 @@
 {"t":"2026-11-21T02:26:53Z","g":1451810,"a":"ACH_ROADRAGE","n":"Road Hog","r":19.1},
 {"t":"2026-11-21T04:07:57Z","g":1451810,"a":"ACH_MASTER_PUNTER","n":"Sidewalk Hog","r":27.7},
 {"t":"2026-11-21T07:55:42Z","g":1451810,"a":"ACH_WELCOME_BB","n":"Cruising Big Butte County","r":48.3},
-{"t":"2026-11-22T14:31:33Z","g":1658290,"a":"ACHIEVEMENT006","n":"The Lords of the Snowpeak","r":40.8}
+{"t":"2026-11-22T14:31:33Z","g":1658290,"a":"ACHIEVEMENT006","n":"The Lords of the Snowpeak","r":40.8},
+{"t":"2026-11-28T06:38:00Z","g":2322380,"a":"ach009","n":"Squirrel Appreciation Day","r":25.5}
 ]}

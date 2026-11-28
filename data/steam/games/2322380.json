@@ -2,7 +2,7 @@
     "appId": 2322380,
     "hasAchievements": true,
     "total": 34,
-    "unlocked": 4,
+    "unlocked": 5,
     "gameName": "SpongeBob SquarePants™: The Patrick Star Game",
     "achievements": [
         {
@@ -25,7 +25,7 @@
             "iconUrl": "456a7b18c693ee078a98502b9ef2e826df52cca5.jpg",
             "iconGrayUrl": "3fbad12e5dcbe011b9220d1afe35f3e0c6a0bdbf.jpg",
             "hidden": false,
-            "globalPct": 20
+            "globalPct": 20.1
         },
         {
             "apiName": "ach003",
@@ -95,8 +95,8 @@
         },
         {
             "apiName": "ach009",
-            "unlocked": false,
-            "unlockedAt": null,
+            "unlocked": true,
+            "unlockedAt": "2026-11-28T06:38:00.000Z",
             "displayName": "Squirrel Appreciation Day",
             "description": "Clean up all of the jellyfish jelly for Sandy",
             "iconUrl": "971eaac7613797af14ccdefca1e768ca7fc0e53e.jpg",
@@ -157,7 +157,7 @@
             "iconUrl": "e15f29d2553550a6c65f9fb9fdf1c2c2be75ab2a.jpg",
             "iconGrayUrl": "c7468563052da550fdd1f50445fcb07b935138fb.jpg",
             "hidden": false,
-            "globalPct": 29.3
+            "globalPct": 29.2
         },
         {
             "apiName": "ach015",
@@ -381,11 +381,20 @@
         }
     ],
     "playtimeForever": 651,
-    "lastPlayedTs": "2026-11-28T05:37:14.000Z",
+    "lastPlayedTs": "2026-11-28T06:31:58.000Z",
     "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/2322380/9f8057e0ae8a626a2f48eb6227b5331db304ab82.jpg",
-    "lastUnlockedAt": "2026-11-08T10:28:13.000Z",
-    "lastUnlockName": "The Artist Within",
+    "lastUnlockedAt": "2026-11-28T06:38:00.000Z",
+    "lastUnlockName": "Squirrel Appreciation Day",
     "preview": [
+        {
+            "apiName": "ach009",
+            "displayName": "Squirrel Appreciation Day",
+            "unlocked": true,
+            "unlockedAt": "2026-11-28T06:38:00.000Z",
+            "iconUrl": "971eaac7613797af14ccdefca1e768ca7fc0e53e.jpg",
+            "iconGrayUrl": "6cc0f73428f9d050442322497f692ef256831964.jpg",
+            "globalPct": 25.5
+        },
         {
             "apiName": "ach010",
             "displayName": "The Artist Within",
@@ -429,16 +438,7 @@
             "unlockedAt": null,
             "iconUrl": "456a7b18c693ee078a98502b9ef2e826df52cca5.jpg",
             "iconGrayUrl": "3fbad12e5dcbe011b9220d1afe35f3e0c6a0bdbf.jpg",
-            "globalPct": 20
-        },
-        {
-            "apiName": "ach003",
-            "displayName": "Glove World Grab",
-            "unlocked": false,
-            "unlockedAt": null,
-            "iconUrl": "0522a2a6027722afa876d5e2b7a2418264386293.jpg",
-            "iconGrayUrl": "7340502cc9c7e6340b31e3ae6c663c93cef01bdd.jpg",
-            "globalPct": 19.4
+            "globalPct": 20.1
         }
     ]
 }
