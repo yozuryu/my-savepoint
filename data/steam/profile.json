@@ -1,19 +1,19 @@
 {
     "metadata": {
-        "extractionTimestamp": "2026-11-28T05:16:52.089Z"
+        "extractionTimestamp": "2026-11-28T05:46:54.884Z"
     },
     "profile": {
         "steamId": "76561198188939413",
         "displayName": "Yozuryu",
         "avatar": "https://avatars.steamstatic.com/3f5e9daea59216d7fe13df4e031d3537580e5e21_full.jpg",
         "profileUrl": "https://steamcommunity.com/id/yozuryu/",
-        "status": 1,
+        "status": 3,
         "lastOnline": "2026-11-22T14:35:28.000Z",
         "countryCode": "ID"
     },
     "stats": {
         "totalGames": 1295,
-        "totalPlaytimeMin": 353268,
+        "totalPlaytimeMin": 353288,
         "totalPlaytimeHrs": 5888,
         "gamesWithPlaytime": 824,
         "totalAchievements": 10250,
@@ -27,11 +27,11 @@
         {
             "appId": 2322380,
             "name": "SpongeBob SquarePants™: The Patrick Star Game",
-            "playtime2Weeks": 366,
-            "playtimeForever": 631,
+            "playtime2Weeks": 387,
+            "playtimeForever": 651,
             "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/2322380/9f8057e0ae8a626a2f48eb6227b5331db304ab82.jpg",
             "storeUrl": "https://store.steampowered.com/app/2322380",
-            "lastPlayedTs": "2026-11-28T05:16:48.000Z",
+            "lastPlayedTs": "2026-11-28T05:37:14.000Z",
             "achUnlocked": 4,
             "achTotal": 34
         },
@@ -83,11 +83,11 @@
     "mostRecentGame": {
         "appId": 2322380,
         "name": "SpongeBob SquarePants™: The Patrick Star Game",
-        "playtime2Weeks": 366,
-        "playtimeForever": 631,
+        "playtime2Weeks": 387,
+        "playtimeForever": 651,
         "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/2322380/9f8057e0ae8a626a2f48eb6227b5331db304ab82.jpg",
         "storeUrl": "https://store.steampowered.com/app/2322380",
-        "lastPlayedTs": "2026-11-28T05:16:48.000Z"
+        "lastPlayedTs": "2026-11-28T05:37:14.000Z"
     },
     "mostRecentUnlock": {
         "appId": 1658290,

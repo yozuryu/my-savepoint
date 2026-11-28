@@ -28,7 +28,7 @@
             "description": "Punt 200 pedestrians into the air",
             "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1451810/1c02d5564326863fb47ad9f99281331a67615918.jpg",
             "unlockedAt": "2026-11-21T04:07:57.000Z",
-            "globalPct": 27.8
+            "globalPct": 27.7
         },
         {
             "appId": 1451810,
@@ -128,7 +128,7 @@
             "description": "Destroy 1000 objects",
             "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1451810/1fcd3f23352ea5bc09a553175c915c8a1e62231f.jpg",
             "unlockedAt": "2026-11-14T07:07:32.000Z",
-            "globalPct": 42.5
+            "globalPct": 42.4
         },
         {
             "appId": 1451810,
@@ -208,7 +208,7 @@
             "description": "",
             "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1658290/f11f05dd5563baa760d0451753feeb410a70dd9d.jpg",
             "unlockedAt": "2026-11-07T15:03:44.000Z",
-            "globalPct": 60.7
+            "globalPct": 60.8
         },
         {
             "appId": 1658290,

@@ -25,7 +25,7 @@
             "iconUrl": "456a7b18c693ee078a98502b9ef2e826df52cca5.jpg",
             "iconGrayUrl": "3fbad12e5dcbe011b9220d1afe35f3e0c6a0bdbf.jpg",
             "hidden": false,
-            "globalPct": 20.1
+            "globalPct": 20
         },
         {
             "apiName": "ach003",
@@ -157,7 +157,7 @@
             "iconUrl": "e15f29d2553550a6c65f9fb9fdf1c2c2be75ab2a.jpg",
             "iconGrayUrl": "c7468563052da550fdd1f50445fcb07b935138fb.jpg",
             "hidden": false,
-            "globalPct": 29.2
+            "globalPct": 29.3
         },
         {
             "apiName": "ach015",
@@ -380,8 +380,8 @@
             "globalPct": 20
         }
     ],
-    "playtimeForever": 631,
-    "lastPlayedTs": "2026-11-28T05:16:48.000Z",
+    "playtimeForever": 651,
+    "lastPlayedTs": "2026-11-28T05:37:14.000Z",
     "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/2322380/9f8057e0ae8a626a2f48eb6227b5331db304ab82.jpg",
     "lastUnlockedAt": "2026-11-08T10:28:13.000Z",
     "lastUnlockName": "The Artist Within",
@@ -429,7 +429,7 @@
             "unlockedAt": null,
             "iconUrl": "456a7b18c693ee078a98502b9ef2e826df52cca5.jpg",
             "iconGrayUrl": "3fbad12e5dcbe011b9220d1afe35f3e0c6a0bdbf.jpg",
-            "globalPct": 20.1
+            "globalPct": 20
         },
         {
             "apiName": "ach003",
