@@ -1,19 +1,19 @@
 {
     "metadata": {
-        "extractionTimestamp": "2026-11-28T08:46:50.620Z"
+        "extractionTimestamp": "2026-11-28T09:16:55.847Z"
     },
     "profile": {
         "steamId": "76561198188939413",
         "displayName": "Yozuryu",
         "avatar": "https://avatars.steamstatic.com/3f5e9daea59216d7fe13df4e031d3537580e5e21_full.jpg",
         "profileUrl": "https://steamcommunity.com/id/yozuryu/",
-        "status": 1,
+        "status": 3,
         "lastOnline": "2026-11-22T14:35:28.000Z",
         "countryCode": "ID"
     },
     "stats": {
         "totalGames": 1295,
-        "totalPlaytimeMin": 353408,
+        "totalPlaytimeMin": 353424,
         "totalPlaytimeHrs": 5890,
         "gamesWithPlaytime": 824,
         "totalAchievements": 10250,
@@ -27,11 +27,11 @@
         {
             "appId": 2322380,
             "name": "SpongeBob SquarePants™: The Patrick Star Game",
-            "playtime2Weeks": 507,
-            "playtimeForever": 771,
+            "playtime2Weeks": 523,
+            "playtimeForever": 787,
             "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/2322380/9f8057e0ae8a626a2f48eb6227b5331db304ab82.jpg",
             "storeUrl": "https://store.steampowered.com/app/2322380",
-            "lastPlayedTs": "2026-11-28T08:32:00.000Z",
+            "lastPlayedTs": "2026-11-28T08:47:58.000Z",
             "achUnlocked": 6,
             "achTotal": 34
         },
@@ -49,7 +49,7 @@
         {
             "appId": 1451810,
             "name": "LEGO® 2K Drive",
-            "playtime2Weeks": 575,
+            "playtime2Weeks": 545,
             "playtimeForever": 898,
             "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1451810/8310e788a7972d6ae815c157a58207b5bb50f369.jpg",
             "storeUrl": "https://store.steampowered.com/app/1451810",
@@ -83,11 +83,11 @@
     "mostRecentGame": {
         "appId": 2322380,
         "name": "SpongeBob SquarePants™: The Patrick Star Game",
-        "playtime2Weeks": 507,
-        "playtimeForever": 771,
+        "playtime2Weeks": 523,
+        "playtimeForever": 787,
         "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/2322380/9f8057e0ae8a626a2f48eb6227b5331db304ab82.jpg",
         "storeUrl": "https://store.steampowered.com/app/2322380",
-        "lastPlayedTs": "2026-11-28T08:32:00.000Z"
+        "lastPlayedTs": "2026-11-28T08:47:58.000Z"
     },
     "mostRecentUnlock": {
         "appId": 2322380,
@@ -97,7 +97,7 @@
         "description": "Go back to sleep",
         "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/2322380/b03a557e558c33a9d947ea2e71c58e2a9cc01f98.jpg",
         "unlockedAt": "2026-11-28T08:22:41.000Z",
-        "globalPct": 47.9
+        "globalPct": 47.8
     },
     "perfectGames": [
         {

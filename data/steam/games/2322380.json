@@ -69,7 +69,7 @@
             "iconUrl": "8c587ebea842503d8aa7a955a23d4378eb381986.jpg",
             "iconGrayUrl": "90c5f2d0645ea82cd38f5f6fd141ef9b16ba5f19.jpg",
             "hidden": false,
-            "globalPct": 15.2
+            "globalPct": 15.1
         },
         {
             "apiName": "ach007",
@@ -135,7 +135,7 @@
             "iconUrl": "1accff7f9b2c6b33150b3fe271f448b07fecfb5f.jpg",
             "iconGrayUrl": "537d74ee6da96da7c2559e3b2fe159c54c015a04.jpg",
             "hidden": false,
-            "globalPct": 18
+            "globalPct": 17.9
         },
         {
             "apiName": "ach013",
@@ -146,7 +146,7 @@
             "iconUrl": "428d3b8f57632dc81a66b1ef1dcd2ca3cff80fac.jpg",
             "iconGrayUrl": "a8a368e8f789a36ab95fa0a074242844b7fc0fde.jpg",
             "hidden": false,
-            "globalPct": 27.7
+            "globalPct": 27.6
         },
         {
             "apiName": "ach014",
@@ -157,7 +157,7 @@
             "iconUrl": "e15f29d2553550a6c65f9fb9fdf1c2c2be75ab2a.jpg",
             "iconGrayUrl": "c7468563052da550fdd1f50445fcb07b935138fb.jpg",
             "hidden": false,
-            "globalPct": 29.3
+            "globalPct": 29.2
         },
         {
             "apiName": "ach015",
@@ -179,7 +179,7 @@
             "iconUrl": "b03a557e558c33a9d947ea2e71c58e2a9cc01f98.jpg",
             "iconGrayUrl": "45f14741bcf36deabec419836fc14e302eeb9c90.jpg",
             "hidden": false,
-            "globalPct": 47.9
+            "globalPct": 47.8
         },
         {
             "apiName": "ach017",
@@ -201,7 +201,7 @@
             "iconUrl": "a639220b40c5915d50085b5aa33e491a15b37333.jpg",
             "iconGrayUrl": "86898118201b8d641831e11ce26a2f5f4939f35c.jpg",
             "hidden": false,
-            "globalPct": 26.9
+            "globalPct": 26.8
         },
         {
             "apiName": "ach019",
@@ -278,7 +278,7 @@
             "iconUrl": "1eba8bcf45ea0f088659303d81844057061989bc.jpg",
             "iconGrayUrl": "e3211abfe76b6d4535444411b1b424b364639d94.jpg",
             "hidden": false,
-            "globalPct": 22.4
+            "globalPct": 22.3
         },
         {
             "apiName": "ach026",
@@ -289,7 +289,7 @@
             "iconUrl": "a9e6602ff851e4a82824627181b18f7d37f9f582.jpg",
             "iconGrayUrl": "84152c5ea72b23341e5a27041635bb195f42e011.jpg",
             "hidden": false,
-            "globalPct": 16.9
+            "globalPct": 16.8
         },
         {
             "apiName": "ach027",
@@ -333,7 +333,7 @@
             "iconUrl": "03f3bde848427020f13964c935624d6cd62eef09.jpg",
             "iconGrayUrl": "5ef311b29c2309925295d1bf601b3e5291436c7a.jpg",
             "hidden": false,
-            "globalPct": 15.9
+            "globalPct": 15.8
         },
         {
             "apiName": "ach031",
@@ -344,7 +344,7 @@
             "iconUrl": "06043d6b2530f4ab841ebdcf692cd67fd2bbf88d.jpg",
             "iconGrayUrl": "25c76aa68e3a2e295847eeb7e39f2af02b1c4f16.jpg",
             "hidden": false,
-            "globalPct": 17.3
+            "globalPct": 17.2
         },
         {
             "apiName": "ach032",
@@ -380,8 +380,8 @@
             "globalPct": 20
         }
     ],
-    "playtimeForever": 771,
-    "lastPlayedTs": "2026-11-28T08:32:00.000Z",
+    "playtimeForever": 787,
+    "lastPlayedTs": "2026-11-28T08:47:58.000Z",
     "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/2322380/9f8057e0ae8a626a2f48eb6227b5331db304ab82.jpg",
     "lastUnlockedAt": "2026-11-28T08:22:41.000Z",
     "lastUnlockName": "Back to Sleep",
@@ -393,7 +393,7 @@
             "unlockedAt": "2026-11-28T08:22:41.000Z",
             "iconUrl": "b03a557e558c33a9d947ea2e71c58e2a9cc01f98.jpg",
             "iconGrayUrl": "45f14741bcf36deabec419836fc14e302eeb9c90.jpg",
-            "globalPct": 47.9
+            "globalPct": 47.8
         },
         {
             "apiName": "ach009",
@@ -420,7 +420,7 @@
             "unlockedAt": "2026-11-08T09:14:51.000Z",
             "iconUrl": "a639220b40c5915d50085b5aa33e491a15b37333.jpg",
             "iconGrayUrl": "86898118201b8d641831e11ce26a2f5f4939f35c.jpg",
-            "globalPct": 26.9
+            "globalPct": 26.8
         },
         {
             "apiName": "ach017",
