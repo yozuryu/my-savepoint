@@ -1,6 +1,6 @@
 {
     "metadata": {
-        "extractionTimestamp": "2026-11-28T07:46:55.856Z"
+        "extractionTimestamp": "2026-11-28T08:16:51.067Z"
     },
     "profile": {
         "steamId": "76561198188939413",
@@ -13,8 +13,8 @@
     },
     "stats": {
         "totalGames": 1295,
-        "totalPlaytimeMin": 353348,
-        "totalPlaytimeHrs": 5889,
+        "totalPlaytimeMin": 353378,
+        "totalPlaytimeHrs": 5890,
         "gamesWithPlaytime": 824,
         "totalAchievements": 10250,
         "unlockedAchievements": 2882,
@@ -27,11 +27,11 @@
         {
             "appId": 2322380,
             "name": "SpongeBob SquarePants™: The Patrick Star Game",
-            "playtime2Weeks": 447,
-            "playtimeForever": 711,
+            "playtime2Weeks": 477,
+            "playtimeForever": 741,
             "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/2322380/9f8057e0ae8a626a2f48eb6227b5331db304ab82.jpg",
             "storeUrl": "https://store.steampowered.com/app/2322380",
-            "lastPlayedTs": "2026-11-28T07:31:59.000Z",
+            "lastPlayedTs": "2026-11-28T08:02:00.000Z",
             "achUnlocked": 5,
             "achTotal": 34
         },
@@ -49,7 +49,7 @@
         {
             "appId": 1451810,
             "name": "LEGO® 2K Drive",
-            "playtime2Weeks": 635,
+            "playtime2Weeks": 605,
             "playtimeForever": 898,
             "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/1451810/8310e788a7972d6ae815c157a58207b5bb50f369.jpg",
             "storeUrl": "https://store.steampowered.com/app/1451810",
@@ -83,11 +83,11 @@
     "mostRecentGame": {
         "appId": 2322380,
         "name": "SpongeBob SquarePants™: The Patrick Star Game",
-        "playtime2Weeks": 447,
-        "playtimeForever": 711,
+        "playtime2Weeks": 477,
+        "playtimeForever": 741,
         "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/2322380/9f8057e0ae8a626a2f48eb6227b5331db304ab82.jpg",
         "storeUrl": "https://store.steampowered.com/app/2322380",
-        "lastPlayedTs": "2026-11-28T07:31:59.000Z"
+        "lastPlayedTs": "2026-11-28T08:02:00.000Z"
     },
     "mostRecentUnlock": {
         "appId": 2322380,

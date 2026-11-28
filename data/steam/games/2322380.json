@@ -69,7 +69,7 @@
             "iconUrl": "8c587ebea842503d8aa7a955a23d4378eb381986.jpg",
             "iconGrayUrl": "90c5f2d0645ea82cd38f5f6fd141ef9b16ba5f19.jpg",
             "hidden": false,
-            "globalPct": 15.2
+            "globalPct": 15.1
         },
         {
             "apiName": "ach007",
@@ -278,7 +278,7 @@
             "iconUrl": "1eba8bcf45ea0f088659303d81844057061989bc.jpg",
             "iconGrayUrl": "e3211abfe76b6d4535444411b1b424b364639d94.jpg",
             "hidden": false,
-            "globalPct": 22.4
+            "globalPct": 22.3
         },
         {
             "apiName": "ach026",
@@ -333,7 +333,7 @@
             "iconUrl": "03f3bde848427020f13964c935624d6cd62eef09.jpg",
             "iconGrayUrl": "5ef311b29c2309925295d1bf601b3e5291436c7a.jpg",
             "hidden": false,
-            "globalPct": 15.9
+            "globalPct": 15.8
         },
         {
             "apiName": "ach031",
@@ -380,8 +380,8 @@
             "globalPct": 20
         }
     ],
-    "playtimeForever": 711,
-    "lastPlayedTs": "2026-11-28T07:31:59.000Z",
+    "playtimeForever": 741,
+    "lastPlayedTs": "2026-11-28T08:02:00.000Z",
     "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/2322380/9f8057e0ae8a626a2f48eb6227b5331db304ab82.jpg",
     "lastUnlockedAt": "2026-11-28T06:38:00.000Z",
     "lastUnlockName": "Squirrel Appreciation Day",
