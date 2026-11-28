@@ -39692,8 +39692,8 @@
             "total": 34,
             "unlocked": 4,
             "gameName": "SpongeBob SquarePants™: The Patrick Star Game",
-            "playtimeForever": 481,
-            "lastPlayedTs": "2026-11-28T02:46:46.000Z",
+            "playtimeForever": 511,
+            "lastPlayedTs": "2026-11-28T03:16:47.000Z",
             "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/2322380/9f8057e0ae8a626a2f48eb6227b5331db304ab82.jpg",
             "lastUnlockedAt": "2026-11-08T10:28:13.000Z",
             "lastUnlockName": "The Artist Within",
@@ -39714,7 +39714,7 @@
                     "unlockedAt": "2026-11-08T09:14:51.000Z",
                     "iconUrl": "a639220b40c5915d50085b5aa33e491a15b37333.jpg",
                     "iconGrayUrl": "86898118201b8d641831e11ce26a2f5f4939f35c.jpg",
-                    "globalPct": 26.9
+                    "globalPct": 26.8
                 },
                 {
                     "apiName": "ach017",
@@ -39741,7 +39741,7 @@
                     "unlockedAt": null,
                     "iconUrl": "456a7b18c693ee078a98502b9ef2e826df52cca5.jpg",
                     "iconGrayUrl": "3fbad12e5dcbe011b9220d1afe35f3e0c6a0bdbf.jpg",
-                    "globalPct": 20
+                    "globalPct": 20.1
                 },
                 {
                     "apiName": "ach003",
@@ -39919,7 +39919,7 @@
                     "unlockedAt": "2026-09-22T14:28:53.000Z",
                     "iconUrl": "8289deab066f28263e8f73ba929fd68958b040a2.jpg",
                     "iconGrayUrl": "ddd944bafb49b5f7f13dd8333a4e5add32828825.jpg",
-                    "globalPct": 57.9
+                    "globalPct": 58
                 },
                 {
                     "apiName": "1003",
@@ -39928,7 +39928,7 @@
                     "unlockedAt": "2026-05-10T09:08:53.000Z",
                     "iconUrl": "8289deab066f28263e8f73ba929fd68958b040a2.jpg",
                     "iconGrayUrl": "ddd944bafb49b5f7f13dd8333a4e5add32828825.jpg",
-                    "globalPct": 64
+                    "globalPct": 64.1
                 },
                 {
                     "apiName": "1002",

@@ -25,7 +25,7 @@
             "iconUrl": "456a7b18c693ee078a98502b9ef2e826df52cca5.jpg",
             "iconGrayUrl": "3fbad12e5dcbe011b9220d1afe35f3e0c6a0bdbf.jpg",
             "hidden": false,
-            "globalPct": 20
+            "globalPct": 20.1
         },
         {
             "apiName": "ach003",
@@ -58,7 +58,7 @@
             "iconUrl": "2395d239d18195920948a8844151154881de52fa.jpg",
             "iconGrayUrl": "047134df6d99dbc0eb57f1e23de1109fb77cf7f2.jpg",
             "hidden": false,
-            "globalPct": 21.2
+            "globalPct": 21.1
         },
         {
             "apiName": "ach006",
@@ -157,7 +157,7 @@
             "iconUrl": "e15f29d2553550a6c65f9fb9fdf1c2c2be75ab2a.jpg",
             "iconGrayUrl": "c7468563052da550fdd1f50445fcb07b935138fb.jpg",
             "hidden": false,
-            "globalPct": 29.3
+            "globalPct": 29.2
         },
         {
             "apiName": "ach015",
@@ -201,7 +201,7 @@
             "iconUrl": "a639220b40c5915d50085b5aa33e491a15b37333.jpg",
             "iconGrayUrl": "86898118201b8d641831e11ce26a2f5f4939f35c.jpg",
             "hidden": false,
-            "globalPct": 26.9
+            "globalPct": 26.8
         },
         {
             "apiName": "ach019",
@@ -267,7 +267,7 @@
             "iconUrl": "1a7b0cec75333b37b73ec1e9f8b2393f19ff100b.jpg",
             "iconGrayUrl": "5521b72f9cee013d76a98a73ca353e3a539c1e22.jpg",
             "hidden": false,
-            "globalPct": 25.7
+            "globalPct": 25.6
         },
         {
             "apiName": "ach025",
@@ -333,7 +333,7 @@
             "iconUrl": "03f3bde848427020f13964c935624d6cd62eef09.jpg",
             "iconGrayUrl": "5ef311b29c2309925295d1bf601b3e5291436c7a.jpg",
             "hidden": false,
-            "globalPct": 15.9
+            "globalPct": 15.8
         },
         {
             "apiName": "ach031",
@@ -380,8 +380,8 @@
             "globalPct": 20
         }
     ],
-    "playtimeForever": 481,
-    "lastPlayedTs": "2026-11-28T02:46:46.000Z",
+    "playtimeForever": 511,
+    "lastPlayedTs": "2026-11-28T03:16:47.000Z",
     "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/2322380/9f8057e0ae8a626a2f48eb6227b5331db304ab82.jpg",
     "lastUnlockedAt": "2026-11-08T10:28:13.000Z",
     "lastUnlockName": "The Artist Within",
@@ -402,7 +402,7 @@
             "unlockedAt": "2026-11-08T09:14:51.000Z",
             "iconUrl": "a639220b40c5915d50085b5aa33e491a15b37333.jpg",
             "iconGrayUrl": "86898118201b8d641831e11ce26a2f5f4939f35c.jpg",
-            "globalPct": 26.9
+            "globalPct": 26.8
         },
         {
             "apiName": "ach017",
@@ -429,7 +429,7 @@
             "unlockedAt": null,
             "iconUrl": "456a7b18c693ee078a98502b9ef2e826df52cca5.jpg",
             "iconGrayUrl": "3fbad12e5dcbe011b9220d1afe35f3e0c6a0bdbf.jpg",
-            "globalPct": 20
+            "globalPct": 20.1
         },
         {
             "apiName": "ach003",
