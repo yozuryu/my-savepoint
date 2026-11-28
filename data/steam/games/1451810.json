@@ -102,7 +102,7 @@
             "iconUrl": "3b97229155d1bd68757fa1769bf7230a1e96f873.jpg",
             "iconGrayUrl": "1d461afd76d4298b800f4b33be77926918dd3a3c.jpg",
             "hidden": false,
-            "globalPct": 4.5
+            "globalPct": 4.4
         },
         {
             "apiName": "ACH_ROADRAGE",
@@ -124,7 +124,7 @@
             "iconUrl": "1fcd3f23352ea5bc09a553175c915c8a1e62231f.jpg",
             "iconGrayUrl": "df72aa80d973580365fd36e4120dbe8c57b3cfcb.jpg",
             "hidden": false,
-            "globalPct": 42.5
+            "globalPct": 42.4
         },
         {
             "apiName": "ACH_BOOM",
@@ -473,7 +473,7 @@
             "unlockedAt": "2026-11-14T07:07:32.000Z",
             "iconUrl": "1fcd3f23352ea5bc09a553175c915c8a1e62231f.jpg",
             "iconGrayUrl": "df72aa80d973580365fd36e4120dbe8c57b3cfcb.jpg",
-            "globalPct": 42.5
+            "globalPct": 42.4
         },
         {
             "apiName": "ACH_STUNTMAN",

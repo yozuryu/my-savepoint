@@ -38096,7 +38096,7 @@
                     "unlockedAt": "2026-11-14T07:07:32.000Z",
                     "iconUrl": "1fcd3f23352ea5bc09a553175c915c8a1e62231f.jpg",
                     "iconGrayUrl": "df72aa80d973580365fd36e4120dbe8c57b3cfcb.jpg",
-                    "globalPct": 42.5
+                    "globalPct": 42.4
                 },
                 {
                     "apiName": "ACH_STUNTMAN",
@@ -38282,7 +38282,7 @@
                     "unlockedAt": "2026-11-15T15:50:14.000Z",
                     "iconUrl": "b3783ab93f0fdf75c957e10f84bf0803b69b2a56.jpg",
                     "iconGrayUrl": "fd43889618933cf736186c5a823daf9080908446.jpg",
-                    "globalPct": 47.8
+                    "globalPct": 47.9
                 },
                 {
                     "apiName": "ACHIEVEMENT028",
@@ -38300,7 +38300,7 @@
                     "unlockedAt": "2026-11-14T16:16:35.000Z",
                     "iconUrl": "bc11c15166e008e553b0479f2bb9216443b564e7.jpg",
                     "iconGrayUrl": "c52f0941e8a0fa43a6e36a9bbb333928d9d03acc.jpg",
-                    "globalPct": 49.6
+                    "globalPct": 49.7
                 },
                 {
                     "apiName": "ACHIEVEMENT036",
@@ -39692,8 +39692,8 @@
             "total": 34,
             "unlocked": 6,
             "gameName": "SpongeBob SquarePants™: The Patrick Star Game",
-            "playtimeForever": 741,
-            "lastPlayedTs": "2026-11-28T08:02:00.000Z",
+            "playtimeForever": 771,
+            "lastPlayedTs": "2026-11-28T08:32:00.000Z",
             "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/2322380/9f8057e0ae8a626a2f48eb6227b5331db304ab82.jpg",
             "lastUnlockedAt": "2026-11-28T08:22:41.000Z",
             "lastUnlockName": "Back to Sleep",
@@ -39732,7 +39732,7 @@
                     "unlockedAt": "2026-11-08T09:14:51.000Z",
                     "iconUrl": "a639220b40c5915d50085b5aa33e491a15b37333.jpg",
                     "iconGrayUrl": "86898118201b8d641831e11ce26a2f5f4939f35c.jpg",
-                    "globalPct": 26.8
+                    "globalPct": 26.9
                 },
                 {
                     "apiName": "ach017",
@@ -39955,7 +39955,7 @@
                     "unlockedAt": "2026-05-03T14:22:24.000Z",
                     "iconUrl": "bc61b9e62ebb09cbc34fd311b7f5d5ca7918869b.jpg",
                     "iconGrayUrl": "b0449b2e0b3bb2d9b99c8359b5514886d7474819.jpg",
-                    "globalPct": 67.4
+                    "globalPct": 67.5
                 }
             ]
         },

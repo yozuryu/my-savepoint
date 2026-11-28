@@ -25,7 +25,7 @@
             "iconUrl": "456a7b18c693ee078a98502b9ef2e826df52cca5.jpg",
             "iconGrayUrl": "3fbad12e5dcbe011b9220d1afe35f3e0c6a0bdbf.jpg",
             "hidden": false,
-            "globalPct": 20.1
+            "globalPct": 20
         },
         {
             "apiName": "ach003",
@@ -157,7 +157,7 @@
             "iconUrl": "e15f29d2553550a6c65f9fb9fdf1c2c2be75ab2a.jpg",
             "iconGrayUrl": "c7468563052da550fdd1f50445fcb07b935138fb.jpg",
             "hidden": false,
-            "globalPct": 29.2
+            "globalPct": 29.3
         },
         {
             "apiName": "ach015",
@@ -201,7 +201,7 @@
             "iconUrl": "a639220b40c5915d50085b5aa33e491a15b37333.jpg",
             "iconGrayUrl": "86898118201b8d641831e11ce26a2f5f4939f35c.jpg",
             "hidden": false,
-            "globalPct": 26.8
+            "globalPct": 26.9
         },
         {
             "apiName": "ach019",
@@ -333,7 +333,7 @@
             "iconUrl": "03f3bde848427020f13964c935624d6cd62eef09.jpg",
             "iconGrayUrl": "5ef311b29c2309925295d1bf601b3e5291436c7a.jpg",
             "hidden": false,
-            "globalPct": 15.8
+            "globalPct": 15.9
         },
         {
             "apiName": "ach031",
@@ -380,8 +380,8 @@
             "globalPct": 20
         }
     ],
-    "playtimeForever": 741,
-    "lastPlayedTs": "2026-11-28T08:02:00.000Z",
+    "playtimeForever": 771,
+    "lastPlayedTs": "2026-11-28T08:32:00.000Z",
     "iconUrl": "https://shared.akamai.steamstatic.com/community_assets/images/apps/2322380/9f8057e0ae8a626a2f48eb6227b5331db304ab82.jpg",
     "lastUnlockedAt": "2026-11-28T08:22:41.000Z",
     "lastUnlockName": "Back to Sleep",
@@ -420,7 +420,7 @@
             "unlockedAt": "2026-11-08T09:14:51.000Z",
             "iconUrl": "a639220b40c5915d50085b5aa33e491a15b37333.jpg",
             "iconGrayUrl": "86898118201b8d641831e11ce26a2f5f4939f35c.jpg",
-            "globalPct": 26.8
+            "globalPct": 26.9
         },
         {
             "apiName": "ach017",

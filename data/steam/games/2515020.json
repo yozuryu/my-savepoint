@@ -25,7 +25,7 @@
             "iconUrl": "8289deab066f28263e8f73ba929fd68958b040a2.jpg",
             "iconGrayUrl": "ddd944bafb49b5f7f13dd8333a4e5add32828825.jpg",
             "hidden": true,
-            "globalPct": 86.4
+            "globalPct": 86.5
         },
         {
             "apiName": "1002",
@@ -69,7 +69,7 @@
             "iconUrl": "8289deab066f28263e8f73ba929fd68958b040a2.jpg",
             "iconGrayUrl": "ddd944bafb49b5f7f13dd8333a4e5add32828825.jpg",
             "hidden": true,
-            "globalPct": 50.9
+            "globalPct": 51
         },
         {
             "apiName": "1006",
@@ -80,7 +80,7 @@
             "iconUrl": "8289deab066f28263e8f73ba929fd68958b040a2.jpg",
             "iconGrayUrl": "ddd944bafb49b5f7f13dd8333a4e5add32828825.jpg",
             "hidden": true,
-            "globalPct": 49.2
+            "globalPct": 49.3
         },
         {
             "apiName": "1007",
@@ -91,7 +91,7 @@
             "iconUrl": "8289deab066f28263e8f73ba929fd68958b040a2.jpg",
             "iconGrayUrl": "ddd944bafb49b5f7f13dd8333a4e5add32828825.jpg",
             "hidden": true,
-            "globalPct": 45.7
+            "globalPct": 45.8
         },
         {
             "apiName": "1008",
@@ -113,7 +113,7 @@
             "iconUrl": "8289deab066f28263e8f73ba929fd68958b040a2.jpg",
             "iconGrayUrl": "ddd944bafb49b5f7f13dd8333a4e5add32828825.jpg",
             "hidden": true,
-            "globalPct": 37.5
+            "globalPct": 37.6
         },
         {
             "apiName": "1010",
@@ -179,7 +179,7 @@
             "iconUrl": "a76b868f5477a4b9ad02d8c72ef9788d31910156.jpg",
             "iconGrayUrl": "49290fb439b9cec624f808daf8e3c028d808b4b7.jpg",
             "hidden": true,
-            "globalPct": 35.4
+            "globalPct": 35.5
         },
         {
             "apiName": "1018",
@@ -267,7 +267,7 @@
             "iconUrl": "14812e539d7e53e2a79ec2130a42d49170cae062.jpg",
             "iconGrayUrl": "5c7b250cfbb2f2649c15ab2c476330d58b8770d3.jpg",
             "hidden": false,
-            "globalPct": 30.6
+            "globalPct": 30.7
         },
         {
             "apiName": "1026",
@@ -278,7 +278,7 @@
             "iconUrl": "14812e539d7e53e2a79ec2130a42d49170cae062.jpg",
             "iconGrayUrl": "5c7b250cfbb2f2649c15ab2c476330d58b8770d3.jpg",
             "hidden": false,
-            "globalPct": 22.4
+            "globalPct": 22.5
         },
         {
             "apiName": "1027",
@@ -399,7 +399,7 @@
             "iconUrl": "924284a6aad430a5d107cc1c699e3bddbe7f271c.jpg",
             "iconGrayUrl": "97842eab26b9d655a97f052d821e21c85a099a21.jpg",
             "hidden": true,
-            "globalPct": 32.7
+            "globalPct": 32.8
         },
         {
             "apiName": "1041",
@@ -443,7 +443,7 @@
             "iconUrl": "bc61b9e62ebb09cbc34fd311b7f5d5ca7918869b.jpg",
             "iconGrayUrl": "b0449b2e0b3bb2d9b99c8359b5514886d7474819.jpg",
             "hidden": false,
-            "globalPct": 67.4
+            "globalPct": 67.5
         },
         {
             "apiName": "1014",
@@ -531,7 +531,7 @@
             "iconUrl": "5cef81833047f40019f63e9c570aee9239f852c1.jpg",
             "iconGrayUrl": "4d2f1f706cdb729dd6d072bcb0a26a69be507a8c.jpg",
             "hidden": false,
-            "globalPct": 19
+            "globalPct": 19.1
         },
         {
             "apiName": "1048",
@@ -542,7 +542,7 @@
             "iconUrl": "e1058d51bbf6ad27f91482802f05cc4b67336a74.jpg",
             "iconGrayUrl": "562de2dc44da5961c5cabd8c64e862bf9badc4cd.jpg",
             "hidden": true,
-            "globalPct": 6.1
+            "globalPct": 6.2
         },
         {
             "apiName": "1049",
@@ -575,7 +575,7 @@
             "iconUrl": "eaf8375bf78017a1034bbc2fadf23cc750d238ba.jpg",
             "iconGrayUrl": "6a47671dc125252f283a666ceadec41aa6060aec.jpg",
             "hidden": true,
-            "globalPct": 19.6
+            "globalPct": 19.7
         },
         {
             "apiName": "2001",
@@ -685,7 +685,7 @@
             "iconUrl": "ea04648e1cdc5fa48a74ea6a9ef62b13eb94cc01.jpg",
             "iconGrayUrl": "6b0367390d7d12df0cf43fa42503453a299028db.jpg",
             "hidden": true,
-            "globalPct": 2.8
+            "globalPct": 2.9
         },
         {
             "apiName": "3006",
@@ -823,7 +823,7 @@
             "unlockedAt": "2026-05-03T14:22:24.000Z",
             "iconUrl": "bc61b9e62ebb09cbc34fd311b7f5d5ca7918869b.jpg",
             "iconGrayUrl": "b0449b2e0b3bb2d9b99c8359b5514886d7474819.jpg",
-            "globalPct": 67.4
+            "globalPct": 67.5
         }
     ]
 }
